@@ -22,6 +22,8 @@ void AGridManager::BeginPlay()
 			_grid[FVector2D(i,j)] = nullptr;
 		}
 	}
+	FVector test = SnapToGrid(FVector(1,2,100));
+	UE_LOG(LogTemp, Warning, TEXT("Grid pos is %s"),*test.ToString());
 }
 
 // Called every frame
@@ -37,8 +39,8 @@ FVector2D AGridManager::WorldToCell(const FVector& p_worldPosition) const
 {
 	FVector2D gridPos;
 	FVector Distance = p_worldPosition - GetActorLocation();
-	gridPos.X = (Distance.X/_cellSize);
-	gridPos.Y = (Distance.Y/_cellSize);
+	gridPos.X = static_cast<int>((Distance.X+CalculateOffset(Distance.X)) / _cellSize );
+	gridPos.Y = static_cast<int>((Distance.Y+CalculateOffset(Distance.Y))/_cellSize);
 	return gridPos;
 }
 
@@ -97,4 +99,15 @@ bool AGridManager::IsInGrid(const FVector2D& p_cell) const
 	return (p_cell.ComponentwiseAllLessOrEqual(UE::Math::TVector2<double>(_gridSize/2))
 		&& p_cell.ComponentwiseAllGreaterOrEqual(UE::Math::TVector2<double>(-_gridSize/2)));
 }
+
+float AGridManager::CalculateOffset(double Distance) const
+{
+	if (Distance < 0)
+	{
+		return -_gridSize/2;
+	}
+	return _gridSize/2;
+}
+
+
 

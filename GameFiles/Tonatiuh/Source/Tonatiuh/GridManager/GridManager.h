@@ -40,4 +40,5 @@ public:
 
 private:
 	bool IsInGrid(const FVector2D& p_cell) const;
+	float CalculateOffset(double Distance) const;
 };
