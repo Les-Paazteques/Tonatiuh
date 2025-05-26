@@ -22,8 +22,6 @@ void AGridManager::BeginPlay()
 			_grid[FVector2D(i,j)] = nullptr;
 		}
 	}
-	FVector test = SnapToGrid(FVector(1,2,100));
-	UE_LOG(LogTemp, Warning, TEXT("Grid pos is %s"),*test.ToString());
 }
 
 // Called every frame
