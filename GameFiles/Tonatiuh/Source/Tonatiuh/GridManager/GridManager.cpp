@@ -66,7 +66,7 @@ FVector AGridManager::SnapToGrid(const FVector& p_worldPosition) const
 /// @param p_cell cell you want to set
 /// @param p_actorToSet what you want to set the cell to
 /// @return return true if successfully set cell
-bool AGridManager::SetCell(const FVector2D& p_cell, AActor* p_actorToSet)
+bool AGridManager::SetCell(const FVector2D& p_cell, const TSubclassOf<ABuildings>& p_actorToSet)
 {
 	if (_grid[p_cell] == nullptr
 		&& IsInGrid(p_cell))
@@ -80,9 +80,9 @@ bool AGridManager::SetCell(const FVector2D& p_cell, AActor* p_actorToSet)
 /// 
 /// @param p_cell cell you want see what it contains
 /// @return returns the content of the specified cell (can return nullptr)
-AActor* AGridManager::GetCell(const FVector2D& p_cell)
+TSubclassOf<ABuildings> AGridManager::GetCell(const FVector2D& p_cell)
 {
-	if (IsInGrid(p_cell))
+	if (!IsInGrid(p_cell))
 	{
 		return nullptr;
 	}

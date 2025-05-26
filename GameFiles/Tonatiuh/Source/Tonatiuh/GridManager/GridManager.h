@@ -6,6 +6,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tonatiuh/Buildings/Buildings.h"
 #include "GridManager.generated.h"
 
 
@@ -26,7 +27,10 @@ protected:
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
 	int _cellSize = 0;
-	std::map<FVector2D,AActor*> _grid;
+	std::map<FVector2D,TSubclassOf<ABuildings>> _grid;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<ABuildings> _BuildingBP;
 
 public:
 	// Called every frame
@@ -35,8 +39,8 @@ public:
 	FVector2D WorldToCell(const FVector& p_worldPosition) const;
 	FVector CellToWorld(const FVector2D& p_cell) const;
 	FVector SnapToGrid(const FVector& p_worldPosition) const;
-	bool SetCell(const FVector2D& p_cell,AActor* p_actorToSet);
-	AActor* GetCell(const FVector2D& p_cell);
+	bool SetCell(const FVector2D& p_cell, const TSubclassOf<ABuildings>& p_actorToSet);
+	TSubclassOf<ABuildings> GetCell(const FVector2D& p_cell);
 
 private:
 	bool IsInGrid(const FVector2D& p_cell) const;
