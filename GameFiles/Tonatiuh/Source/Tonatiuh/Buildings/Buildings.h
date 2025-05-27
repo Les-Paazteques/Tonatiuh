@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tonatiuh/Enums/ResourceEnum.h"
+#include "Tonatiuh/Enums/JobEnum.h"
 #include "Buildings.generated.h"
 
 UCLASS()
@@ -22,4 +24,10 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TMap<resourceEnum,int> BuildingCost;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TMap<JobEnum,int> JobCapIncrease;
 };

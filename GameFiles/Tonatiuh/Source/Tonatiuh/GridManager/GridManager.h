@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include <map>
-
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Buildings/Buildings.h"
@@ -27,10 +25,7 @@ protected:
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
 	int _cellSize = 0;
-	std::map<FVector2D,TSubclassOf<ABuildings>> _grid;
-
-	UPROPERTY(EditAnywhere)
-	TSubclassOf<ABuildings> _BuildingBP;
+	TMap<FVector2D,TSubclassOf<ABuildings>> _grid;
 
 public:
 	// Called every frame

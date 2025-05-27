@@ -18,6 +18,10 @@ void ABuildings::BeginPlay()
 	
 }
 
+void ABuildings::behavior()
+{
+}
+
 // Called every frame
 void ABuildings::Tick(float DeltaTime)
 {
