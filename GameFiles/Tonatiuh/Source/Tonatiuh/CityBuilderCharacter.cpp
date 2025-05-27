@@ -19,22 +19,22 @@ void ACityBuilderCharacter::BeginPlay()
 }
 
 // Called every frame
-void ACityBuilderCharacter::Tick(float DeltaTime)
+void ACityBuilderCharacter::Tick(float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 
 }
 
 // Called to bind functionality to input
-void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* p_playerInputComponent)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	Super::SetupPlayerInputComponent(p_playerInputComponent);
 
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
+	if (UEnhancedInputComponent* enhancedInputComponent = Cast<UEnhancedInputComponent>(p_playerInputComponent)) {
 		// Moving
-		EnhancedInputComponent->BindAction(_moveAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Move);
+		enhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Move);
 		// Interacting
-		EnhancedInputComponent->BindAction(_interactAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Interact);
+		enhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Interact);
 	}
 }
 
@@ -60,7 +60,7 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 		}
 		else{
 			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
-			UE_LOG(LogTemp, Display, TEXT("%s"), *movementVector.ToString());
+			UE_LOG(LogTemp, Display, TEXT("%s"), *movementVector.ToString())
 		}
 
 		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
