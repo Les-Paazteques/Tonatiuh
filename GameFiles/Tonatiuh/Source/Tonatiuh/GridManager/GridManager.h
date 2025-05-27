@@ -25,19 +25,20 @@ protected:
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
 	int _cellSize = 0;
-	TMap<FVector2D,TSubclassOf<ABuildings>> _grid;
+	TMap<FIntPoint,TSubclassOf<ABuildings>> _grid;
 
 public:
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
 	
-	FVector2D WorldToCell(const FVector& p_worldPosition) const;
-	FVector CellToWorld(const FVector2D& p_cell) const;
+	FIntPoint WorldToCell(const FVector& p_worldPosition) const;
+	FVector CellToWorld(const FIntPoint& p_cell) const;
 	FVector SnapToGrid(const FVector& p_worldPosition) const;
-	bool SetCell(const FVector2D& p_cell, const TSubclassOf<ABuildings>& p_actorToSet);
-	TSubclassOf<ABuildings> GetCell(const FVector2D& p_cell);
+	bool SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet);
+	bool UnSetCell(const FIntPoint& p_cell);
+	TSubclassOf<ABuildings> GetCell(const FIntPoint& p_cell);
 
 private:
-	bool IsInGrid(const FVector2D& p_cell) const;
+	bool IsInGrid(const FIntPoint& p_cell) const;
 	float CalculateOffset(double Distance) const;
 };

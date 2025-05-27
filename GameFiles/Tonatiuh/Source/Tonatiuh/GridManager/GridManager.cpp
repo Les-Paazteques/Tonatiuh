@@ -15,11 +15,12 @@ AGridManager::AGridManager()
 void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
+	_grid = TMap<FIntPoint,TSubclassOf<ABuildings>>();
 	for (int i = -_gridSize/2; i <= _gridSize/2; i++)
 	{
 		for (int j = -_gridSize/2; j <= _gridSize/2; j++)
 		{
-			_grid[FVector2D(i,j)] = nullptr;
+			_grid.Add(FIntPoint(i,j));
 		}
 	}
 }
@@ -33,9 +34,9 @@ void AGridManager::Tick(float DeltaTime)
 /// 
 /// @param p_worldPosition the world position you want to know the corresponding cell
 /// @return the cell corresponding to world position
-FVector2D AGridManager::WorldToCell(const FVector& p_worldPosition) const
+FIntPoint AGridManager::WorldToCell(const FVector& p_worldPosition) const
 {
-	FVector2D gridPos;
+	FIntPoint gridPos;
 	FVector Distance = p_worldPosition - GetActorLocation();
 	gridPos.X = static_cast<int>((Distance.X+CalculateOffset(Distance.X)) / _cellSize );
 	gridPos.Y = static_cast<int>((Distance.Y+CalculateOffset(Distance.Y))/_cellSize);
@@ -45,7 +46,7 @@ FVector2D AGridManager::WorldToCell(const FVector& p_worldPosition) const
 /// 
 /// @param p_cell the cell you want to know the world pos
 /// @return return the world pos of the cell
-FVector AGridManager::CellToWorld(const FVector2D& p_cell) const
+FVector AGridManager::CellToWorld(const FIntPoint& p_cell) const
 {
 	FVector worldPos;
 	worldPos.X = (p_cell.X*_cellSize);
@@ -62,14 +63,15 @@ FVector AGridManager::SnapToGrid(const FVector& p_worldPosition) const
 	return CellToWorld(WorldToCell(p_worldPosition));
 }
 
+
+
 /// 
 /// @param p_cell cell you want to set
 /// @param p_actorToSet what you want to set the cell to
 /// @return return true if successfully set cell
-bool AGridManager::SetCell(const FVector2D& p_cell, const TSubclassOf<ABuildings>& p_actorToSet)
+bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet)
 {
-	if (_grid[p_cell] == nullptr
-		&& IsInGrid(p_cell))
+	if (_grid[p_cell] == nullptr && IsInGrid(p_cell))
 	{
 		_grid[p_cell] = p_actorToSet;
 		return true;
@@ -77,10 +79,19 @@ bool AGridManager::SetCell(const FVector2D& p_cell, const TSubclassOf<ABuildings
 	return false;
 }
 
+bool AGridManager::UnSetCell(const FIntPoint& p_cell)
+{
+	if (_grid[p_cell] == nullptr || !IsInGrid(p_cell))
+	{
+		return false;
+	}
+	return SetCell(p_cell, nullptr);
+}
+
 /// 
 /// @param p_cell cell you want see what it contains
 /// @return returns the content of the specified cell (can return nullptr)
-TSubclassOf<ABuildings> AGridManager::GetCell(const FVector2D& p_cell)
+TSubclassOf<ABuildings> AGridManager::GetCell(const FIntPoint& p_cell)
 {
 	if (!IsInGrid(p_cell))
 	{
@@ -92,10 +103,10 @@ TSubclassOf<ABuildings> AGridManager::GetCell(const FVector2D& p_cell)
 /// 
 /// @param p_cell the cell you want to see belong to the grid
 /// @return return true if the cell is in the grid
-bool AGridManager::IsInGrid(const FVector2D& p_cell) const
+bool AGridManager::IsInGrid(const FIntPoint& p_cell) const
 {
-	return (p_cell.ComponentwiseAllLessOrEqual(UE::Math::TVector2<double>(_gridSize/2))
-		&& p_cell.ComponentwiseAllGreaterOrEqual(UE::Math::TVector2<double>(-_gridSize/2)));
+	return (p_cell.X >= -_gridSize/2 && p_cell.X <= _gridSize/2 ||
+		 p_cell.Y >= -_gridSize/2 && p_cell.Y <= _gridSize/2);
 }
 
 float AGridManager::CalculateOffset(double Distance) const

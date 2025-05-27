@@ -15,11 +15,6 @@ ABuildings::ABuildings()
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
-
-void ABuildings::behavior()
-{
 }
 
 // Called every frame
@@ -27,4 +22,3 @@ void ABuildings::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 }
-
