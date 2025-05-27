@@ -39,7 +39,6 @@ void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 }
 
 void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
-
 	// input is a Vector2D
 	FVector2D movementVector = p_value.Get<FVector2D>();
 
@@ -55,10 +54,16 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 		// get right vector
 		const FVector rightDirection = FRotationMatrix(yawRotation).GetUnitAxis(EAxis::Y);
 
-		// add movement 
-		AddMovementInput(forwardDirection, movementVector.Y, true);
-		AddMovementInput(rightDirection, movementVector.X, true);
+		if (GetActorLocation() == GetActorLocation().BoundToBox(_boundsMin - 1, _boundsMax + 1)) {
+			AddMovementInput(rightDirection, movementVector.X);
+			AddMovementInput(forwardDirection, movementVector.Y);
+		}
+		else{
+			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
+			UE_LOG(LogTemp, Display, TEXT("%s"), *movementVector.ToString());
+		}
 
+		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 	}
 }
 

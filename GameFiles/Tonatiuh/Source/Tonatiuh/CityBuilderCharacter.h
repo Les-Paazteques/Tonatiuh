@@ -46,6 +46,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputMappingContext* _defaultMappingContext;
 
+	/** Upper limits of movement */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
+	FVector _boundsMax;
+
+	/** Lesser limits of movement */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
+	FVector _boundsMin;
+
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
 
