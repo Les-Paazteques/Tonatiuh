@@ -17,10 +17,13 @@ public:
 	// Sets default values for this actor's properties
 	AGridManager();
 
+	static AGridManager* Get(UWorld* World);
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 	UPROPERTY(EditAnywhere)
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
@@ -41,4 +44,5 @@ public:
 private:
 	bool IsInGrid(const FIntPoint& p_cell) const;
 	float CalculateOffset(double Distance) const;
+	static AGridManager* Instance;
 };
