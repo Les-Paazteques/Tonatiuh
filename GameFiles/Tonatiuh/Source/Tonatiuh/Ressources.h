@@ -33,7 +33,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float p_deltaTime) override;
 
 	virtual int GetCurrentAmount();
 

@@ -22,9 +22,9 @@ void AResource::BeginPlay()
 }
 
 // Called every frame
-void AResource::Tick(float DeltaTime)
+void AResource::Tick(float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 
 }
 
