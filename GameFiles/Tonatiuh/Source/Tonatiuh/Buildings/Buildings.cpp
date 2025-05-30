@@ -15,6 +15,10 @@ ABuildings::ABuildings()
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
+	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
+	}
 }
 
 // Called every frame
