@@ -21,7 +21,7 @@ public:
 	int32 CheckpointID;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoint")
-	class UBoxComponent* TriggerBox;
+	UBoxComponent* TriggerBox;
 
 
 protected:

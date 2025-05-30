@@ -3,7 +3,7 @@
 
 #include "Checkpoint.h"
 #include "Components/BoxComponent.h"
-#include "TonatiuhCharacter.h"
+#include "Tonatiuh/HealthComponent/PlayerHealthComponent.h"
 
 
 // Sets default values
@@ -11,30 +11,25 @@ ACheckpoint::ACheckpoint()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	TriggerBox = CreateDefaultSubObject<UBoxComponent>(TEXT("TriggerBox"));
+	TriggerBox = CreateDefaultSubobject<UBoxComponent>(TEXT("TriggerBox"));
 	RootComponent = TriggerBox;
 	TriggerBox->SetBoxExtent(FVector(100.f));
 	TriggerBox->SetCollisionProfileName("Trigger");
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnOverlapBegin);
-
 }
 
 // Called when the game starts or when spawned
 void ACheckpoint::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
-void OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* p_otherActor,
+void ACheckpoint::OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* p_otherActor,
 	UPrimitiveComponent* p_otherComp, int32 p_otherBodyIndex,
 	bool p_fromSweep, const FHitResult& p_sweepResult)
 {
-	ATonatiuhCharacter* player = Cast<ATonatiuhCharacter>(p_otherActor);
-
-	if (player)
+	if (UPlayerHealthComponent* playerHealthComponent = Cast<UPlayerHealthComponent>(p_otherActor))
 	{
-		player->SetRespawnLocation(GetActorLocation());
+		playerHealthComponent->SetRespawnLocation(GetActorLocation());
 	}
 }
-
