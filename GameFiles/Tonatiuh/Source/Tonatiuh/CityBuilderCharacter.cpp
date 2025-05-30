@@ -78,22 +78,20 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 
 void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
 
-	if (FoundWidget != nullptr)
+	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->previewBuilding != nullptr)
+		return;
+	
+	if (GridManager->SetCell(GridManager->WorldToCell(FoundWidget->previewBuilding->GetActorLocation()),FoundWidget->SelectedBuilding))
 	{
-		if (FoundWidget->SelectedBuilding != nullptr && FoundWidget->previewBuilding != nullptr)
-		{
-			if (GridManager->SetCell(GridManager->WorldToCell(FoundWidget->previewBuilding->GetActorLocation()),FoundWidget->SelectedBuilding))
-			{
-				AActor* test =  GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
-				FoundWidget->previewBuilding->GetActorLocation(),
-				FRotator(0, 0, 0));
-				UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(
+		//add resource check
+		AActor* test =  GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
+			FoundWidget->previewBuilding->GetActorLocation(),
+			FRotator(0, 0, 0));
+		UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(
 			test->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this);
-				Material->SetScalarParameterValue(TEXT("Opacity"),1);
+		Material->SetScalarParameterValue(TEXT("Opacity"),1);
 				test->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0,Material);
-			}
-		}
-	}	
+	}
 }
 
 void ACityBuilderCharacter::NotifyControllerChanged() {
