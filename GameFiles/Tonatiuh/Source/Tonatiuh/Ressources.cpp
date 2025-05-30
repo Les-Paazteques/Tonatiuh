@@ -11,6 +11,7 @@ AResource::AResource()
 	_maxAmount = 0;
 	_currentAmount = 0;
 	_sprite = nullptr;
+	_resourceType = EResourceEnum::Food;
 
 }
 
