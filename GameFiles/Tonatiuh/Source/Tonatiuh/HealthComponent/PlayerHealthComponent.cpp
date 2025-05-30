@@ -10,9 +10,9 @@ UPlayerHealthComponent::UPlayerHealthComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
-void UPlayerHealthComponent::SetRespawnLocation(FVector NewLocation)
+void UPlayerHealthComponent::SetRespawnLocation(FVector p_newLocation)
 {
-	RespawnLocation = NewLocation;
+	RespawnLocation = p_newLocation;
 }
 
 FVector UPlayerHealthComponent::GetRespawnLocation() const
@@ -27,9 +27,10 @@ void UPlayerHealthComponent::Die()
 
 void UPlayerHealthComponent::Respawn()
 {
-	ATonatiuhCharacter* Owner = Cast<ATonatiuhCharacter>(GetOwner());
-	if (Owner && !RespawnLocation.IsZero())
+	ATonatiuhCharacter* owner = Cast<ATonatiuhCharacter>(GetOwner());
+
+	if (owner && !RespawnLocation.IsZero())
 	{
-		Owner->SetActorLocation(RespawnLocation);
+		owner->SetActorLocation(RespawnLocation);
 	}
 }

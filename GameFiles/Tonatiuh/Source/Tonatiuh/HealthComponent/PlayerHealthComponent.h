@@ -16,7 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UPlayerHealthComponent();
 
-	void SetRespawnLocation(FVector NewLocation);
+	void SetRespawnLocation(FVector p_newLocation);
 	FVector GetRespawnLocation() const;
 
 	void Die();
@@ -29,7 +29,7 @@ protected:
 
 public:	
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickComponent(float p_deltaTime, ELevelTick p_tickType, FActorComponentTickFunction* p_thisTickFunction) override;
 	FVector RespawnLocation;
 		
 };
