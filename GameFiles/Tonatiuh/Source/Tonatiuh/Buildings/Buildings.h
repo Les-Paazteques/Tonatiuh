@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/Enums/ResourceEnum.h"
-#include "Tonatiuh/Enums/JobEnum.h"
+#include "Tonatiuh/Enums/EResourceEnum.h"
+#include "Tonatiuh/Enums/EJobEnum.h"
 #include "Buildings.generated.h"
 
 UCLASS()
@@ -26,8 +26,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	TMap<resourceEnum,int> BuildingCost;
+	TMap<EResourceEnum,int> BuildingCost;
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
-	TMap<JobEnum,int> JobCapIncrease;
+	TMap<EJobEnum,int> JobCapIncrease;
 };
