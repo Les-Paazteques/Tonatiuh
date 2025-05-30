@@ -80,7 +80,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
 
 	if (FoundWidget != nullptr)
 	{
-		if (FoundWidget->SelectedBuilding != nullptr)
+		if (FoundWidget->SelectedBuilding != nullptr && FoundWidget->previewBuilding != nullptr)
 		{
 			if (GridManager->SetCell(GridManager->WorldToCell(FoundWidget->previewBuilding->GetActorLocation()),FoundWidget->SelectedBuilding))
 			{
