@@ -12,12 +12,15 @@ AGridManager::AGridManager()
 	
 }
 
-
+AGridManager* AGridManager::Instance = nullptr;
 
 // Called when the game starts or when spawned
 void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Instance = this;
+	
 	_grid = TMap<FIntPoint,TSubclassOf<ABuildings>>();
 	for (int i = -_gridSize/2; i <= _gridSize/2; i++)
 	{
@@ -65,8 +68,6 @@ FVector AGridManager::SnapToGrid(const FVector& p_worldPosition) const
 {
 	return CellToWorld(WorldToCell(p_worldPosition));
 }
-
-
 
 /// 
 /// @param p_cell cell you want to set
@@ -121,5 +122,7 @@ float AGridManager::CalculateOffset(double Distance) const
 	return _gridSize/2;
 }
 
-
-
+AGridManager* AGridManager::Get(UWorld* World)
+{
+	return Instance;
+}
