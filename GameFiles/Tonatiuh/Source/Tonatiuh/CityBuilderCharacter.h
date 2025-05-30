@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "W_CityBuilder.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "GameFramework/Pawn.h"
 #include "CityBuilderCharacter.generated.h"
 
@@ -54,6 +56,15 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
 	FVector _boundsMin;
 
+	UPROPERTY()
+	TArray<UUserWidget*> FoundWidgets;
+
+	UPROPERTY()
+	UW_CityBuilder* FoundWidget;
+
+	UPROPERTY()
+	AGridManager* GridManager;
+	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
 

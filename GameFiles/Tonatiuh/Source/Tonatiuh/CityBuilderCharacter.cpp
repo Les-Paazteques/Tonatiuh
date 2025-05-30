@@ -3,6 +3,7 @@
 #include "CityBuilderCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GridManager/GridManager.h"
 
 // Sets default values
 ACityBuilderCharacter::ACityBuilderCharacter()
@@ -15,7 +16,15 @@ ACityBuilderCharacter::ACityBuilderCharacter()
 void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(),FoundWidgets, UW_CityBuilder::StaticClass(), false);
+	if (FoundWidgets.Num() > 0)
+	{
+		FoundWidget = Cast<UW_CityBuilder>(FoundWidgets[0]);
+	}
+	if (GridManager == nullptr)
+	{
+		GridManager = AGridManager::Get(GetWorld());
+	}
 }
 
 // Called every frame
@@ -68,7 +77,23 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 }
 
 void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
-	
+
+	if (FoundWidget != nullptr)
+	{
+		if (FoundWidget->SelectedBuilding != nullptr)
+		{
+			if (GridManager->SetCell(GridManager->WorldToCell(FoundWidget->previewBuilding->GetActorLocation()),FoundWidget->SelectedBuilding))
+			{
+				AActor* test =  GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
+				FoundWidget->previewBuilding->GetActorLocation(),
+				FRotator(0, 0, 0));
+				UMaterialInstanceDynamic* Material = UMaterialInstanceDynamic::Create(
+			test->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this);
+				Material->SetScalarParameterValue(TEXT("Opacity"),1);
+				test->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0,Material);
+			}
+		}
+	}	
 }
 
 void ACityBuilderCharacter::NotifyControllerChanged() {
