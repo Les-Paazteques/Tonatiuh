@@ -13,7 +13,8 @@ class TONATIUH_API UPlayerHealthComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:
-	
+
+	UPROPERTY(VisibleAnywhere)
 	FVector RespawnLocation;
 
 public:

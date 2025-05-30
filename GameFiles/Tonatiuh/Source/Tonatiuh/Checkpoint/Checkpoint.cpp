@@ -28,7 +28,17 @@ void ACheckpoint::OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* 
 	UPrimitiveComponent* p_otherComp, int32 p_otherBodyIndex,
 	bool p_fromSweep, const FHitResult& p_sweepResult)
 {
-	if (UPlayerHealthComponent* playerHealthComponent = Cast<UPlayerHealthComponent>(p_otherActor))
+	if (p_otherActor == nullptr)
+		return;
+	
+	UActorComponent* triggerComponent = p_otherActor->GetComponentByClass(UPlayerHealthComponent::StaticClass());
+
+	if (!triggerComponent)
+		return;
+	
+	UPlayerHealthComponent* playerHealthComponent = Cast<UPlayerHealthComponent>(triggerComponent);
+	
+	if (playerHealthComponent)
 	{
 		playerHealthComponent->SetRespawnLocation(GetActorLocation());
 	}
