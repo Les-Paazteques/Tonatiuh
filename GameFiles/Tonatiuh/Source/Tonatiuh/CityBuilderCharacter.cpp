@@ -21,11 +21,11 @@ void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(),FoundWidgets, UW_CityBuilder::StaticClass(), false);
+	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(),FoundWidgets, UCityBuilder::StaticClass(), false);
 	
 	if (FoundWidgets.Num() > 0)
 	{
-		FoundWidget = Cast<UW_CityBuilder>(FoundWidgets[0]);
+		FoundWidget = Cast<UCityBuilder>(FoundWidgets[0]);
 	}
 	
 	if (GridManager == nullptr)

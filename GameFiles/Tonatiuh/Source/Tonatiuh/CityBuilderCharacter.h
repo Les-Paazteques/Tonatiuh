@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "W_CityBuilder.h"
+#include "CityBuilder.h"
 #include "GameFramework/Pawn.h"
 #include "CityBuilderCharacter.generated.h"
 
@@ -61,7 +61,7 @@ protected:
 	TArray<UUserWidget*> FoundWidgets;
 
 	UPROPERTY()
-	UW_CityBuilder* FoundWidget;
+	UCityBuilder* FoundWidget;
 
 	UPROPERTY()
 	AGridManager* GridManager;
