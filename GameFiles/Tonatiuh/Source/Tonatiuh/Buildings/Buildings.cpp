@@ -15,6 +15,7 @@ ABuildings::ABuildings()
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
+	
 	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
@@ -22,7 +23,7 @@ void ABuildings::BeginPlay()
 }
 
 // Called every frame
-void ABuildings::Tick(float DeltaTime)
+void ABuildings::Tick(const float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 }

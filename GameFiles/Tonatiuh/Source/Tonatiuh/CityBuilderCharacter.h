@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "W_CityBuilder.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "GameFramework/Pawn.h"
 #include "CityBuilderCharacter.generated.h"
 
