@@ -31,7 +31,7 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnHourPassedEvent OnHourPassedEvent;
 
-	const bool IS_DEBUG_MODE_ON = true;
+	const bool IS_DEBUG_MODE_ON = false;
 
 	UPROPERTY(EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
 	int DayCycleLengthIRL = 5;
