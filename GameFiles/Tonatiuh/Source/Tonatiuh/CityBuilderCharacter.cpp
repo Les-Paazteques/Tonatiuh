@@ -45,7 +45,7 @@ void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* p_playerI
 		// Interacting
 		enhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Interact);
 		// Remove Building
-		enhancedInputComponent->BindAction(RightClickInteraction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::RemoveBuilding);
+		enhancedInputComponent->BindAction(RightClickInteraction, ETriggerEvent::Started, this, &ACityBuilderCharacter::RemoveBuilding);
 	}
 }
 
@@ -100,9 +100,9 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 {
 	
-	FVector CamPos;
-	FVector CamDir;
-	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(CamPos,CamDir);
+	FVector cameraPosistion;
+	FVector cameraDirection;
+	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(cameraPosistion,cameraDirection);
 	FHitResult Hit;
 	FCollisionQueryParams Params;
 	if (ActorToIgnores.IsEmpty())
@@ -114,13 +114,12 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		Params.AddIgnoredActor(FoundWidget->previewBuilding);
 	}
 	GetWorld()->LineTraceSingleByChannel(Hit,
-		CamPos,CamPos + CamDir * 1000
+		cameraPosistion,cameraPosistion + cameraDirection * 1000
 		,ECC_Visibility,Params);
 	if (Hit.GetActor())
 	{
 		if (GridManager->UnSetCell(GridManager->WorldToCell(Hit.GetActor()->GetActorLocation())))
 		{
-			UE_LOG(LogTemp, Warning, TEXT("cell is empty"));
 			Hit.GetActor()->Destroy();
 		}
 	}
