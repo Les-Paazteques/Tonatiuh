@@ -43,9 +43,9 @@ void AGridManager::Tick(float DeltaTime)
 FIntPoint AGridManager::WorldToCell(const FVector& p_worldPosition) const
 {
 	FIntPoint gridPos;
-	FVector Distance = p_worldPosition - GetActorLocation();
-	gridPos.X = static_cast<int>((Distance.X+CalculateOffset(Distance.X)) / _cellSize );
-	gridPos.Y = static_cast<int>((Distance.Y+CalculateOffset(Distance.Y))/_cellSize);
+	FVector Distance = p_worldPosition;
+	gridPos.X = UE4::SSE::RoundToInt32((Distance.X+CalculateOffset(Distance.X))/ _cellSize);
+	gridPos.Y = UE4::SSE::RoundToInt32((Distance.Y+CalculateOffset(Distance.Y))/_cellSize);
 	return gridPos;
 }
 
@@ -85,11 +85,12 @@ bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings
 
 bool AGridManager::UnSetCell(const FIntPoint& p_cell)
 {
-	if (_grid[p_cell] == nullptr || !IsInGrid(p_cell))
+	if (_grid[p_cell] != nullptr && IsInGrid(p_cell))
 	{
-		return false;
+		_grid[p_cell] = nullptr;
+		return true;
 	}
-	return SetCell(p_cell, nullptr);
+	return false;
 }
 
 /// 

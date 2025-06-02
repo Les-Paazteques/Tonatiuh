@@ -44,6 +44,8 @@ void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* p_playerI
 		enhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Move);
 		// Interacting
 		enhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Interact);
+		// Remove Building
+		enhancedInputComponent->BindAction(RightClickInteraction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::RemoveBuilding);
 	}
 }
 
@@ -69,7 +71,6 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 		}
 		else{
 			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
-			UE_LOG(LogTemp, Display, TEXT("%s"), *movementVector.ToString())
 		}
 
 		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
@@ -78,8 +79,10 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value) {
 
 void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
 
-	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->previewBuilding != nullptr)
+	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->previewBuilding == nullptr)
+	{
 		return;
+	}
 	
 	if (GridManager->SetCell(GridManager->WorldToCell(FoundWidget->previewBuilding->GetActorLocation()),FoundWidget->SelectedBuilding))
 	{
@@ -91,6 +94,35 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value) {
 			test->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this);
 		Material->SetScalarParameterValue(TEXT("Opacity"),1);
 				test->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0,Material);
+	}
+}
+
+void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
+{
+	
+	FVector CamPos;
+	FVector CamDir;
+	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(CamPos,CamDir);
+	FHitResult Hit;
+	FCollisionQueryParams Params;
+	if (ActorToIgnores.IsEmpty())
+	{
+		Params.AddIgnoredActors(ActorToIgnores);
+	}
+	if (FoundWidget->previewBuilding != nullptr)
+	{
+		Params.AddIgnoredActor(FoundWidget->previewBuilding);
+	}
+	GetWorld()->LineTraceSingleByChannel(Hit,
+		CamPos,CamPos + CamDir * 1000
+		,ECC_Visibility,Params);
+	if (Hit.GetActor())
+	{
+		if (GridManager->UnSetCell(GridManager->WorldToCell(Hit.GetActor()->GetActorLocation())))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("cell is empty"));
+			Hit.GetActor()->Destroy();
+		}
 	}
 }
 

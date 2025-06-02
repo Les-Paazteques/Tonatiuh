@@ -31,6 +31,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* InteractAction;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* RightClickInteraction;
 
 protected:
 	// Called when the game starts or when spawned
@@ -64,12 +66,18 @@ protected:
 
 	UPROPERTY()
 	AGridManager* GridManager;
+
+	UPROPERTY(EditAnywhere)
+	TArray<AActor*> ActorToIgnores;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
 
 	/** Called for interaction input */
 	void Interact(const FInputActionValue& p_value);
+
+	/** Called to removing building */
+	void RemoveBuilding(const FInputActionValue& p_value);
 
 	virtual void NotifyControllerChanged() override;
 
