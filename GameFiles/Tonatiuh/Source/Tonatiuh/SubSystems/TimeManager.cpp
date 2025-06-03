@@ -1,0 +1,79 @@
+// Made by 'Les Paaztèques', check out game's credits for more information.
+
+
+#include "TimeManager.h"
+
+#include "Engine/EngineTypes.h"
+#include "Engine/World.h"
+#include "Tonatiuh/ExternalTools/MessageDebugger.h"
+
+UTimeManager::UTimeManager()
+{
+	_dayCycleInSecondsIRL = DayCycleLengthIRL * 60;
+	_inGameHourInSecondsIRL = _dayCycleInSecondsIRL / 24;
+
+	if (IsDebugModeOn())
+		MessageDebugger::MessageOnScreen(-1,
+			FString::Printf(TEXT("_inGameHourInSecondsIRL (%f)"), _inGameHourInSecondsIRL),
+			10.0f
+		);
+}
+
+void UTimeManager::Initialize(FSubsystemCollectionBase& p_collection)
+{
+	Super::Initialize(p_collection);
+}
+
+void UTimeManager::Deinitialize()
+{
+	Super::Deinitialize();
+}
+
+void UTimeManager::Tick(const float p_deltaTime)
+{
+	if (!CurrentWorld)
+		CurrentWorld = GetWorld();
+
+	// Stopping the execution of the TimeManager subsystem for the Editor
+	if (CurrentWorld->WorldType != EWorldType::Game && CurrentWorld->WorldType != EWorldType::PIE)
+		return;
+	
+	_secondsPassed += p_deltaTime;
+
+	if (IsDebugModeOn())
+		MessageDebugger::MessageOnScreen(-1,
+			FString::Printf(TEXT("Current time in hours (%f) / (%f)"), _secondsPassed, _inGameHourInSecondsIRL),
+			0.1f
+		);
+	
+	if (_secondsPassed >= _inGameHourInSecondsIRL)
+	{
+		_secondsPassed -= _inGameHourInSecondsIRL;
+		_inGameCurrentTimeInHours++;
+
+		if (_inGameCurrentTimeInHours >= 24)
+			_inGameCurrentTimeInHours = 0;	
+		
+		HourPassed();
+	}
+}
+
+void UTimeManager::HourPassed() const
+{
+	OnHourPassedEvent.Broadcast(_inGameCurrentTimeInHours);
+
+	if (IsDebugModeOn())
+		MessageDebugger::CustomMessageOnScreen(-1,
+			FString::Printf(TEXT("An hour passed (%d)"), _inGameCurrentTimeInHours),
+			FColor::Green,
+			10.0f
+		);
+}
+
+bool UTimeManager::IsDebugModeOn() const
+{
+	// For nows it only uses the IS_DEBUG_MODE_ON but maybe in the future the condition of debugging will change,
+	// that's why there is a method
+	
+	return IS_DEBUG_MODE_ON;
+}

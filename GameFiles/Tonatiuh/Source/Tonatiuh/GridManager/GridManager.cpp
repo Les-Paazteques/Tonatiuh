@@ -9,15 +9,17 @@ AGridManager::AGridManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	
 }
 
-
+AGridManager* AGridManager::Instance = nullptr;
 
 // Called when the game starts or when spawned
 void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Instance = this;
+	
 	_grid = TMap<FIntPoint,TSubclassOf<ABuildings>>();
 	for (int i = -_gridSize/2; i <= _gridSize/2; i++)
 	{
@@ -29,9 +31,9 @@ void AGridManager::BeginPlay()
 }
 
 // Called every frame
-void AGridManager::Tick(float DeltaTime)
+void AGridManager::Tick(const float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 }
 
 /// 
@@ -40,9 +42,10 @@ void AGridManager::Tick(float DeltaTime)
 FIntPoint AGridManager::WorldToCell(const FVector& p_worldPosition) const
 {
 	FIntPoint gridPos;
-	FVector Distance = p_worldPosition - GetActorLocation();
-	gridPos.X = static_cast<int>((Distance.X+CalculateOffset(Distance.X)) / _cellSize );
-	gridPos.Y = static_cast<int>((Distance.Y+CalculateOffset(Distance.Y))/_cellSize);
+	const FVector distance = p_worldPosition;
+	gridPos.X = UE4::SSE::RoundToInt32((distance.X + CalculateOffset(distance.X)) /  _cellSize);
+	gridPos.Y = UE4::SSE::RoundToInt32((distance.Y + CalculateOffset(distance.Y)) / _cellSize);
+	
 	return gridPos;
 }
 
@@ -51,11 +54,13 @@ FIntPoint AGridManager::WorldToCell(const FVector& p_worldPosition) const
 /// @return return the world pos of the cell
 FVector AGridManager::CellToWorld(const FIntPoint& p_cell) const
 {
-	FVector worldPos;
-	worldPos.X = (p_cell.X*_cellSize);
-	worldPos.Y = (p_cell.Y*_cellSize);
-	worldPos.Z = GetActorLocation().Z;
-	return worldPos;
+	FVector worldPosition;
+	
+	worldPosition.X = (p_cell.X * _cellSize);
+	worldPosition.Y = (p_cell.Y * _cellSize);
+	worldPosition.Z = GetActorLocation().Z;
+	
+	return worldPosition;
 }
 
 /// 
@@ -66,29 +71,33 @@ FVector AGridManager::SnapToGrid(const FVector& p_worldPosition) const
 	return CellToWorld(WorldToCell(p_worldPosition));
 }
 
-
-
 /// 
 /// @param p_cell cell you want to set
 /// @param p_actorToSet what you want to set the cell to
 /// @return return true if successfully set cell
 bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet)
 {
-	if (_grid[p_cell] == nullptr && IsInGrid(p_cell))
-	{
-		_grid[p_cell] = p_actorToSet;
-		return true;
-	}
-	return false;
+	if (!IsInGrid(p_cell))
+		return false;
+
+	if (_grid[p_cell] != nullptr)
+		return false;
+
+	_grid[p_cell] = p_actorToSet;
+	
+	return true;
 }
 
 bool AGridManager::UnSetCell(const FIntPoint& p_cell)
 {
-	if (_grid[p_cell] == nullptr || !IsInGrid(p_cell))
-	{
+	if (!IsInGrid(p_cell))
 		return false;
-	}
-	return SetCell(p_cell, nullptr);
+
+	if (_grid[p_cell] == nullptr)
+		return false;
+	
+	_grid[p_cell] = nullptr;
+	return true;
 }
 
 /// 
@@ -97,9 +106,8 @@ bool AGridManager::UnSetCell(const FIntPoint& p_cell)
 TSubclassOf<ABuildings> AGridManager::GetCell(const FIntPoint& p_cell)
 {
 	if (!IsInGrid(p_cell))
-	{
 		return nullptr;
-	}
+	
 	return  _grid[p_cell];
 }
 
@@ -108,18 +116,19 @@ TSubclassOf<ABuildings> AGridManager::GetCell(const FIntPoint& p_cell)
 /// @return return true if the cell is in the grid
 bool AGridManager::IsInGrid(const FIntPoint& p_cell) const
 {
-	return (p_cell.X >= -_gridSize/2 && p_cell.X <= _gridSize/2 ||
-		 p_cell.Y >= -_gridSize/2 && p_cell.Y <= _gridSize/2);
+	return (p_cell.X >= -_gridSize / 2 && p_cell.X <= _gridSize / 2 &&
+		 p_cell.Y >= -_gridSize / 2 && p_cell.Y <= _gridSize / 2);
 }
 
-float AGridManager::CalculateOffset(double Distance) const
+float AGridManager::CalculateOffset(const double p_distance) const
 {
-	if (Distance < 0)
-	{
-		return -_gridSize/2;
-	}
+	if (p_distance < 0)
+		return -_gridSize / 2;
+	
 	return _gridSize/2;
 }
 
-
-
+AGridManager* AGridManager::Get(UWorld* p_world)
+{
+	return Instance;
+}
