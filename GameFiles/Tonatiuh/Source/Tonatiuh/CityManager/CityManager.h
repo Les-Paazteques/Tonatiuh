@@ -5,7 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
+#include "Tonatiuh/Buildings/TownHall.h"
 #include "CityManager.generated.h"
+
+class UTimeManager;
 
 UCLASS()
 class TONATIUH_API ACityManager : public AActor
@@ -23,6 +26,8 @@ protected:
 
 	void UpdateResourceGain();
 
+	void UpdateNightDebuff(int hour);
+	
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resources;
 
@@ -30,8 +35,19 @@ protected:
 	TMap<EResourceEnum, int> resourcesCap;
 
 	UPROPERTY(EditAnywhere)
+	TMap<EResourceEnum, int> BaseGain;
+
+	UPROPERTY(EditAnywhere)
+	float ProductionTime;
+	
+	UPROPERTY()
+	ATownHall* TownHall;
+	
 	TMap<EResourceEnum, int> resourcesGain;
 
+	
+	float timer;
+	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

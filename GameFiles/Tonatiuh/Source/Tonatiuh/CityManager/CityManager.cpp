@@ -2,6 +2,9 @@
 
 
 #include "CityManager.h"
+#include "Tonatiuh/SubSystems/TimeManager.h"
+#include "Kismet/GameplayStatics.h"
+
 
 
 // Sets default values
@@ -15,6 +18,18 @@ ACityManager::ACityManager()
 void ACityManager::BeginPlay()
 {
 	Super::BeginPlay();
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATownHall::StaticClass(), FoundActors);
+
+	if (FoundActors.Num() > 0)
+	{
+		TownHall = Cast<ATownHall>(FoundActors[0]);
+	}
+	UTimeManager* TimeManager = GetWorld()->GetSubsystem<UTimeManager>();
+	 if (TimeManager)
+	 {
+	     TimeManager->OnHourPassedEvent.AddDynamic(this, &ACityManager::UpdateNightDebuff);
+	 }
 }
 
 void ACityManager::produceResource()
@@ -40,16 +55,25 @@ void ACityManager::produceResource()
 
 void ACityManager::UpdateResourceGain()
 {
-	
 	for (auto[Name,value]: resourcesGain)
 	{
-		//resourcesGain[Name] += 
+		resourcesGain[Name] = TownHall->GetJobByResource(Name)->GetJobNumber()*BaseGain[Name];
 	}
+}
+
+void ACityManager::UpdateNightDebuff(int hour)
+{
+	
 }
 
 // Called every frame
 void ACityManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	timer += DeltaTime;
+	if (timer >= ProductionTime)
+	{
+		produceResource();
+	}
 }
 
