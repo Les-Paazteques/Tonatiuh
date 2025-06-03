@@ -15,11 +15,32 @@ ATownHall::ATownHall()
 void ATownHall::BeginPlay()
 {
 	Super::BeginPlay();
-	//FActorSpawnParameters jobSpawnParameters = FActorSpawnParameters();
-	//jobSpawnParameters.Owner = this;
-	//jobSpawnParameters.Name = "WoodCutter";
-	//AJob* woodCutter = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
-	//_jobs.Add(woodCutter);
+	FActorSpawnParameters jobSpawnParameters = FActorSpawnParameters();
+	jobSpawnParameters.Owner = this;
+
+	//Creation of the WoodCutter job
+	jobSpawnParameters.Name = "WoodCutter";
+	AJob* woodCutter = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
+	woodCutter->init(EJobEnum::WoodCutter,0,0, EResourceEnum::Wood);
+	_jobs[0] = woodCutter;
+
+	//Creation of the Farmer job
+	jobSpawnParameters.Name = "Farmer";
+	AJob* farmer = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
+	farmer->init(EJobEnum::Farmer,0,0, EResourceEnum::Food);
+	_jobs.Add(farmer);
+
+	//Creation of the HealthPriest job
+	jobSpawnParameters.Name = "HealthPriest";
+	AJob* healthPriest = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
+	healthPriest->init(EJobEnum::HealthPriest,0,0, EResourceEnum::HealthBonus);
+	_jobs.Add(healthPriest);
+
+	//Creation of the TimePriest job
+	jobSpawnParameters.Name = "TimePriest";
+	AJob* timePriest = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
+	timePriest->init(EJobEnum::TimePriest,0,0, EResourceEnum::TimeBonus);
+	_jobs.Add(timePriest);
 }
 
 int ATownHall::GetGlobalPopulation()
@@ -100,7 +121,7 @@ FString ATownHall::GetJobPopInfoFromInd(int p_ind)
 	AJob* job = GetJobByInd(p_ind);
 	if (job == nullptr)
 	{
-		return FString("0/0");
+		return FString("nullptr");
 	}
 	FString result = FString::FromInt(job->GetJobNumber());
 	result += "/";

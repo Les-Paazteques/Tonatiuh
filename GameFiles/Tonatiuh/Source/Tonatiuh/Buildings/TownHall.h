@@ -42,6 +42,7 @@ public:
 	int GetBasePopulation();
 
 	/** Method to get a specific job from his index in the array */
+	UFUNCTION(Blueprintable, BlueprintCallable)
 	AJob* GetJobByInd(int p_index);
 
 	/** Method to get a specific job from his EJobEnum */
@@ -57,6 +58,7 @@ public:
 	void RemoveFromPopulation(int p_value);
 
 	/** Assigns population to job */
+	UFUNCTION(Blueprintable, BlueprintCallable)
 	void AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign);
 
 	/** Switches population from one job to another */
