@@ -14,8 +14,9 @@ class TONATIUH_API AJob : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
 	AJob();
+	// Sets default values for this actor's properties
+	void init(EJobEnum p_myType, int p_currentNumber, int p_maxNumber, EResourceEnum p_resource);
 
 protected:
 	// Called when the game starts or when spawned

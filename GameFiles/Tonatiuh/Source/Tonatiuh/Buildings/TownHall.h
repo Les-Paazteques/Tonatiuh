@@ -17,7 +17,11 @@ public:
 	ATownHall();
 
 protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
 	/** Array containing all the jobs of the city */
+	UPROPERTY(EditAnywhere)
 	TArray<AJob*> _jobs;
 
 	/** Total number of living people in the city (cannot be lower than 5) */
@@ -27,7 +31,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = population, meta = (AllowPrivateAccess = "true"))
 	int _basePopulation;
 
-	UFUNCTION()
+	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
 	void ActivateUI(AActor* TouchedActor, FKey ButtonPressed);
 
 public:
@@ -57,5 +61,9 @@ public:
 
 	/** Switches population from one job to another */
 	void TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_newJob);
+
+	/** Gives information to ui */
+	UFUNCTION(BlueprintCallable)
+	FString GetJobPopInfoFromInd(int p_ind);
 	
 };

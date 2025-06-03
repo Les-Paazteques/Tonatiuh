@@ -11,6 +11,17 @@ ATownHall::ATownHall()
 	OnClicked.AddDynamic(this, &ATownHall::ActivateUI);
 }
 
+// Called when the game starts or when spawned
+void ATownHall::BeginPlay()
+{
+	Super::BeginPlay();
+	//FActorSpawnParameters jobSpawnParameters = FActorSpawnParameters();
+	//jobSpawnParameters.Owner = this;
+	//jobSpawnParameters.Name = "WoodCutter";
+	//AJob* woodCutter = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
+	//_jobs.Add(woodCutter);
+}
+
 int ATownHall::GetGlobalPopulation()
 {
 	return _globalPopulation;
@@ -84,8 +95,15 @@ void ATownHall::TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_n
 	p_newJob->AddPopulation(tempPopulation);
 }
 
-void ATownHall::ActivateUI(AActor* TouchedActor, FKey ButtonPressed)
+FString ATownHall::GetJobPopInfoFromInd(int p_ind)
 {
-	
+	AJob* job = GetJobByInd(p_ind);
+	if (job == nullptr)
+	{
+		return FString("0/0");
+	}
+	FString result = FString::FromInt(job->GetJobNumber());
+	result += "/";
+	result += FString::FromInt(job->GetMaxNumber());
+	return result;
 }
-
