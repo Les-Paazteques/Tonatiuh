@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/Enums/EJobEnum.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "CityManager.generated.h"
 
@@ -22,7 +21,7 @@ protected:
 
 	void produceResource();
 
-	void UpdateResourcegain();
+	void UpdateResourceGain();
 
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resources;

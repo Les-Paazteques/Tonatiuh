@@ -38,7 +38,7 @@ void ACityManager::produceResource()
 	}
 }
 
-void ACityManager::UpdateResourcegain()
+void ACityManager::UpdateResourceGain()
 {
 	
 	for (auto[Name,value]: resourcesGain)
