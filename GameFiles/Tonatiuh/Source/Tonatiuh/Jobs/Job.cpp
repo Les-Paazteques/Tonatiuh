@@ -3,16 +3,21 @@
 
 #include "Job.h"
 
+AJob::AJob()
+{
+	
+}
+
 
 // Sets default values
-AJob::AJob()
+void AJob::init(EJobEnum p_myType, int p_currentNumber, int p_maxNumber, EResourceEnum p_resource)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	_jobType = EJobEnum::Farmer;
-	_jobNumber = 0;
-	_maxNumber = 0;
-	_producedResource = EResourceEnum::Food;
+	_jobType = p_myType;
+	_jobNumber = p_currentNumber;
+	_maxNumber = p_maxNumber;
+	_producedResource = p_resource;
 }
 
 // Called when the game starts or when spawned
