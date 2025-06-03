@@ -93,7 +93,7 @@ bool AGridManager::UnSetCell(const FIntPoint& p_cell)
 	if (!IsInGrid(p_cell))
 		return false;
 
-	if (_grid[p_cell] != nullptr)
+	if (_grid[p_cell] == nullptr)
 		return false;
 	
 	_grid[p_cell] = nullptr;
