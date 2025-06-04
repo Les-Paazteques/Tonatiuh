@@ -96,6 +96,11 @@ void ATownHall::RemoveFromPopulation(int p_value)
 
 void ATownHall::AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign)
 {
+	if (p_populationToAdd < 0)
+	{
+		//Someone tried to add a negative number of population to a job
+		return;
+	}
 	int tempPopulation = p_populationToAdd;
 	if (p_populationToAdd > _globalPopulation - _basePopulation)
 	{
@@ -105,8 +110,30 @@ void ATownHall::AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign)
 	RemoveFromPopulation(tempPopulation);
 }
 
+void ATownHall::RemovePopFromJob(int p_popToRemove, AJob* p_jobAffected)
+{
+	if (p_popToRemove < 0)
+	{
+		//Someone tried to remove a negative number of population from a job
+		return;
+	}
+	int tempPopulation = p_popToRemove;
+	if (p_jobAffected->GetJobNumber() - p_popToRemove < 0)
+	{
+		tempPopulation = p_jobAffected->GetJobNumber();
+	}
+	p_jobAffected->AddPopulation(-tempPopulation);
+	AddToPopulation(tempPopulation);
+}
+
+
 void ATownHall::TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_newJob)
 {
+	if (p_population < 0)
+	{
+		//Someone tried to transfer a negative number of population from a job to another
+		return;
+	}
 	int tempPopulation = p_population;
 	if (tempPopulation > p_jobToLeave->GetJobNumber())
 	{

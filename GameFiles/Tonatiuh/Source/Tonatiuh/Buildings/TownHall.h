@@ -61,6 +61,10 @@ public:
 	UFUNCTION(Blueprintable, BlueprintCallable)
 	void AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign);
 
+	/** Removes population from job */
+	UFUNCTION(Blueprintable, BlueprintCallable)
+	void RemovePopFromJob(int p_popToRemove, AJob* p_jobAffected);
+
 	/** Switches population from one job to another */
 	void TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_newJob);
 
