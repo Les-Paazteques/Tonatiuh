@@ -43,16 +43,16 @@ public:
 	virtual void Tick(float p_deltaTime) override;
 
 	/** Gets current number of people working this job */
-	int GetJobNumber();
+	int GetJobNumber() const;
 
 	/** Gets the maximum number of people able to work this job */
-	int GetMaxNumber();
+	int GetMaxNumber() const;
 
 	/** Gets the type of job this is */
-	EJobEnum GetJobType();
+	EJobEnum GetJobType() const;
 
 	/** Gets the type of resource this produces */
-	EResourceEnum GetProducedResource();
+	EResourceEnum GetProducedResource() const;
 
 	/** Adds to the number of people working this job and returns any leftovers
 	 * in case the max limit is exceeded */
