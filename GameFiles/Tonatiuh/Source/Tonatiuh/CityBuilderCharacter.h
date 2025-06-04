@@ -61,9 +61,6 @@ protected:
 	TArray<UUserWidget*> FoundWidgets;
 
 	UPROPERTY()
-	UCityBuilder* FoundWidget;
-
-	UPROPERTY()
 	AGridManager* GridManager;
 
 	UPROPERTY(EditAnywhere)
@@ -93,5 +90,8 @@ public:
 
 	/** Returns Camera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return _camera; }
+
+	UPROPERTY()
+	UCityBuilder* FoundWidget;
 
 };

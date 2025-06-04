@@ -8,8 +8,6 @@
 #include "Tonatiuh/Buildings/TownHall.h"
 #include "CityManager.generated.h"
 
-class UTimeManager;
-
 UCLASS()
 class TONATIUH_API ACityManager : public AActor
 {
@@ -18,35 +16,55 @@ class TONATIUH_API ACityManager : public AActor
 public:
 	// Sets default values for this actor's properties
 	ACityManager();
+	
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	void UpdateResourceGain(int p_hour);
 
-	void produceResource();
-
-	void UpdateResourceGain();
-
-	void UpdateNightDebuff(int hour);
+	void UpdateNightDebuff(int p_hour);
+	
+	UFUNCTION()
+	void produceResource(int p_hour);
+	
 	
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resources;
 
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resourcesCap;
+	
+	UPROPERTY(EditAnywhere)
+	TMap<EResourceEnum, int> popUpkeep;
+	
+	UPROPERTY(EditAnywhere)
+	TMap<EResourceEnum, int> JobGain;
 
 	UPROPERTY(EditAnywhere)
-	TMap<EResourceEnum, int> BaseGain;
+	int BaseGain;
 
 	UPROPERTY(EditAnywhere)
-	float ProductionTime;
+	float MaxDebuff;
+
+	UPROPERTY(EditAnywhere)
+	float NightStart;
+	
+	UPROPERTY(EditAnywhere)
+	float NightEnd;
 	
 	UPROPERTY()
 	ATownHall* TownHall;
+
+	UPROPERTY(EditAnywhere)
+	int PopGrowthTime;
+
+	UPROPERTY(EditAnywhere)
+	int PopDeclineTime;
 	
 	TMap<EResourceEnum, int> resourcesGain;
 
-	
-	float timer;
+	float debuff;
 	
 public:
 	// Called every frame
