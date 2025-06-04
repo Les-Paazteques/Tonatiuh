@@ -43,22 +43,22 @@ void ATownHall::BeginPlay()
 	_jobs.Add(timePriest);
 }
 
-int ATownHall::GetGlobalPopulation()
+int ATownHall::GetGlobalPopulation() const
 {
 	return _globalPopulation;
 }
 
-int ATownHall::GetBasePopulation()
+int ATownHall::GetBasePopulation() const
 {
 	return _basePopulation;
 }
 
-AJob* ATownHall::GetJobByInd(int p_index)
+AJob* ATownHall::GetJobByInd(const int p_index)
 {
 	return _jobs[p_index];
 }
 
-AJob* ATownHall::GetJobByType(EJobEnum p_jobType)
+AJob* ATownHall::GetJobByType(const EJobEnum p_jobType)
 {
 	for (AJob* job : _jobs)
 	{
@@ -70,7 +70,7 @@ AJob* ATownHall::GetJobByType(EJobEnum p_jobType)
 	return nullptr;
 }
 
-AJob* ATownHall::GetJobByResource(EResourceEnum p_resourceType)
+AJob* ATownHall::GetJobByResource(const EResourceEnum p_resourceType)
 {
 	for (AJob* job : _jobs)
 	{
@@ -82,19 +82,19 @@ AJob* ATownHall::GetJobByResource(EResourceEnum p_resourceType)
 	return nullptr;
 }
 
-void ATownHall::AddToPopulation(int p_value)
+void ATownHall::AddToPopulation(const int p_value)
 {
 	_globalPopulation += p_value;
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
 }
 
-void ATownHall::RemoveFromPopulation(int p_value)
+void ATownHall::RemoveFromPopulation(const int p_value)
 {
 	_globalPopulation -= p_value;
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
 }
 
-void ATownHall::AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign)
+void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
 {
 	if (p_populationToAdd < 0)
 	{
@@ -110,7 +110,7 @@ void ATownHall::AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign)
 	RemoveFromPopulation(tempPopulation);
 }
 
-void ATownHall::RemovePopFromJob(int p_popToRemove, AJob* p_jobAffected)
+void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
 {
 	if (p_popToRemove < 0)
 	{
@@ -127,7 +127,7 @@ void ATownHall::RemovePopFromJob(int p_popToRemove, AJob* p_jobAffected)
 }
 
 
-void ATownHall::TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_newJob)
+void ATownHall::TransferPopToJob(const int p_population, AJob* p_jobToLeave, AJob* p_newJob)
 {
 	if (p_population < 0)
 	{
@@ -143,7 +143,7 @@ void ATownHall::TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_n
 	p_newJob->AddPopulation(tempPopulation);
 }
 
-FString ATownHall::GetJobPopInfoFromInd(int p_ind)
+FString ATownHall::GetJobPopInfoFromInd(const int p_ind)
 {
 	AJob* job = GetJobByInd(p_ind);
 	if (job == nullptr)

@@ -32,14 +32,14 @@ protected:
 	int _basePopulation;
 
 	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
-	void ActivateUI(AActor* TouchedActor, FKey ButtonPressed);
+	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
 
 public:
 	/** Returns total number of living people in the city */
-	int GetGlobalPopulation();
+	int GetGlobalPopulation() const;
 
 	/** Returns base number of population */
-	int GetBasePopulation();
+	int GetBasePopulation() const;
 
 	/** Method to get a specific job from his index in the array */
 	UFUNCTION(Blueprintable, BlueprintCallable)
