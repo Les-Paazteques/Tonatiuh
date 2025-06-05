@@ -27,7 +27,6 @@ void ABuildings::BeginPlay()
 	{
 		return;
 	}
-	UE_LOG(LogTemp, Display, TEXT("This text should not appear"));
 	for (TPair<EJobEnum, int> element : JobCapIncrease)
 	{
 		increase = element.Value;
@@ -40,4 +39,21 @@ void ABuildings::BeginPlay()
 void ABuildings::Tick(const float p_deltaTime)
 {
 	Super::Tick(p_deltaTime);
+}
+
+void ABuildings::EndPlay(const EEndPlayReason::Type p_reason)
+{
+	Super::EndPlay(p_reason);
+	int increase = 0;
+	EJobEnum jobType;
+	if (JobCapIncrease.IsEmpty())
+	{
+		return;
+	}
+	for (TPair<EJobEnum, int> element : JobCapIncrease)
+	{
+		increase = element.Value;
+		jobType = element.Key;
+	}
+	_eventManager->OnDestroyEvent.Broadcast(increase, jobType);
 }

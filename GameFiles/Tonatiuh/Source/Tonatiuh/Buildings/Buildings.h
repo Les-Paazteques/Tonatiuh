@@ -36,5 +36,6 @@ protected:
 	virtual void BeginPlay() override;
 
 	UBuildingEventManager* _eventManager;
-	
+
+	virtual void EndPlay(const EEndPlayReason::Type p_reason) override;
 };

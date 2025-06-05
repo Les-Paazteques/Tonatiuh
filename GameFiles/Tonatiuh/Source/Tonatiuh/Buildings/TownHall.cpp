@@ -50,6 +50,8 @@ void ATownHall::BeginPlay()
 	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
 
 	_eventManager->OnBuildingEvent.AddDynamic(this, &ATownHall::AddToJobMaxPop);
+
+	_eventManager->OnDestroyEvent.AddDynamic(this, &ATownHall::SubstractFromJobMaxPop);
 	
 }
 
@@ -191,7 +193,7 @@ void ATownHall::SubstractFromJobMaxPop(int p_population, EJobEnum p_jobType)
 	int tempPopulation = job->GetMaxNumber();
 	if (p_population > tempPopulation)
 	{
-		_unemployedPopulation += tempPopulation;
+		_unemployedPopulation += job->GetJobNumber();
 		job->SetMaxNumber(0);
 	}
 	if (tempPopulation-p_population < job->GetJobNumber())
