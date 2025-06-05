@@ -88,24 +88,42 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 {
 	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->PreviewBuilding == nullptr)
 		return;
-	
-	if (GridManager->SetCell(GridManager->WorldToCell(
-		FoundWidget->PreviewBuilding->GetActorLocation()),
-		FoundWidget->SelectedBuilding))
+
+	ABuildings* Building = Cast<ABuildings>(FoundWidget->PreviewBuilding);
+	bool HasResources = false;
+	if (Building != nullptr)
 	{
-		// TODO: Add resource check
-		
-		AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
-			FoundWidget->PreviewBuilding->GetActorLocation(),
-			FRotator(0, 0, 0)
-		);
-		UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
-			building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
-		);
-		material->SetScalarParameterValue(TEXT("Opacity"),1);
-		building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
-		FoundWidget->SelectedBuilding = nullptr;
-		FoundWidget->PreviewBuilding->Destroy();
+		for (auto element : Building->BuildingCost)
+		{
+			if (CityManager->resources[element.Key] <= Building->BuildingCost[element.Key])
+			{
+				return;
+			}
+			HasResources = true;
+		}
+	}
+	if (HasResources)
+	{
+		if (GridManager->SetCell(GridManager->WorldToCell(
+			FoundWidget->PreviewBuilding->GetActorLocation()),
+			FoundWidget->SelectedBuilding))
+		{
+			for (auto element : Building->BuildingCost)
+			{
+				CityManager->removeResource(element.Key,element.Value);
+			}
+			AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
+				FoundWidget->PreviewBuilding->GetActorLocation(),
+				FRotator(0, 0, 0)
+			);
+			UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
+				building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
+			);
+			material->SetScalarParameterValue(TEXT("Opacity"),1);
+			building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
+			FoundWidget->SelectedBuilding = nullptr;
+			FoundWidget->PreviewBuilding->Destroy();
+		}
 	}
 	
 }

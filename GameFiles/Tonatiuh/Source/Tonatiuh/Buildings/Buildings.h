@@ -21,8 +21,6 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TMap<EJobEnum, int> JobCapIncrease;
 	
-public:
-	
 	// Sets default values for this actor's properties
 	ABuildings();
 	
