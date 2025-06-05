@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CityBuilder.h"
+#include "CityManager/CityManager.h"
 #include "GameFramework/Pawn.h"
 #include "CityBuilderCharacter.generated.h"
 
@@ -57,17 +58,17 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
 	FVector _boundsMin;
 
-	UPROPERTY()
-	TArray<UUserWidget*> FoundWidgets;
-
-	UPROPERTY()
-	UCityBuilder* FoundWidget;
+	UPROPERTY(EditAnywhere, Category="UI")
+	TSubclassOf<UCityBuilder> CityBuilderClass;
 
 	UPROPERTY()
 	AGridManager* GridManager;
 
+	UPROPERTY()
+	ACityManager* CityManager;
+	
 	UPROPERTY(EditAnywhere)
-	TArray<AActor*> ActorToIgnores;
+	TArray<TSubclassOf<AActor>> ActorToIgnores;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
@@ -93,5 +94,8 @@ public:
 
 	/** Returns Camera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return _camera; }
+
+	UPROPERTY()
+	UCityBuilder* FoundWidget;
 
 };
