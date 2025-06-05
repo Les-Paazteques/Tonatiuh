@@ -64,7 +64,7 @@ protected:
 	AGridManager* GridManager;
 
 	UPROPERTY(EditAnywhere)
-	TArray<AActor*> ActorToIgnores;
+	TArray<TSubclassOf<AActor>> ActorToIgnores;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);

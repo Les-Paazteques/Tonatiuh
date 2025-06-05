@@ -3,6 +3,7 @@
 #include "CityBuilderCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Algo/ForEach.h"
 #include "GridManager/GridManager.h"
 
 // Sets default values
@@ -112,10 +113,6 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	FHitResult hitResult;
 	FCollisionQueryParams collisionQueryParams;
 	
-	if (ActorToIgnores.IsEmpty())
-	{
-		collisionQueryParams.AddIgnoredActors(ActorToIgnores);
-	}
 	
 	if (FoundWidget->PreviewBuilding != nullptr)
 	{
@@ -132,6 +129,11 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	
 	if (hitResult.GetActor())
 	{
+		for (TSubclassOf<AActor> actor_to_ignore : ActorToIgnores)
+		{
+			if (hitResult.GetActor()->GetClass() == actor_to_ignore)
+				return;
+		}
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
 			hitResult.GetActor()->Destroy();

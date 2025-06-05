@@ -3,6 +3,8 @@
 
 #include "GridManager.h"
 
+#include "Tonatiuh/Buildings/TownHall.h"
+
 
 // Sets default values
 AGridManager::AGridManager()
