@@ -1,12 +1,8 @@
 // Made by 'Les Paaztèques', check out game's credits for more information.
 
 #include "CityBuilderCharacter.h"
-
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
-#include "Blueprint/WidgetBlueprintLibrary.h"
-
 #include "GridManager/GridManager.h"
 
 // Sets default values
@@ -20,14 +16,9 @@ ACityBuilderCharacter::ACityBuilderCharacter()
 void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(),FoundWidgets, UCityBuilder::StaticClass(), false);
-	
-	if (FoundWidgets.Num() > 0)
-	{
-		FoundWidget = Cast<UCityBuilder>(FoundWidgets[0]);
-	}
-	
+	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
+	FoundWidget->AddToViewport();
+	FoundWidget->SetResourceGainText(0,0,0,0);
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());

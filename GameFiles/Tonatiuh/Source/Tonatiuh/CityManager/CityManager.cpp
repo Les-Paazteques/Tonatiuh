@@ -5,6 +5,7 @@
 
 #include "Tonatiuh/SubSystems/TimeManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Tonatiuh/CityBuilderCharacter.h"
 
 
 // Sets default values
@@ -29,9 +30,9 @@ void ACityManager::BeginPlay()
 	{
 		TimeManager->OnHourPassedEvent.AddDynamic(this, &ACityManager::produceResource);
 	}
-	
 	resourcesGain.Add(EResourceEnum::Food,0);
 	resourcesGain.Add(EResourceEnum::Wood,0);
+	GetWorldTimerManager().SetTimerForNextTick(this, &ACityManager::TryGetUi);
 }
 
 void ACityManager::produceResource(int p_hour)
@@ -52,24 +53,26 @@ void ACityManager::produceResource(int p_hour)
 		}
 		resources[Name] += resourcesGain[Name];
 	}
-	
+	if (UI)
+	{
+		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],
+			resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood]);
+	}
 }
 
 void ACityManager::UpdateResourceGain(int p_hour)
 {
+	if (!TownHall)
+	{
+		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
+		return;
+	}
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
 	{
-		if (TownHall == nullptr)
-		{
-			resourcesGain[Name] = BaseGain * debuff;
-		}
-		else
-		{
-			resourcesGain[Name] = BaseGain
-			+ TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff
-			- TownHall->GetGlobalPopulation()*popUpkeep[Name];
-		}
+		resourcesGain[Name] = BaseGain
+		+ TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff
+		- TownHall->GetGlobalPopulation()*popUpkeep[Name];
 	}
 	if (p_hour == 0 || p_hour % PopGrowthTime == 0 )
 	{
@@ -84,6 +87,11 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		{
 			TownHall->RemoveFromPopulation(1);
 		}
+	}
+	if (UI)
+	{
+		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food]
+			,resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood]);
 	}
 }
 
@@ -104,6 +112,23 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	{
 		//morning to night
 		debuff = 1 - MaxDebuff * p_hour/nightLength;
+	}
+}
+
+void ACityManager::TryGetUi()
+{
+	if (ACityBuilderCharacter* PC = Cast<ACityBuilderCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
+	{
+		if (!PC->FoundWidget)
+		{
+			UE_LOG(LogTemp, Error, TEXT("TryGetUi: Widget not found"));
+			return;
+		}
+		UI = PC->FoundWidget;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Player Character"));
 	}
 }
 

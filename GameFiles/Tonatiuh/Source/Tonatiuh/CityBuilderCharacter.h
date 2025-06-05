@@ -57,8 +57,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
 	FVector _boundsMin;
 
-	UPROPERTY()
-	TArray<UUserWidget*> FoundWidgets;
+	UPROPERTY(EditAnywhere, Category="UI")
+	TSubclassOf<UCityBuilder> CityBuilderClass;
 
 	UPROPERTY()
 	AGridManager* GridManager;

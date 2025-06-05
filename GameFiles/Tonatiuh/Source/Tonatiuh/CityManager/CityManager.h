@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tonatiuh/CityBuilder.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Buildings/TownHall.h"
 #include "CityManager.generated.h"
@@ -24,6 +25,8 @@ protected:
 	void UpdateResourceGain(int p_hour);
 
 	void UpdateNightDebuff(int p_hour);
+
+	void TryGetUi();
 	
 	UFUNCTION()
 	void produceResource(int p_hour);
@@ -64,6 +67,9 @@ protected:
 	
 	TMap<EResourceEnum, int> resourcesGain;
 
+	UPROPERTY()
+	UCityBuilder* UI;
+	
 	float debuff;
 	
 public:
