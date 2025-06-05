@@ -125,6 +125,7 @@ void ACityManager::TryGetUi()
 			return;
 		}
 		UI = PC->FoundWidget;
+		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
 	}
 	else
 	{

@@ -137,6 +137,10 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 			hitResult.GetActor()->Destroy();
 		}
 	}
+	if (FoundWidget->PreviewBuilding)
+	{
+		FoundWidget->PreviewBuilding->Destroy();
+	}
 }
 
 void ACityBuilderCharacter::NotifyControllerChanged()
