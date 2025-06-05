@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Enums/EJobEnum.h"
+#include "Tonatiuh/SubSystems/BuildingEventManager.h"
 #include "Buildings.generated.h"
 
 UCLASS()
@@ -33,5 +34,7 @@ protected:
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UBuildingEventManager* _eventManager;
 	
 };

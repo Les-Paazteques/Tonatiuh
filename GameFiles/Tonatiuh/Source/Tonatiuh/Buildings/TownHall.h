@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Buildings.h"
 #include "../Jobs/Job.h"
+#include "Tonatiuh/GridManager/GridManager.h"
 #include "TownHall.generated.h"
 
 
@@ -26,13 +27,21 @@ protected:
 
 	/** Total number of living people in the city (cannot be lower than 5) */
 	int _globalPopulation;
+
+	/** Total number of people not working in the city */
+	int _unemployedPopulation;
 	
 	/** Base number of population (population cannot be lower) */
 	UPROPERTY(EditAnywhere, Category = population, meta = (AllowPrivateAccess = "true"))
-	int _basePopulation;
+	int _basePopulation = 5;
 
 	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
 	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
+
+	UPROPERTY()
+	AGridManager* _gridManager;
+
+	void FindGridManager();
 
 public:
 	/** Returns total number of living people in the city */
@@ -71,5 +80,13 @@ public:
 	/** Gives information to ui */
 	UFUNCTION(BlueprintCallable)
 	FString GetJobPopInfoFromInd(int p_ind);
+
+	/** Adds to a job's max population */
+	UFUNCTION()
+	void AddToJobMaxPop(int p_population, EJobEnum p_jobType);
+
+	/** Takes from a job's max population */
+	UFUNCTION()
+	void SubstractFromJobMaxPop(int p_population, EJobEnum p_jobType);
 	
 };

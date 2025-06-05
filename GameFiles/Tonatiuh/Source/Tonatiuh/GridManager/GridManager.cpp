@@ -18,8 +18,6 @@ void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Instance = this;
-	
 	_grid = TMap<FIntPoint,TSubclassOf<ABuildings>>();
 	for (int i = -_gridSize/2; i <= _gridSize/2; i++)
 	{
@@ -28,6 +26,8 @@ void AGridManager::BeginPlay()
 			_grid.Add(FIntPoint(i,j));
 		}
 	}
+	Instance = this;
+	
 }
 
 // Called every frame
@@ -80,9 +80,13 @@ bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings
 	if (!IsInGrid(p_cell))
 		return false;
 
+	if (_grid.IsEmpty())
+		return false;
+
 	if (_grid[p_cell] != nullptr)
 		return false;
 
+	
 	_grid[p_cell] = p_actorToSet;
 	
 	return true;

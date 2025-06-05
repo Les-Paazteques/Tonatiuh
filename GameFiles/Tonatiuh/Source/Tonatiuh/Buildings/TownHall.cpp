@@ -3,10 +3,9 @@
 
 #include "TownHall.h"
 
+
 ATownHall::ATownHall()
 {
-	_basePopulation = 5;
-	_globalPopulation = _basePopulation;
 	_jobs.SetNum(1);
 	OnClicked.AddDynamic(this, &ATownHall::ActivateUI);
 }
@@ -15,6 +14,12 @@ ATownHall::ATownHall()
 void ATownHall::BeginPlay()
 {
 	Super::BeginPlay();
+
+	FindGridManager();
+
+	_globalPopulation = _basePopulation;
+	_unemployedPopulation = _globalPopulation;
+	
 	FActorSpawnParameters jobSpawnParameters = FActorSpawnParameters();
 	jobSpawnParameters.Owner = this;
 
@@ -41,6 +46,11 @@ void ATownHall::BeginPlay()
 	AJob* timePriest = GetWorld()->SpawnActor<AJob>(jobSpawnParameters);
 	timePriest->init(EJobEnum::TimePriest,0,0, EResourceEnum::TimeBonus);
 	_jobs.Add(timePriest);
+
+	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+
+	_eventManager->OnBuildingEvent.AddDynamic(this, &ATownHall::AddToJobMaxPop);
+	
 }
 
 int ATownHall::GetGlobalPopulation() const
@@ -85,13 +95,17 @@ AJob* ATownHall::GetJobByResource(const EResourceEnum p_resourceType)
 void ATownHall::AddToPopulation(const int p_value)
 {
 	_globalPopulation += p_value;
+	_unemployedPopulation += p_value;
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
+	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, _basePopulation, INT_MAX);
 }
 
 void ATownHall::RemoveFromPopulation(const int p_value)
 {
 	_globalPopulation -= p_value;
+	_unemployedPopulation -= p_value;
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
+	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, _basePopulation, INT_MAX);
 }
 
 void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
@@ -102,12 +116,12 @@ void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
 		return;
 	}
 	int tempPopulation = p_populationToAdd;
-	if (p_populationToAdd > _globalPopulation - _basePopulation)
+	if (p_populationToAdd > _unemployedPopulation)
 	{
-		tempPopulation = _globalPopulation - _basePopulation;
+		tempPopulation = _unemployedPopulation;
 	}
 	p_jobToAssign->AddPopulation(tempPopulation);
-	RemoveFromPopulation(tempPopulation);
+	_unemployedPopulation -= tempPopulation;
 }
 
 void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
@@ -123,7 +137,7 @@ void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
 		tempPopulation = p_jobAffected->GetJobNumber();
 	}
 	p_jobAffected->AddPopulation(-tempPopulation);
-	AddToPopulation(tempPopulation);
+	_unemployedPopulation += tempPopulation;
 }
 
 
@@ -154,4 +168,47 @@ FString ATownHall::GetJobPopInfoFromInd(const int p_ind)
 	result += "/";
 	result += FString::FromInt(job->GetMaxNumber());
 	return result;
+}
+
+void ATownHall::AddToJobMaxPop(int p_population, EJobEnum p_jobType)
+{
+	AJob* job = GetJobByType(p_jobType);
+	if (job == nullptr)
+	{
+		return;
+	}
+	int tempPopulation = job->GetMaxNumber();
+	job->SetMaxNumber(tempPopulation + p_population);
+}
+
+void ATownHall::SubstractFromJobMaxPop(int p_population, EJobEnum p_jobType)
+{
+	AJob* job = GetJobByType(p_jobType);
+	if (job == nullptr)
+	{
+		return;
+	}
+	int tempPopulation = job->GetMaxNumber();
+	if (p_population > tempPopulation)
+	{
+		_unemployedPopulation += tempPopulation;
+		job->SetMaxNumber(0);
+	}
+	if (tempPopulation-p_population < job->GetJobNumber())
+	{
+		int leftover = job->GetJobNumber() - (tempPopulation-p_population);
+		_unemployedPopulation += leftover;
+	}
+	job->SetMaxNumber(tempPopulation - p_population);
+}
+
+
+void ATownHall::FindGridManager()
+{
+	_gridManager = AGridManager::Get(GetWorld());
+	if (_gridManager != nullptr)
+	{
+		if (_gridManager->SetCell(_gridManager->WorldToCell(GetActorLocation()), this->StaticClass())) return;
+	}
+	GetWorldTimerManager().SetTimerForNextTick(this, &ATownHall::FindGridManager);
 }

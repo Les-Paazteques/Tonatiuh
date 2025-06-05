@@ -15,11 +15,25 @@ ABuildings::ABuildings()
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
 	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
 	}
+	int increase = 0;
+	EJobEnum jobType;
+	if (JobCapIncrease.IsEmpty())
+	{
+		return;
+	}
+	UE_LOG(LogTemp, Display, TEXT("This text should not appear"));
+	for (TPair<EJobEnum, int> element : JobCapIncrease)
+	{
+		increase = element.Value;
+		jobType = element.Key;
+	}
+	_eventManager->OnBuildingEvent.Broadcast(increase, jobType);
 }
 
 // Called every frame
