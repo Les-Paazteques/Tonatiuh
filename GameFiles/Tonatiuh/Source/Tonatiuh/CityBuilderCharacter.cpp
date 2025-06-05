@@ -3,7 +3,6 @@
 #include "CityBuilderCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Algo/ForEach.h"
 #include "GridManager/GridManager.h"
 
 // Sets default values
@@ -74,7 +73,6 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value)
 		{
 			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 		}
-
 		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 	}
 }
@@ -94,14 +92,15 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 			FoundWidget->PreviewBuilding->GetActorLocation(),
 			FRotator(0, 0, 0)
 		);
-		
 		UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
 			building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
 		);
-		
 		material->SetScalarParameterValue(TEXT("Opacity"),1);
 		building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
+		FoundWidget->SelectedBuilding = nullptr;
+		FoundWidget->PreviewBuilding->Destroy();
 	}
+	
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -141,6 +140,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	}
 	if (FoundWidget->PreviewBuilding)
 	{
+		FoundWidget->SelectedBuilding = nullptr;
 		FoundWidget->PreviewBuilding->Destroy();
 	}
 }
