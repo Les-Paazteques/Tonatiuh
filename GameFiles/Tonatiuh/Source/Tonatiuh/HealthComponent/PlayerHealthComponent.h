@@ -18,6 +18,11 @@ class TONATIUH_API UPlayerHealthComponent : public UActorComponent
 
 public:
 
+	UPROPERTY(EditAnywhere)
+	float MaxInvcibilityCooldown = 1.f;
+	
+	float IncibilityCooldown = 0.0f;
+
 	UPROPERTY(VisibleAnywhere)
 	FVector RespawnLocation;
 
