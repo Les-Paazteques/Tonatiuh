@@ -7,7 +7,7 @@
 
 UPlayerHealthComponent::UPlayerHealthComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 	RespawnLocation = FVector::ZeroVector;
 	MaxHealth = 5;
 	CurrentHealth = MaxHealth;
@@ -16,12 +16,19 @@ UPlayerHealthComponent::UPlayerHealthComponent()
 void UPlayerHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	RespawnLocation = GetOwner()->GetActorLocation();
 }
 
 void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevelTick p_tickType,
 	FActorComponentTickFunction* p_thisTickFunction)
 {
 	Super::TickComponent(p_deltaTime, p_tickType, p_thisTickFunction);
+
+	if (IncibilityCooldown > 0)
+	{
+		IncibilityCooldown -= p_deltaTime;
+	}
 }
 
 void UPlayerHealthComponent::SetRespawnLocation(const FVector& p_newLocation)
@@ -43,7 +50,7 @@ void UPlayerHealthComponent::Die()
 
 void UPlayerHealthComponent::Respawn()
 {
-	AMetroidVaniaCharacter* owner = Cast<AMetroidVaniaCharacter>(GetOwner()->GetClass());
+	AMetroidVaniaCharacter* owner = Cast<AMetroidVaniaCharacter>(GetOwner());
 	owner->SetActorLocation(RespawnLocation);
     
 	OnRespawn.Broadcast();
@@ -51,12 +58,12 @@ void UPlayerHealthComponent::Respawn()
 
 void UPlayerHealthComponent::TakeDamage(int p_damageAmount)
 {
-	if (p_damageAmount <= 0)
+	if (p_damageAmount <= 0 || IncibilityCooldown > 0)
 		return;
 
 	CurrentHealth -= p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
-	
+	IncibilityCooldown = MaxInvcibilityCooldown;
 
 	OnDamaged.Broadcast(p_damageAmount);
 
