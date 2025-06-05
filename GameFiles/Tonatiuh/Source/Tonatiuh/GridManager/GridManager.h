@@ -17,7 +17,7 @@ public:
 	// Sets default values for this actor's properties
 	AGridManager();
 
-	static AGridManager* Get(UWorld* World);
+	static AGridManager* Get(UWorld* p_world);
 
 
 protected:
@@ -28,7 +28,7 @@ protected:
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
 	int _cellSize = 0;
-	TMap<FIntPoint,TSubclassOf<ABuildings>> _grid;
+	TMap<FIntPoint, TSubclassOf<ABuildings>> _grid;
 
 public:
 	// Called every frame
@@ -40,9 +40,11 @@ public:
 	bool SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet);
 	bool UnSetCell(const FIntPoint& p_cell);
 	TSubclassOf<ABuildings> GetCell(const FIntPoint& p_cell);
+	
+	bool IsInGrid(const FIntPoint& p_cell) const;
 
 private:
-	bool IsInGrid(const FIntPoint& p_cell) const;
-	float CalculateOffset(double Distance) const;
+	
+	float CalculateOffset(double p_distance) const;
 	static AGridManager* Instance;
 };

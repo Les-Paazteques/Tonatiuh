@@ -3,16 +3,21 @@
 
 #include "Job.h"
 
+AJob::AJob()
+{
+	
+}
+
 
 // Sets default values
-AJob::AJob()
+void AJob::init(const EJobEnum p_myType, const int p_currentNumber, const int p_maxNumber, const EResourceEnum p_resource)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	_jobType = EJobEnum::Farmer;
-	_jobNumber = 0;
-	_maxNumber = 0;
-	_producedResource = EResourceEnum::Food;
+	_jobType = p_myType;
+	_jobNumber = p_currentNumber;
+	_maxNumber = p_maxNumber;
+	_producedResource = p_resource;
 }
 
 // Called when the game starts or when spawned
@@ -23,45 +28,45 @@ void AJob::BeginPlay()
 }
 
 // Called every frame
-void AJob::Tick(float p_deltaTime)
+void AJob::Tick(const float p_deltaTime)
 {
 	Super::Tick(p_deltaTime);
 }
 
-int AJob::GetJobNumber()
+int AJob::GetJobNumber() const
 {
 	return _jobNumber;
 }
 
-int AJob::GetMaxNumber()
+int AJob::GetMaxNumber() const
 {
 	return _maxNumber;
 }
 
-EJobEnum AJob::GetJobType()
+EJobEnum AJob::GetJobType() const
 {
 	return _jobType;
 }
 
-EResourceEnum AJob::GetProducedResource()
+EResourceEnum AJob::GetProducedResource() const
 {
 	return _producedResource;
 }
 
-int AJob::AddPopulation(int p_numberToAdd)
+int AJob::AddPopulation(const int p_numberToAdd)
 {
-	int tempNumber = _jobNumber;
+	const int tempNumber = _jobNumber;
 	_jobNumber += p_numberToAdd;
 	_jobNumber = _jobNumber > _maxNumber ? _maxNumber : _jobNumber;
 	return (FMath::Clamp(_jobNumber-tempNumber, 0, INT_MAX));
 }
 
-void AJob::SetMaxNumber(int p_numberToSet)
+void AJob::SetMaxNumber(const int p_numberToSet)
 {
 	_maxNumber = p_numberToSet;
 }
 
-void AJob::SetJobType(EJobEnum p_jobType)
+void AJob::SetJobType(const EJobEnum p_jobType)
 {
 	_jobType = p_jobType;
 	switch (_jobType)
