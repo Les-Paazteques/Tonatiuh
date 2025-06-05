@@ -4,6 +4,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "GridManager/GridManager.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACityBuilderCharacter::ACityBuilderCharacter()
@@ -22,6 +23,12 @@ void ACityBuilderCharacter::BeginPlay()
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
+	}
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(),ACityManager::StaticClass(),FoundActors);
+	if (FoundActors.Num() > 0)
+	{
+		CityManager = Cast<ACityManager>(FoundActors[0]);
 	}
 }
 

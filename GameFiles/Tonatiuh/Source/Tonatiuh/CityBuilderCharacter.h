@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "CityBuilder.h"
+#include "CityManager/CityManager.h"
 #include "GameFramework/Pawn.h"
 #include "CityBuilderCharacter.generated.h"
 
@@ -63,6 +64,9 @@ protected:
 	UPROPERTY()
 	AGridManager* GridManager;
 
+	UPROPERTY()
+	ACityManager* CityManager;
+	
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorToIgnores;
 	
