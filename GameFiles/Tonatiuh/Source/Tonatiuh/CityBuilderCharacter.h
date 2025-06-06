@@ -80,6 +80,7 @@ protected:
 
 	virtual void NotifyControllerChanged() override;
 
+	void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame

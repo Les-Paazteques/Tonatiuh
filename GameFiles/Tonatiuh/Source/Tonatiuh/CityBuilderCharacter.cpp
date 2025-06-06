@@ -161,3 +161,13 @@ void ACityBuilderCharacter::NotifyControllerChanged()
 		}
 	}
 }
+
+void ACityBuilderCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (APlayerController* playerController = Cast<APlayerController>(GetController()))
+	{
+		playerController->SetViewTargetWithBlend(this);
+	}
+}
