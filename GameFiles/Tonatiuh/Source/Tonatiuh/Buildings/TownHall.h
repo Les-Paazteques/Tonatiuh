@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Buildings.h"
 #include "../Jobs/Job.h"
+#include "Tonatiuh/GridManager/GridManager.h"
 #include "TownHall.generated.h"
 
 
@@ -13,12 +14,7 @@ class TONATIUH_API ATownHall : public ABuildings
 {
 	GENERATED_BODY()
 
-public:
-	ATownHall();
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
 	/** Array containing all the jobs of the city */
 	UPROPERTY(EditAnywhere)
@@ -26,15 +22,25 @@ protected:
 
 	/** Total number of living people in the city (cannot be lower than 5) */
 	int _globalPopulation;
+
+	/** Total number of people not working in the city */
+	int _unemployedPopulation;
 	
 	/** Base number of population (population cannot be lower) */
 	UPROPERTY(EditAnywhere, Category = population, meta = (AllowPrivateAccess = "true"))
-	int _basePopulation;
+	int _basePopulation = 5;
 
-	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
-	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
+private:
+
+	UPROPERTY()
+	AGridManager* _gridManager;
 
 public:
+	ATownHall();
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
 	/** Returns total number of living people in the city */
 	int GetGlobalPopulation() const;
 
@@ -70,6 +76,21 @@ public:
 
 	/** Gives information to ui */
 	UFUNCTION(BlueprintCallable)
-	FString GetJobPopInfoFromInd(int p_ind);
+	FString GetJobPopInfoFromIndex(int p_index);
+
+	/** Adds to a job's max population */
+	UFUNCTION()
+	void AddToJobMaxPop(int p_population, EJobEnum p_jobType);
+
+	/** Takes from a job's max population */
+	UFUNCTION()
+	void SubtractFromJobMaxPop(int p_population, EJobEnum p_jobType);
+
+protected:
+
+	void FindGridManager();
+	
+	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
+	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
 	
 };

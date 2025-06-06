@@ -1,13 +1,10 @@
 // Made by 'Les Paaztèques', check out game's credits for more information.
 
 #include "CityBuilderCharacter.h"
-
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-
-#include "Blueprint/WidgetBlueprintLibrary.h"
-
 #include "GridManager/GridManager.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACityBuilderCharacter::ACityBuilderCharacter()
@@ -20,17 +17,18 @@ ACityBuilderCharacter::ACityBuilderCharacter()
 void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	UWidgetBlueprintLibrary::GetAllWidgetsOfClass(GetWorld(),FoundWidgets, UCityBuilder::StaticClass(), false);
-	
-	if (FoundWidgets.Num() > 0)
-	{
-		FoundWidget = Cast<UCityBuilder>(FoundWidgets[0]);
-	}
-	
+	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
+	FoundWidget->AddToViewport();
+	FoundWidget->SetResourceGainText(0,0,0,0);
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
+	}
+	TArray<AActor*> FoundActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(),ACityManager::StaticClass(),FoundActors);
+	if (FoundActors.Num() > 0)
+	{
+		CityManager = Cast<ACityManager>(FoundActors[0]);
 	}
 }
 
@@ -82,7 +80,6 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value)
 		{
 			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 		}
-
 		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 	}
 }
@@ -102,14 +99,15 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 			FoundWidget->PreviewBuilding->GetActorLocation(),
 			FRotator(0, 0, 0)
 		);
-		
 		UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
 			building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
 		);
-		
 		material->SetScalarParameterValue(TEXT("Opacity"),1);
 		building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
+		FoundWidget->SelectedBuilding = nullptr;
+		FoundWidget->PreviewBuilding->Destroy();
 	}
+	
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -121,10 +119,6 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	FHitResult hitResult;
 	FCollisionQueryParams collisionQueryParams;
 	
-	if (ActorToIgnores.IsEmpty())
-	{
-		collisionQueryParams.AddIgnoredActors(ActorToIgnores);
-	}
 	
 	if (FoundWidget->PreviewBuilding != nullptr)
 	{
@@ -141,10 +135,20 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	
 	if (hitResult.GetActor())
 	{
+		for (TSubclassOf<AActor> actor_to_ignore : ActorToIgnores)
+		{
+			if (hitResult.GetActor()->GetClass() == actor_to_ignore)
+				return;
+		}
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
 			hitResult.GetActor()->Destroy();
 		}
+	}
+	if (FoundWidget->PreviewBuilding)
+	{
+		FoundWidget->SelectedBuilding = nullptr;
+		FoundWidget->PreviewBuilding->Destroy();
 	}
 }
 
