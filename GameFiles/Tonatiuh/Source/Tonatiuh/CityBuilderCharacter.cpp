@@ -20,6 +20,10 @@ void ACityBuilderCharacter::BeginPlay()
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
 	FoundWidget->AddToViewport();
 	FoundWidget->SetResourceGainText(0,0,0,0);
+
+	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
+	SwitchWidget->AddToViewport();
+	
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
