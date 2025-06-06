@@ -87,6 +87,7 @@ protected:
 
 	UFUNCTION()
 	void increaseBuildCount(int p_Amount, EJobEnum p_Job);
+	UFUNCTION()
 	void decreaseBuildCount(int p_Amount, EJobEnum p_Job);
 	
 	virtual void NotifyControllerChanged() override;

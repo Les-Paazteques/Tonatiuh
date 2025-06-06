@@ -34,6 +34,7 @@ void ACityBuilderCharacter::BeginPlay()
 	if (buildingEventManager != nullptr)
 	{
 		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityBuilderCharacter::increaseBuildCount);
+		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
 	}
 }
 
@@ -112,6 +113,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 				{
 					if (jobs.Key == EJobEnum::HealthPriest)
 					{
+						UE_LOG(LogTemp,Warning,TEXT("%i"),HealthTempleCount);
 						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
 						break;
 					}
@@ -210,7 +212,6 @@ bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
 
 float ACityBuilderCharacter::GetTempleCost(int p_BaseCost,int p_TempleCount)
 {
-	UE_LOG(LogTemp,Warning,TEXT("i should be here"));
 	return p_BaseCost*exp(p_TempleCount/3);
 }
 
