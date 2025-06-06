@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Enums/EJobEnum.h"
+#include "Tonatiuh/SubSystems/BuildingEventManager.h"
 #include "Buildings.generated.h"
 
 UCLASS()
@@ -28,10 +29,15 @@ public:
 	
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
+	bool TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType);
 
 protected:
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
+	UPROPERTY()
+	UBuildingEventManager* _eventManager;
+
+	virtual void EndPlay(const EEndPlayReason::Type p_reason) override;
 };
