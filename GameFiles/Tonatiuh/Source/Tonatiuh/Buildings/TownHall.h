@@ -32,16 +32,17 @@ protected:
 	int _basePopulation;
 
 	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
-	void ActivateUI(AActor* TouchedActor, FKey ButtonPressed);
+	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
 
 public:
 	/** Returns total number of living people in the city */
-	int GetGlobalPopulation();
+	int GetGlobalPopulation() const;
 
 	/** Returns base number of population */
-	int GetBasePopulation();
+	int GetBasePopulation() const;
 
 	/** Method to get a specific job from his index in the array */
+	UFUNCTION(Blueprintable, BlueprintCallable)
 	AJob* GetJobByInd(int p_index);
 
 	/** Method to get a specific job from his EJobEnum */
@@ -57,7 +58,12 @@ public:
 	void RemoveFromPopulation(int p_value);
 
 	/** Assigns population to job */
+	UFUNCTION(Blueprintable, BlueprintCallable)
 	void AssignPopToJob(int p_populationToAdd, AJob* p_jobToAssign);
+
+	/** Removes population from job */
+	UFUNCTION(Blueprintable, BlueprintCallable)
+	void RemovePopFromJob(int p_popToRemove, AJob* p_jobAffected);
 
 	/** Switches population from one job to another */
 	void TransferPopToJob(int p_population, AJob* p_jobToLeave, AJob* p_newJob);
