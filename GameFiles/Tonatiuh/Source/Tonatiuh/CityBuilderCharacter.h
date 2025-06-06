@@ -6,6 +6,7 @@
 #include "CityBuilder.h"
 #include "CityManager/CityManager.h"
 #include "GameFramework/Pawn.h"
+#include "UIs/CitySwitch.h"
 #include "CityBuilderCharacter.generated.h"
 
 class USpringArmComponent;
@@ -61,6 +62,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="UI")
 	TSubclassOf<UCityBuilder> CityBuilderClass;
 
+	UPROPERTY(EditAnywhere, Category="UI")
+	TSubclassOf<UCitySwitch> SwitchClass;
+	
 	UPROPERTY()
 	AGridManager* GridManager;
 
@@ -81,6 +85,7 @@ protected:
 
 	virtual void NotifyControllerChanged() override;
 
+	void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame
@@ -97,5 +102,8 @@ public:
 
 	UPROPERTY()
 	UCityBuilder* FoundWidget;
+	
+	UPROPERTY()
+	UCitySwitch* SwitchWidget;
 
 };
