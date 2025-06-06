@@ -3,6 +3,8 @@
 
 #include "TownHall.h"
 
+#include <string>
+
 
 ATownHall::ATownHall()
 {
@@ -122,8 +124,8 @@ void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
 	{
 		tempPopulation = _unemployedPopulation;
 	}
-	p_jobToAssign->AddPopulation(tempPopulation);
 	_unemployedPopulation -= tempPopulation;
+	_unemployedPopulation += p_jobToAssign->AddPopulation(tempPopulation);
 }
 
 void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
@@ -191,10 +193,11 @@ void ATownHall::SubstractFromJobMaxPop(int p_population, EJobEnum p_jobType)
 		return;
 	}
 	int tempPopulation = job->GetMaxNumber();
-	if (p_population > tempPopulation)
+	if (p_population >= tempPopulation)
 	{
 		_unemployedPopulation += job->GetJobNumber();
 		job->SetMaxNumber(0);
+		return;
 	}
 	if (tempPopulation-p_population < job->GetJobNumber())
 	{

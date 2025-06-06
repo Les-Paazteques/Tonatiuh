@@ -55,10 +55,10 @@ EResourceEnum AJob::GetProducedResource() const
 
 int AJob::AddPopulation(const int p_numberToAdd)
 {
-	const int tempNumber = _jobNumber;
 	_jobNumber += p_numberToAdd;
+	int tempNumber = _jobNumber;
 	_jobNumber = _jobNumber > _maxNumber ? _maxNumber : _jobNumber;
-	return (FMath::Clamp(_jobNumber-tempNumber, 0, INT_MAX));
+	return (FMath::Clamp(tempNumber-_maxNumber, 0, INT_MAX));
 }
 
 void AJob::SetMaxNumber(const int p_numberToSet)
