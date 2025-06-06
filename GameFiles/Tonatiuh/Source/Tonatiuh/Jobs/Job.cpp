@@ -64,6 +64,9 @@ int AJob::AddPopulation(const int p_numberToAdd)
 void AJob::SetMaxNumber(const int p_numberToSet)
 {
 	_maxNumber = p_numberToSet;
+
+	if (_maxNumber < _jobNumber)
+		_jobNumber = _maxNumber;
 }
 
 void AJob::SetJobType(const EJobEnum p_jobType)
