@@ -5,7 +5,7 @@
 
 
 // Sets default values
-ABuildings::ABuildings()
+ABuildings::ABuildings(): _eventManager(nullptr)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -17,21 +17,18 @@ void ABuildings::BeginPlay()
 	Super::BeginPlay();
 
 	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	
 	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
 	{
 		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
 	}
+	
 	int increase = 0;
 	EJobEnum jobType;
-	if (JobCapIncrease.IsEmpty())
-	{
+	
+	if (!TryGetResourceIncreasedAndJobType(increase, jobType))
 		return;
-	}
-	for (TPair<EJobEnum, int> element : JobCapIncrease)
-	{
-		increase = element.Value;
-		jobType = element.Key;
-	}
+	
 	_eventManager->OnBuildingEvent.Broadcast(increase, jobType);
 }
 
@@ -41,19 +38,31 @@ void ABuildings::Tick(const float p_deltaTime)
 	Super::Tick(p_deltaTime);
 }
 
+bool ABuildings::TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType)
+{
+	p_increase = 0;
+
+	if (JobCapIncrease.IsEmpty())
+		return false;
+	
+	for (const TPair<EJobEnum, int> element : JobCapIncrease)
+	{
+		p_increase = element.Value;
+		p_jobType = element.Key;
+	}
+	
+	return true;
+}
+
 void ABuildings::EndPlay(const EEndPlayReason::Type p_reason)
 {
 	Super::EndPlay(p_reason);
-	int increase = 0;
+
+	int increase;
 	EJobEnum jobType;
-	if (JobCapIncrease.IsEmpty())
-	{
+	
+	if (!TryGetResourceIncreasedAndJobType(increase, jobType))
 		return;
-	}
-	for (TPair<EJobEnum, int> element : JobCapIncrease)
-	{
-		increase = element.Value;
-		jobType = element.Key;
-	}
+
 	_eventManager->OnDestroyEvent.Broadcast(increase, jobType);
 }

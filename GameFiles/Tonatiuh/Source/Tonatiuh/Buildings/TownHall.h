@@ -14,12 +14,7 @@ class TONATIUH_API ATownHall : public ABuildings
 {
 	GENERATED_BODY()
 
-public:
-	ATownHall();
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
 	
 	/** Array containing all the jobs of the city */
 	UPROPERTY(EditAnywhere)
@@ -35,15 +30,17 @@ protected:
 	UPROPERTY(EditAnywhere, Category = population, meta = (AllowPrivateAccess = "true"))
 	int _basePopulation = 5;
 
-	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
-	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
+private:
 
 	UPROPERTY()
 	AGridManager* _gridManager;
 
-	void FindGridManager();
-
 public:
+	ATownHall();
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
 	/** Returns total number of living people in the city */
 	int GetGlobalPopulation() const;
 
@@ -79,7 +76,7 @@ public:
 
 	/** Gives information to ui */
 	UFUNCTION(BlueprintCallable)
-	FString GetJobPopInfoFromInd(int p_ind);
+	FString GetJobPopInfoFromIndex(int p_index);
 
 	/** Adds to a job's max population */
 	UFUNCTION()
@@ -87,6 +84,13 @@ public:
 
 	/** Takes from a job's max population */
 	UFUNCTION()
-	void SubstractFromJobMaxPop(int p_population, EJobEnum p_jobType);
+	void SubtractFromJobMaxPop(int p_population, EJobEnum p_jobType);
+
+protected:
+
+	void FindGridManager();
+	
+	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
+	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
 	
 };
