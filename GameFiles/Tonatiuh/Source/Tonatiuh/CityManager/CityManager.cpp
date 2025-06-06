@@ -62,7 +62,6 @@ void ACityManager::produceResource(int p_hour)
 
 void ACityManager::UpdateResourceGain(int p_hour)
 {
-	UE_LOG(LogTemp, Display, TEXT("%i"), p_hour);
 	if (!TownHall)
 	{
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
