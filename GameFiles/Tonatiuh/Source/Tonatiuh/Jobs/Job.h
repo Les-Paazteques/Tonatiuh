@@ -13,11 +13,6 @@ class TONATIUH_API AJob : public AActor
 {
 	GENERATED_BODY()
 
-public:
-	AJob();
-	// Sets default values for this actor's properties
-	void init(EJobEnum p_myType, int p_currentNumber, int p_maxNumber, EResourceEnum p_resource);
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,6 +34,10 @@ protected:
 	int _maxNumber;
 
 public:
+	AJob();
+	// Sets default values for this actor's properties
+	void Init(EJobEnum p_myType, int p_currentNumber, int p_maxNumber, EResourceEnum p_resource);
+	
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
 
