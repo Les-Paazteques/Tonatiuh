@@ -22,7 +22,6 @@ class TONATIUH_API ACityBuilderCharacter : public APawn
 public:
 	// Sets default values for this character's properties
 	ACityBuilderCharacter();
-
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;

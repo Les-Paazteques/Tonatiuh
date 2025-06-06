@@ -95,9 +95,16 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	{
 		for (auto element : Building->BuildingCost)
 		{
-			if (CityManager->resources[element.Key] <= Building->BuildingCost[element.Key])
+			for (auto jobs:Building->JobCapIncrease)
 			{
-				return;
+				if (jobs.Key == EJobEnum::TimePriest || jobs.Key == EJobEnum::HealthPriest)
+				{
+					return;
+				}
+				if (CityManager->resources[element.Key] <= Building->BuildingCost[element.Key])
+				{
+					return;
+				}
 			}
 			HasResources = true;
 		}
