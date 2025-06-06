@@ -3,8 +3,6 @@
 
 #include "TownHall.h"
 
-#include <string>
-
 
 ATownHall::ATownHall()
 {
