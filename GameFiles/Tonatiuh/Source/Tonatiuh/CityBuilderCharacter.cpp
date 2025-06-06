@@ -90,26 +90,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 		return;
 
 	ABuildings* Building = Cast<ABuildings>(FoundWidget->PreviewBuilding);
-	bool HasResources = false;
-	if (Building != nullptr)
-	{
-		for (auto element : Building->BuildingCost)
-		{
-			for (auto jobs:Building->JobCapIncrease)
-			{
-				if (jobs.Key == EJobEnum::TimePriest || jobs.Key == EJobEnum::HealthPriest)
-				{
-					return;
-				}
-				if (CityManager->resources[element.Key] <= Building->BuildingCost[element.Key])
-				{
-					return;
-				}
-			}
-			HasResources = true;
-		}
-	}
-	if (HasResources)
+	if (HasResources(Building))
 	{
 		if (GridManager->SetCell(GridManager->WorldToCell(
 			FoundWidget->PreviewBuilding->GetActorLocation()),
@@ -117,7 +98,24 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 		{
 			for (auto element : Building->BuildingCost)
 			{
-				CityManager->removeResource(element.Key,element.Value);
+				if (!(Building->JobCapIncrease.Contains(EJobEnum::HealthPriest)||Building->JobCapIncrease.Contains(EJobEnum::TimePriest)))
+				{
+					CityManager->removeResource(element.Key,element.Value);
+					break;
+				}
+				for (auto jobs:Building->JobCapIncrease)
+				{
+					if (jobs.Key == EJobEnum::HealthPriest)
+					{
+						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
+						break;
+					}
+					if (jobs.Key == EJobEnum::TimePriest )
+					{
+						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
+						break;
+					}
+				}
 			}
 			AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
 				FoundWidget->PreviewBuilding->GetActorLocation(),
@@ -132,7 +130,6 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 			FoundWidget->PreviewBuilding->Destroy();
 		}
 	}
-	
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -175,6 +172,57 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		FoundWidget->SelectedBuilding = nullptr;
 		FoundWidget->PreviewBuilding->Destroy();
 	}
+}
+
+bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
+{
+	if (p_Building != nullptr)
+	{
+		for (auto element : p_Building->BuildingCost)
+		{
+			for (auto jobs:p_Building->JobCapIncrease)
+			{
+				if (jobs.Key == EJobEnum::HealthPriest)
+				{
+					if (CityManager->resources[element.Key]
+						<=
+						GetTempleCost(p_Building->BuildingCost[element.Key],HealthTempleCount))
+						return false;
+				}
+				if (jobs.Key == EJobEnum::TimePriest )
+				{
+					if (CityManager->resources[element.Key]
+						<=
+						GetTempleCost(p_Building->BuildingCost[element.Key],TimeTempleCount))
+						return false;
+				}
+			}
+			if (CityManager->resources[element.Key] <= p_Building->BuildingCost[element.Key])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+float ACityBuilderCharacter::GetTempleCost(int BaseCost,int TempleCount)
+{
+	return BaseCost*exp((TempleCount-1)/3);
+}
+
+
+void ACityBuilderCharacter::increaseBuildCount()
+{
+	HealthTempleCount ++;
+	TimeTempleCount ++;
+}
+
+void ACityBuilderCharacter::decreaseBuildCount()
+{
+	HealthTempleCount --;
+	TimeTempleCount --;
 }
 
 void ACityBuilderCharacter::NotifyControllerChanged()

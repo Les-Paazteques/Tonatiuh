@@ -68,6 +68,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorToIgnores;
+
+	int HealthTempleCount;
+	int TimeTempleCount;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
@@ -78,6 +81,13 @@ protected:
 	/** Called to removing building */
 	void RemoveBuilding(const FInputActionValue& p_value);
 
+	bool HasResources(ABuildings* p_Building) const;
+
+	static float GetTempleCost(int BaseCost,int TempleCount);
+	
+	void increaseBuildCount();
+	void decreaseBuildCount();
+	
 	virtual void NotifyControllerChanged() override;
 
 
