@@ -62,6 +62,7 @@ void ACityManager::produceResource(int p_hour)
 
 void ACityManager::UpdateResourceGain(int p_hour)
 {
+	UE_LOG(LogTemp, Display, TEXT("%i"), p_hour);
 	if (!TownHall)
 	{
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
@@ -71,17 +72,17 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	for (auto[Name,value]: resourcesGain)
 	{
 		resourcesGain[Name] = BaseGain
-		+ TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff
+		+ (TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff)
 		- TownHall->GetGlobalPopulation()*popUpkeep[Name];
 	}
-	if (p_hour == 0 || p_hour % PopGrowthTime == 0 )
+	if (p_hour == 0 || (p_hour % PopGrowthTime) == 0 )
 	{
 		if (resourcesGain[EResourceEnum::Food] >= 0 && resources[EResourceEnum::Food] > 0)
 		{
-			TownHall->AddToPopulation(2);
+			TownHall->AddToPopulation(1);
 		}
 	}
-	if (p_hour == 0 || p_hour % PopDeclineTime == 0)
+	if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
 	{
 		if (resourcesGain[EResourceEnum::Food] < 0 && resources[EResourceEnum::Food] == 0)
 		{

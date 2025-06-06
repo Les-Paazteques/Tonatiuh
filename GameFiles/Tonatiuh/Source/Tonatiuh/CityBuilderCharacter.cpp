@@ -30,6 +30,11 @@ void ACityBuilderCharacter::BeginPlay()
 	{
 		CityManager = Cast<ACityManager>(FoundActors[0]);
 	}
+	UBuildingEventManager* buildingEventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	if (buildingEventManager != nullptr)
+	{
+		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityBuilderCharacter::increaseBuildCount);
+	}
 }
 
 // Called every frame
@@ -112,7 +117,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 					}
 					if (jobs.Key == EJobEnum::TimePriest )
 					{
-						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
+						CityManager->removeResource(element.Key,GetTempleCost(element.Value,TimeTempleCount));
 						break;
 					}
 				}
@@ -141,7 +146,6 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	FHitResult hitResult;
 	FCollisionQueryParams collisionQueryParams;
 	
-	
 	if (FoundWidget->PreviewBuilding != nullptr)
 	{
 		collisionQueryParams.AddIgnoredActor(FoundWidget->PreviewBuilding);
@@ -157,11 +161,8 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	
 	if (hitResult.GetActor())
 	{
-		for (TSubclassOf<AActor> actor_to_ignore : ActorToIgnores)
-		{
-			if (hitResult.GetActor()->GetClass() == actor_to_ignore)
-				return;
-		}
+		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
+			return;
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
 			hitResult.GetActor()->Destroy();
@@ -207,22 +208,35 @@ bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
 	return false;
 }
 
-float ACityBuilderCharacter::GetTempleCost(int BaseCost,int TempleCount)
+float ACityBuilderCharacter::GetTempleCost(int p_BaseCost,int p_TempleCount)
 {
-	return BaseCost*exp((TempleCount-1)/3);
+	UE_LOG(LogTemp,Warning,TEXT("i should be here"));
+	return p_BaseCost*exp(p_TempleCount/3);
 }
 
 
-void ACityBuilderCharacter::increaseBuildCount()
+void ACityBuilderCharacter::increaseBuildCount(int p_Amount, EJobEnum p_Job)
 {
-	HealthTempleCount ++;
-	TimeTempleCount ++;
+	if (p_Job == EJobEnum::HealthPriest)
+	{
+		HealthTempleCount ++;
+	}
+	else if (p_Job == EJobEnum::TimePriest)
+	{
+		TimeTempleCount ++;
+	}
 }
 
-void ACityBuilderCharacter::decreaseBuildCount()
+void ACityBuilderCharacter::decreaseBuildCount(int p_Amount, EJobEnum p_Job)
 {
-	HealthTempleCount --;
-	TimeTempleCount --;
+	if (p_Job == EJobEnum::HealthPriest)
+	{
+		HealthTempleCount --;
+	}
+	else if (p_Job == EJobEnum::TimePriest)
+	{
+		TimeTempleCount --;
+	}
 }
 
 void ACityBuilderCharacter::NotifyControllerChanged()

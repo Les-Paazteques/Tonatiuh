@@ -83,10 +83,11 @@ protected:
 
 	bool HasResources(ABuildings* p_Building) const;
 
-	static float GetTempleCost(int BaseCost,int TempleCount);
-	
-	void increaseBuildCount();
-	void decreaseBuildCount();
+	static float GetTempleCost(int p_BaseCost,int p_TempleCount);
+
+	UFUNCTION()
+	void increaseBuildCount(int p_Amount, EJobEnum p_Job);
+	void decreaseBuildCount(int p_Amount, EJobEnum p_Job);
 	
 	virtual void NotifyControllerChanged() override;
 
