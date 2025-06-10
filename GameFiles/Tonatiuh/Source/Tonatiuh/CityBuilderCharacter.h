@@ -23,7 +23,6 @@ class TONATIUH_API ACityBuilderCharacter : public APawn
 public:
 	// Sets default values for this character's properties
 	ACityBuilderCharacter();
-
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -73,6 +72,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorToIgnores;
+
+	int HealthTempleCount;
+	int TimeTempleCount;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
@@ -83,6 +85,15 @@ protected:
 	/** Called to removing building */
 	void RemoveBuilding(const FInputActionValue& p_value);
 
+	bool HasResources(ABuildings* p_Building) const;
+
+	static float GetTempleCost(int p_BaseCost,int p_TempleCount);
+
+	UFUNCTION()
+	void increaseBuildCount(int p_Amount, EJobEnum p_Job);
+	UFUNCTION()
+	void decreaseBuildCount(int p_Amount, EJobEnum p_Job);
+	
 	virtual void NotifyControllerChanged() override;
 
 	void PossessedBy(AController* NewController) override;

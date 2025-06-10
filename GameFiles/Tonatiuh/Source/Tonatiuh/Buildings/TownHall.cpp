@@ -98,9 +98,8 @@ void ATownHall::AddToPopulation(const int p_value)
 {
 	_globalPopulation += p_value;
 	_unemployedPopulation += p_value;
-	
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
-	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, _basePopulation, INT_MAX);
+	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, 0, INT_MAX);
 }
 
 void ATownHall::RemoveFromPopulation(const int p_value)
@@ -126,7 +125,6 @@ void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
 	{
 		tempPopulation = _unemployedPopulation;
 	}
-	
 	_unemployedPopulation -= tempPopulation;
 	_unemployedPopulation += p_jobToAssign->AddPopulation(tempPopulation);
 }

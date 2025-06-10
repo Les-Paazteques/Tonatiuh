@@ -17,6 +17,9 @@ class TONATIUH_API ACityManager : public AActor
 public:
 	// Sets default values for this actor's properties
 	ACityManager();
+
+	UPROPERTY(EditAnywhere)
+	TMap<EResourceEnum, int> resources;
 	
 protected:
 	// Called when the game starts or when spawned
@@ -30,10 +33,6 @@ protected:
 	
 	UFUNCTION()
 	void produceResource(int p_hour);
-	
-	
-	UPROPERTY(EditAnywhere)
-	TMap<EResourceEnum, int> resources;
 
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resourcesCap;
@@ -44,6 +43,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> JobGain;
 
+	
+	
 	UPROPERTY(EditAnywhere)
 	int BaseGain;
 
@@ -75,4 +76,8 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
+	
+	
 };
