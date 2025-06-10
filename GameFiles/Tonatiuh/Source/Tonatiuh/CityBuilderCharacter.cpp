@@ -3,6 +3,7 @@
 #include "CityBuilderCharacter.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Gamemode/SwitchGamemode.h"
 #include "GridManager/GridManager.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -23,6 +24,13 @@ void ACityBuilderCharacter::BeginPlay()
 
 	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
 	SwitchWidget->AddToViewport();
+
+	if (ASwitchGamemode* gamemode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode()))
+	{
+		gamemode->OnMetroidVaniaEnterEvent.AddDynamic(this, &ACityBuilderCharacter::DeactivateUI);
+		gamemode->OnCityBuilderEnterEvent.AddDynamic(this, &ACityBuilderCharacter::ActivateUI);
+	}
+	
 	
 	if (GridManager == nullptr)
 	{
@@ -266,4 +274,16 @@ void ACityBuilderCharacter::PossessedBy(AController* NewController)
 	{
 		playerController->SetViewTargetWithBlend(this);
 	}
+}
+
+void ACityBuilderCharacter::ActivateUI()
+{
+	FoundWidget->AddToViewport();
+	SwitchWidget->AddToViewport();
+}
+
+void ACityBuilderCharacter::DeactivateUI()
+{
+	FoundWidget->RemoveFromParent();
+	SwitchWidget->RemoveFromParent();
 }
