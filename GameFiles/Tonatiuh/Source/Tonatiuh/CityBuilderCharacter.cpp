@@ -20,6 +20,10 @@ void ACityBuilderCharacter::BeginPlay()
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
 	FoundWidget->AddToViewport();
 	FoundWidget->SetResourceGainText(0,0,0,0);
+
+	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
+	SwitchWidget->AddToViewport();
+	
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
@@ -251,5 +255,15 @@ void ACityBuilderCharacter::NotifyControllerChanged()
 		{
 			subsystem->AddMappingContext(_defaultMappingContext, 0);
 		}
+	}
+}
+
+void ACityBuilderCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (APlayerController* playerController = Cast<APlayerController>(GetController()))
+	{
+		playerController->SetViewTargetWithBlend(this);
 	}
 }
