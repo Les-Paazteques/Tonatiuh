@@ -43,11 +43,21 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> JobGain;
 
-	
+	UPROPERTY(EditAnywhere)
+	int BaseHappiness = 10;
+
+	UPROPERTY(EditAnywhere)
+	int LowHappinessThreshold  = 0;
+
+	UPROPERTY(EditAnywhere)
+	int HighHappinessThreshold = 10;
 	
 	UPROPERTY(EditAnywhere)
 	int BaseGain;
 
+	UPROPERTY(EditAnywhere)
+	int MaxHappiness = 100;
+	
 	UPROPERTY(EditAnywhere)
 	float MaxDebuff;
 
@@ -72,6 +82,8 @@ protected:
 	UCityBuilder* UI;
 	
 	float debuff;
+
+	int Happiness;
 	
 public:
 	// Called every frame

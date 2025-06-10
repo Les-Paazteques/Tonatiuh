@@ -67,6 +67,19 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
+	Happiness = BaseHappiness - TownHall->GetGlobalPopulation(); 
+	if (Happiness >= HighHappinessThreshold)
+	{
+		
+	}
+	else if (Happiness <= LowHappinessThreshold)
+	{
+		
+	}
+	else
+	{
+		
+	}
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
 	{
