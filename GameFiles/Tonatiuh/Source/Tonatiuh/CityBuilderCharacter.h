@@ -6,6 +6,7 @@
 #include "CityBuilder.h"
 #include "CityManager/CityManager.h"
 #include "GameFramework/Pawn.h"
+#include "UIs/CitySwitch.h"
 #include "CityBuilderCharacter.generated.h"
 
 class USpringArmComponent;
@@ -22,7 +23,6 @@ class TONATIUH_API ACityBuilderCharacter : public APawn
 public:
 	// Sets default values for this character's properties
 	ACityBuilderCharacter();
-
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -61,6 +61,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="UI")
 	TSubclassOf<UCityBuilder> CityBuilderClass;
 
+	UPROPERTY(EditAnywhere, Category="UI")
+	TSubclassOf<UCitySwitch> SwitchClass;
+	
 	UPROPERTY()
 	AGridManager* GridManager;
 
@@ -69,6 +72,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere)
 	TArray<TSubclassOf<AActor>> ActorToIgnores;
+
+	int HealthTempleCount;
+	int TimeTempleCount;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
@@ -79,8 +85,18 @@ protected:
 	/** Called to removing building */
 	void RemoveBuilding(const FInputActionValue& p_value);
 
+	bool HasResources(ABuildings* p_Building) const;
+
+	static float GetTempleCost(int p_BaseCost,int p_TempleCount);
+
+	UFUNCTION()
+	void increaseBuildCount(int p_Amount, EJobEnum p_Job);
+	UFUNCTION()
+	void decreaseBuildCount(int p_Amount, EJobEnum p_Job);
+	
 	virtual void NotifyControllerChanged() override;
 
+	void PossessedBy(AController* NewController) override;
 
 public:	
 	// Called every frame
@@ -89,6 +105,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* p_playerInputComponent) override;
 
+	UFUNCTION()
+	void DeactivateUI();
+
+	UFUNCTION()
+	void ActivateUI();
+	
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return _cameraBoom; }
 
@@ -97,5 +119,8 @@ public:
 
 	UPROPERTY()
 	UCityBuilder* FoundWidget;
+	
+	UPROPERTY()
+	UCitySwitch* SwitchWidget;
 
 };

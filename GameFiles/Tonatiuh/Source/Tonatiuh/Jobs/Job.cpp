@@ -3,14 +3,15 @@
 
 #include "Job.h"
 
-AJob::AJob()
+#include "Tonatiuh/ExternalTools/MessageDebugger.h"
+
+AJob::AJob(): _jobType(EJobEnum::Farmer), _producedResource(EResourceEnum::Food), _jobNumber(0), _maxNumber(0)
 {
-	
 }
 
 
 // Sets default values
-void AJob::init(const EJobEnum p_myType, const int p_currentNumber, const int p_maxNumber, const EResourceEnum p_resource)
+void AJob::Init(const EJobEnum p_myType, const int p_currentNumber, const int p_maxNumber, const EResourceEnum p_resource)
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -24,7 +25,6 @@ void AJob::init(const EJobEnum p_myType, const int p_currentNumber, const int p_
 void AJob::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -55,33 +55,50 @@ EResourceEnum AJob::GetProducedResource() const
 
 int AJob::AddPopulation(const int p_numberToAdd)
 {
-	const int tempNumber = _jobNumber;
 	_jobNumber += p_numberToAdd;
+	
+	const int tempNumber = _jobNumber;
+	
 	_jobNumber = _jobNumber > _maxNumber ? _maxNumber : _jobNumber;
-	return (FMath::Clamp(_jobNumber-tempNumber, 0, INT_MAX));
+
+	// Return the people leftover
+	return (FMath::Clamp(tempNumber - _maxNumber, 0, INT_MAX));
 }
 
 void AJob::SetMaxNumber(const int p_numberToSet)
 {
 	_maxNumber = p_numberToSet;
+
+	if (_maxNumber < _jobNumber)
+		_jobNumber = _maxNumber;
 }
 
 void AJob::SetJobType(const EJobEnum p_jobType)
 {
+	// Setting the job
 	_jobType = p_jobType;
+
+	// Setting the resource produced by the job
 	switch (_jobType)
 	{
 		case EJobEnum::Farmer:
 			_producedResource = EResourceEnum::Food;
 			break;
+		
 		case EJobEnum::WoodCutter:
 			_producedResource = EResourceEnum::Wood;
 			break;
+		
 		case EJobEnum::HealthPriest:
 			_producedResource = EResourceEnum::HealthBonus;
 			break;
+		
 		case EJobEnum::TimePriest:
 			_producedResource = EResourceEnum::TimeBonus;
 			break;
+
+		default:
+			MessageDebugger::LogError("The given 'EJobEnum' is not planned in the switch.");
+			
 	}
 }
