@@ -16,9 +16,13 @@ class TONATIUH_API UCitySwitch : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	UFUNCTION(BlueprintCallable)
-	void OpenExplorationPanel();
 
 	UPROPERTY(EditAnywhere)
 	UScrollBox* ScrollBox;
+	
+public:
+	
+	UFUNCTION(BlueprintCallable)
+	void OpenExplorationPanel();
+	
 };

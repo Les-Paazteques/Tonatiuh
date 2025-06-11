@@ -7,13 +7,15 @@
 
 void UCitySwitch::OpenExplorationPanel()
 {
-	AGameModeBase* gamemode = GetWorld()->GetAuthGameMode();
+	AGameModeBase* gameMode = GetWorld()->GetAuthGameMode();
 
-	if (gamemode == nullptr) return;
+	if (gameMode == nullptr)
+		return;
 	
-	ASwitchGamemode* switchGamemode = Cast<ASwitchGamemode>(gamemode);
+	ASwitchGamemode* switchGameMode = Cast<ASwitchGamemode>(gameMode);
 
-	if (switchGamemode == nullptr) return;
+	if (switchGameMode == nullptr)
+		return;
 
-	switchGamemode->SwitchToMetroidvania();
+	switchGameMode->SwitchToMetroidvania();
 }
