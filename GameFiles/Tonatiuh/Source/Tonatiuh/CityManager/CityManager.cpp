@@ -75,6 +75,10 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	}
 	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,0,INT_MAX);
 	Happiness = BaseHappiness - homeless;
+	if (resourcesGain[EResourceEnum::Food] < 0)
+	{
+		Happiness = resourcesGain[EResourceEnum::Food]*5;
+	}
 	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
 	{
 		HappinessTimer = 0;
