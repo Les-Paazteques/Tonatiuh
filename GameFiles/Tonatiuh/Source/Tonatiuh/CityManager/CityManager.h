@@ -31,6 +31,12 @@ protected:
 	void UpdateNightDebuff(int p_hour);
 
 	void TryGetUi();
+
+	UFUNCTION()
+	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
+
+	UFUNCTION()
+	void decreaseHouseCount(int p_Amount, EJobEnum p_Job);
 	
 	UFUNCTION()
 	void produceResource(int p_hour);
@@ -94,6 +100,8 @@ protected:
 
 	int HappinessTimer;
 
+	int HouseCount;
+	
 	EHappinessEnum Mood = EHappinessEnum::Neutral;
 
 	

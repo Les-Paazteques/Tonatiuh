@@ -32,6 +32,12 @@ void ACityManager::BeginPlay()
 	}
 	resourcesGain.Add(EResourceEnum::Food,0);
 	resourcesGain.Add(EResourceEnum::Wood,0);
+	UBuildingEventManager* buildingEventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	if (buildingEventManager != nullptr)
+	{
+		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityManager::increaseHouseCount);
+		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityManager::decreaseHouseCount);
+	}
 	GetWorldTimerManager().SetTimerForNextTick(this, &ACityManager::TryGetUi);
 }
 
@@ -67,11 +73,8 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
-	/*int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - Housing *2,0,UINT_MAX);
-	Happiness = BaseHappiness - Homeless;
-	*/
-	Happiness = BaseHappiness - TownHall->GetGlobalPopulation();
-	HappinessTimer ++;
+	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,0,UINT_MAX);
+	Happiness = BaseHappiness - homeless;
 	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
 	{
 		HappinessTimer = 0;
@@ -86,6 +89,8 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	{
 		Mood = EHappinessEnum::Neutral;
 	}
+	UE_LOG(LogTemp,Warning,TEXT("Happiness = %d"),Happiness);
+	HappinessTimer ++;
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
 	{
@@ -159,6 +164,19 @@ void ACityManager::TryGetUi()
 		UE_LOG(LogTemp, Error, TEXT("No Player Character"));
 	}
 }
+
+void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::Housing)
+		HouseCount++;
+}
+
+void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::Housing)
+		HouseCount--;
+}
+
 
 // Called every frame
 void ACityManager::Tick(float DeltaTime)
