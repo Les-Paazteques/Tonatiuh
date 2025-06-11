@@ -5,7 +5,7 @@
 
 #include "Tonatiuh/Gamemode/SwitchGamemode.h"
 
-void UCitySwitch::SwitchToMetroidvania() //Test the transition, will need the name of the sector later
+void UCitySwitch::OpenExplorationPanel()
 {
 	AGameModeBase* gamemode = GetWorld()->GetAuthGameMode();
 

@@ -278,12 +278,12 @@ void ACityBuilderCharacter::PossessedBy(AController* NewController)
 
 void ACityBuilderCharacter::ActivateUI()
 {
-	FoundWidget->AddToViewport();
-	SwitchWidget->AddToViewport();
+	FoundWidget->SetVisibility(ESlateVisibility::Visible);
+	SwitchWidget->SetVisibility(ESlateVisibility::Visible);
 }
 
 void ACityBuilderCharacter::DeactivateUI()
 {
-	FoundWidget->RemoveFromParent();
-	SwitchWidget->RemoveFromParent();
+	FoundWidget->SetVisibility(ESlateVisibility::Hidden);
+	SwitchWidget->SetVisibility(ESlateVisibility::Hidden);
 }
