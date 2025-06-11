@@ -110,6 +110,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
-	
+
+	int GetHappiness() const;
 	
 };

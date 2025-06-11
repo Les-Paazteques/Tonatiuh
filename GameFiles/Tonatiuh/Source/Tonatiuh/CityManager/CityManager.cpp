@@ -140,12 +140,12 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	}
 	else if (p_hour < NightEnd)
 	{
-		//night to morning
+		//night to day
 		debuff = 1 - MaxDebuff * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
-		//morning to night
+		//day to night
 		debuff = 1 - MaxDebuff * p_hour/nightLength;
 	}
 }
@@ -191,5 +191,10 @@ void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
 {
 	resources[p_Resource] -= p_Quantity;
 	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
+}
+
+int ACityManager::GetHappiness() const
+{
+	return Happiness;
 }
 
