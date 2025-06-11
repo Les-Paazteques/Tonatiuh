@@ -77,7 +77,7 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	Happiness = BaseHappiness - homeless;
 	if (resourcesGain[EResourceEnum::Food] < 0)
 	{
-		Happiness = resourcesGain[EResourceEnum::Food]*5;
+		Happiness -= resourcesGain[EResourceEnum::Food]*5;
 	}
 	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
 	{
