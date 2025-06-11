@@ -40,14 +40,14 @@ void ACityManager::produceResource(int p_hour)
 	UpdateResourceGain(p_hour);
 	for (auto[Name,value]: resources)
 	{
-		if (resources[Name] >= resourcesCap[Name] ||
+		/*if (resources[Name] >= resourcesCap[Name] ||
 			(resources[Name] <= 0 && resourcesGain[Name] < 0))
 			return;
 		if (resources[Name]+resourcesGain[Name] > resourcesCap[Name])
 		{
 			resources[Name] += resourcesCap[Name]-resourcesGain[Name];
-		}
-		else if (resources[Name]-resourcesGain[Name] < 0)
+		}*/
+		if (resources[Name]-resourcesGain[Name] < 0)
 		{
 			resources[Name] = 0;
 		}
@@ -71,17 +71,17 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	for (auto[Name,value]: resourcesGain)
 	{
 		resourcesGain[Name] = BaseGain
-		+ TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff
+		+ (TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff)
 		- TownHall->GetGlobalPopulation()*popUpkeep[Name];
 	}
-	if (p_hour == 0 || p_hour % PopGrowthTime == 0 )
+	if (p_hour == 0 || (p_hour % PopGrowthTime) == 0 )
 	{
 		if (resourcesGain[EResourceEnum::Food] >= 0 && resources[EResourceEnum::Food] > 0)
 		{
-			TownHall->AddToPopulation(2);
+			TownHall->AddToPopulation(1);
 		}
 	}
-	if (p_hour == 0 || p_hour % PopDeclineTime == 0)
+	if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
 	{
 		if (resourcesGain[EResourceEnum::Food] < 0 && resources[EResourceEnum::Food] == 0)
 		{
@@ -137,5 +137,11 @@ void ACityManager::TryGetUi()
 void ACityManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
+{
+	resources[p_Resource] -= p_Quantity;
+	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
 }
 

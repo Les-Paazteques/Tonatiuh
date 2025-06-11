@@ -20,6 +20,10 @@ void ACityBuilderCharacter::BeginPlay()
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
 	FoundWidget->AddToViewport();
 	FoundWidget->SetResourceGainText(0,0,0,0);
+
+	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
+	SwitchWidget->AddToViewport();
+	
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
@@ -29,6 +33,12 @@ void ACityBuilderCharacter::BeginPlay()
 	if (FoundActors.Num() > 0)
 	{
 		CityManager = Cast<ACityManager>(FoundActors[0]);
+	}
+	UBuildingEventManager* buildingEventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	if (buildingEventManager != nullptr)
+	{
+		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityBuilderCharacter::increaseBuildCount);
+		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
 	}
 }
 
@@ -88,26 +98,49 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 {
 	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->PreviewBuilding == nullptr)
 		return;
-	
-	if (GridManager->SetCell(GridManager->WorldToCell(
-		FoundWidget->PreviewBuilding->GetActorLocation()),
-		FoundWidget->SelectedBuilding))
+
+	ABuildings* Building = Cast<ABuildings>(FoundWidget->PreviewBuilding);
+	if (HasResources(Building))
 	{
-		// TODO: Add resource check
-		
-		AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
-			FoundWidget->PreviewBuilding->GetActorLocation(),
-			FRotator(0, 0, 0)
-		);
-		UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
-			building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
-		);
-		material->SetScalarParameterValue(TEXT("Opacity"),1);
-		building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
-		FoundWidget->SelectedBuilding = nullptr;
-		FoundWidget->PreviewBuilding->Destroy();
+		if (GridManager->SetCell(GridManager->WorldToCell(
+			FoundWidget->PreviewBuilding->GetActorLocation()),
+			FoundWidget->SelectedBuilding))
+		{
+			for (auto element : Building->BuildingCost)
+			{
+				if (!(Building->JobCapIncrease.Contains(EJobEnum::HealthPriest)||Building->JobCapIncrease.Contains(EJobEnum::TimePriest)))
+				{
+					CityManager->removeResource(element.Key,element.Value);
+					break;
+				}
+				for (auto jobs:Building->JobCapIncrease)
+				{
+					if (jobs.Key == EJobEnum::HealthPriest)
+					{
+						UE_LOG(LogTemp,Warning,TEXT("%i"),HealthTempleCount);
+						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
+						break;
+					}
+					if (jobs.Key == EJobEnum::TimePriest )
+					{
+						CityManager->removeResource(element.Key,GetTempleCost(element.Value,TimeTempleCount));
+						break;
+					}
+				}
+			}
+			AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
+				FoundWidget->PreviewBuilding->GetActorLocation(),
+				FRotator(0, 0, 0)
+			);
+			UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
+				building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
+			);
+			material->SetScalarParameterValue(TEXT("Opacity"),1);
+			building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
+			FoundWidget->SelectedBuilding = nullptr;
+			FoundWidget->PreviewBuilding->Destroy();
+		}
 	}
-	
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -118,7 +151,6 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(cameraPosition,cameraDirection);
 	FHitResult hitResult;
 	FCollisionQueryParams collisionQueryParams;
-	
 	
 	if (FoundWidget->PreviewBuilding != nullptr)
 	{
@@ -135,11 +167,8 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	
 	if (hitResult.GetActor())
 	{
-		for (TSubclassOf<AActor> actor_to_ignore : ActorToIgnores)
-		{
-			if (hitResult.GetActor()->GetClass() == actor_to_ignore)
-				return;
-		}
+		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
+			return;
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
 			hitResult.GetActor()->Destroy();
@@ -149,6 +178,69 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	{
 		FoundWidget->SelectedBuilding = nullptr;
 		FoundWidget->PreviewBuilding->Destroy();
+	}
+}
+
+bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
+{
+	if (p_Building != nullptr)
+	{
+		for (auto element : p_Building->BuildingCost)
+		{
+			for (auto jobs:p_Building->JobCapIncrease)
+			{
+				if (jobs.Key == EJobEnum::HealthPriest)
+				{
+					if (CityManager->resources[element.Key]
+						<=
+						GetTempleCost(p_Building->BuildingCost[element.Key],HealthTempleCount))
+						return false;
+				}
+				if (jobs.Key == EJobEnum::TimePriest )
+				{
+					if (CityManager->resources[element.Key]
+						<=
+						GetTempleCost(p_Building->BuildingCost[element.Key],TimeTempleCount))
+						return false;
+				}
+			}
+			if (CityManager->resources[element.Key] <= p_Building->BuildingCost[element.Key])
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
+float ACityBuilderCharacter::GetTempleCost(int p_BaseCost,int p_TempleCount)
+{
+	return p_BaseCost*exp(p_TempleCount/3);
+}
+
+
+void ACityBuilderCharacter::increaseBuildCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::HealthPriest)
+	{
+		HealthTempleCount ++;
+	}
+	else if (p_Job == EJobEnum::TimePriest)
+	{
+		TimeTempleCount ++;
+	}
+}
+
+void ACityBuilderCharacter::decreaseBuildCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::HealthPriest)
+	{
+		HealthTempleCount --;
+	}
+	else if (p_Job == EJobEnum::TimePriest)
+	{
+		TimeTempleCount --;
 	}
 }
 
@@ -163,5 +255,15 @@ void ACityBuilderCharacter::NotifyControllerChanged()
 		{
 			subsystem->AddMappingContext(_defaultMappingContext, 0);
 		}
+	}
+}
+
+void ACityBuilderCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+
+	if (APlayerController* playerController = Cast<APlayerController>(GetController()))
+	{
+		playerController->SetViewTargetWithBlend(this);
 	}
 }
