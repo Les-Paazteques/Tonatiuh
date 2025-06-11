@@ -105,6 +105,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* p_playerInputComponent) override;
 
+	UFUNCTION()
+	void DeactivateUI();
+
+	UFUNCTION()
+	void ActivateUI();
+	
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return _cameraBoom; }
 
