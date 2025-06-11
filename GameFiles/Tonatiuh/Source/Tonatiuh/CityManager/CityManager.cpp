@@ -73,7 +73,7 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
-	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,0,UINT_MAX);
+	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,0,INT_MAX);
 	Happiness = BaseHappiness - homeless;
 	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
 	{
@@ -89,7 +89,6 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	{
 		Mood = EHappinessEnum::Neutral;
 	}
-	UE_LOG(LogTemp,Warning,TEXT("Happiness = %d"),Happiness);
 	HappinessTimer ++;
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
