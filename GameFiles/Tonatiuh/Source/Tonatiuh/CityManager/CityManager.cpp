@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/CityBuilderCharacter.h"
 
-
 // Sets default values
 ACityManager::ACityManager()
 {
@@ -179,7 +178,6 @@ void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
 	if (p_Job == EJobEnum::Housing)
 		HouseCount--;
 }
-
 
 // Called every frame
 void ACityManager::Tick(float DeltaTime)
