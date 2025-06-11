@@ -7,6 +7,7 @@
 #include "Tonatiuh/CityBuilder.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/Enums/EHappinessEnum.h"
 #include "CityManager.generated.h"
 
 UCLASS()
@@ -51,6 +52,12 @@ protected:
 
 	UPROPERTY(EditAnywhere)
 	int HighHappinessThreshold = 10;
+
+	UPROPERTY(EditAnywhere)
+	int UnHappyDelay = 24;
+
+	UPROPERTY(EditAnywhere)
+	int HappyDelay = 48;
 	
 	UPROPERTY(EditAnywhere)
 	int BaseGain;
@@ -84,6 +91,11 @@ protected:
 	float debuff;
 
 	int Happiness;
+
+	int HappinessTimer;
+
+	EHappinessEnum Mood = EHappinessEnum::Neutral;
+
 	
 public:
 	// Called every frame

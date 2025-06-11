@@ -67,18 +67,24 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
-	Happiness = BaseHappiness - TownHall->GetGlobalPopulation(); 
-	if (Happiness >= HighHappinessThreshold)
+	/*int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - Housing *2,0,UINT_MAX);
+	Happiness = BaseHappiness - Homeless;
+	*/
+	Happiness = BaseHappiness - TownHall->GetGlobalPopulation();
+	HappinessTimer ++;
+	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
 	{
-		
+		HappinessTimer = 0;
+		Mood = EHappinessEnum::Happy;
 	}
-	else if (Happiness <= LowHappinessThreshold)
+	else if (Happiness <= LowHappinessThreshold && Mood != EHappinessEnum::Unhappy)
 	{
-		
+		HappinessTimer = 0;
+		Mood = EHappinessEnum::Unhappy;
 	}
 	else
 	{
-		
+		Mood = EHappinessEnum::Neutral;
 	}
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
@@ -94,12 +100,20 @@ void ACityManager::UpdateResourceGain(int p_hour)
 			TownHall->AddToPopulation(1);
 		}
 	}
-	if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
+	else if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
 	{
 		if (resourcesGain[EResourceEnum::Food] < 0 && resources[EResourceEnum::Food] == 0)
 		{
 			TownHall->RemoveFromPopulation(1);
 		}
+	}
+	if (Mood == EHappinessEnum::Happy && HappinessTimer >= HappyDelay)
+	{
+		TownHall->AddToPopulation(1);
+	}
+	else if (Mood == EHappinessEnum::Unhappy && HappinessTimer >= UnHappyDelay)
+	{
+		TownHall->RemoveFromPopulation(1);
 	}
 	if (UI)
 	{
