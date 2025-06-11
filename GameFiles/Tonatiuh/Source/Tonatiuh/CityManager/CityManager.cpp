@@ -73,7 +73,7 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
-	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,0,INT_MAX);
+	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,-  TownHall->GetGlobalPopulation()/2,INT_MAX);
 	Happiness = BaseHappiness - homeless;
 	if (resourcesGain[EResourceEnum::Food] < 0)
 	{
