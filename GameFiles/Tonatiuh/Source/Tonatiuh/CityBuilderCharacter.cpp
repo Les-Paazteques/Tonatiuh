@@ -1,11 +1,18 @@
 // Made by 'Les Paaztèques', check out game's credits for more information.
 
 #include "CityBuilderCharacter.h"
+
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+
 #include "Gamemode/SwitchGamemode.h"
 #include "GridManager/GridManager.h"
-#include "Kismet/GameplayStatics.h"
+#include "CityManager/CityManager.h"
+#include "CityBuilder.h"
+#include "Buildings/TownHall.h"
+#include "ExternalTools/MessageDebugger.h"
+
 
 // Sets default values
 ACityBuilderCharacter::ACityBuilderCharacter()
@@ -18,36 +25,80 @@ ACityBuilderCharacter::ACityBuilderCharacter()
 void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	#pragma region - FoundWidget setup -
+	
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
 	FoundWidget->AddToViewport();
-	FoundWidget->SetResourceGainText(0,0,0,0);
+	
+	FoundWidget->SetResourceGainText(
+		0, 0,
+		0, 0,
+		0, 0,0
+	);
 
+	#pragma endregion
+
+	#pragma region - SwitchWidget setup -
+	
 	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
 	SwitchWidget->AddToViewport();
 
-	if (ASwitchGamemode* gamemode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode()))
+	if (ASwitchGamemode* switchGameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode()))
 	{
-		gamemode->OnMetroidVaniaEnterEvent.AddDynamic(this, &ACityBuilderCharacter::DeactivateUI);
-		gamemode->OnCityBuilderEnterEvent.AddDynamic(this, &ACityBuilderCharacter::ActivateUI);
+		switchGameMode->OnMetroidVaniaEnterEvent.AddDynamic(this, &ACityBuilderCharacter::DeactivateUI);
+		switchGameMode->OnCityBuilderEnterEvent.AddDynamic(this, &ACityBuilderCharacter::ActivateUI);
 	}
-	
+
+	#pragma endregion
+
+	#pragma region - GridManager setup -
 	
 	if (GridManager == nullptr)
 	{
 		GridManager = AGridManager::Get(GetWorld());
 	}
-	TArray<AActor*> FoundActors;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(),ACityManager::StaticClass(),FoundActors);
-	if (FoundActors.Num() > 0)
+	
+	TArray<AActor*> foundCityManagerActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACityManager::StaticClass(), foundCityManagerActors);
+
+	const int numberOfCityManagerActorsFound = foundCityManagerActors.Num();
+	
+	if (numberOfCityManagerActorsFound <= 0)
 	{
-		CityManager = Cast<ACityManager>(FoundActors[0]);
+		MessageDebugger::ErrorOnScreen(-1,
+			FString::Printf(TEXT("No CityManager actor found in the Level !"))
+		);
+
+		return;
 	}
+	
+	if (numberOfCityManagerActorsFound > 1)
+	{
+		MessageDebugger::WarningOnScreen(-1,
+			FString::Printf(TEXT("There is more than one CityManager actor in the Level (actually %d)"), numberOfCityManagerActorsFound)
+		);
+	}
+
+	// Only taking the first found (should always be one)
+	CityManager = Cast<ACityManager>(foundCityManagerActors[0]);
+
+	#pragma endregion
+
+	#pragma region - BuildingEventManager setup -
+	
 	UBuildingEventManager* buildingEventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
-	if (buildingEventManager != nullptr)
+
+	if (buildingEventManager == nullptr)
 	{
-		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityBuilderCharacter::increaseBuildCount);
-		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
+		MessageDebugger::ErrorOnScreen(-1, "BuildingEventManager SubSystem not found");
+		return;
 	}
+
+	buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityBuilderCharacter::increaseBuildCount);
+	buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
+
+	#pragma endregion
 }
 
 // Called every frame
@@ -65,8 +116,10 @@ void ACityBuilderCharacter::SetupPlayerInputComponent(UInputComponent* p_playerI
 	{
 		// Moving
 		enhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Move);
+		
 		// Interacting
 		enhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ACityBuilderCharacter::Interact);
+		
 		// Remove Building
 		enhancedInputComponent->BindAction(RightClickInteraction, ETriggerEvent::Started, this, &ACityBuilderCharacter::RemoveBuilding);
 	}
@@ -77,8 +130,8 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value)
 	// The input result is a Vector2D
 	const FVector2D movementVector = p_value.Get<FVector2D>();
 
-	if (Controller != nullptr) {
-
+	if (Controller != nullptr)
+	{
 		// Find out which way is forward
 		const FRotator rotation = Controller->GetControlRotation();
 		const FRotator yawRotation(0, rotation.Yaw, 0);
@@ -98,6 +151,7 @@ void ACityBuilderCharacter::Move(const FInputActionValue& p_value)
 		{
 			SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 		}
+		
 		SetActorLocation(GetActorLocation().BoundToBox(_boundsMin, _boundsMax));
 	}
 }
@@ -107,48 +161,68 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->PreviewBuilding == nullptr)
 		return;
 
-	ABuildings* Building = Cast<ABuildings>(FoundWidget->PreviewBuilding);
-	if (HasResources(Building))
+	ABuildings* previewBuilding = Cast<ABuildings>(FoundWidget->PreviewBuilding);
+
+	if (previewBuilding == nullptr)
 	{
-		if (GridManager->SetCell(GridManager->WorldToCell(
-			FoundWidget->PreviewBuilding->GetActorLocation()),
-			FoundWidget->SelectedBuilding))
+		MessageDebugger::ErrorOnScreen(-1, "Preview building not found, the 'previewBuilding' variable is null");
+		return;
+	}
+
+	if (!HasResources(previewBuilding))
+		return;
+
+	// Try to place the building
+	if (!GridManager->SetCell(
+		GridManager->WorldToCell(FoundWidget->PreviewBuilding->GetActorLocation()),
+		FoundWidget->SelectedBuilding))
+	{
+		return;
+	}
+
+	// TODO: Note from the LeadDev : The code below (the 'for') should be explain because I'm having a bad time understanding this
+	
+	for (const TTuple<EResourceEnum, int> buildingCost : previewBuilding->BuildingCost)
+	{
+		if (!(previewBuilding->JobCapIncrease.Contains(EJobEnum::HealthPriest) ||
+			  previewBuilding->JobCapIncrease.Contains(EJobEnum::TimePriest)))
 		{
-			for (auto element : Building->BuildingCost)
+			CityManager->removeResource(buildingCost.Key, buildingCost.Value);
+			break;
+		}
+		
+		for (TTuple<EJobEnum, int> jobCapIncrease : previewBuilding->JobCapIncrease)
+		{
+			if (jobCapIncrease.Key == EJobEnum::HealthPriest)
 			{
-				if (!(Building->JobCapIncrease.Contains(EJobEnum::HealthPriest)||Building->JobCapIncrease.Contains(EJobEnum::TimePriest)))
-				{
-					CityManager->removeResource(element.Key,element.Value);
-					break;
-				}
-				for (auto jobs:Building->JobCapIncrease)
-				{
-					if (jobs.Key == EJobEnum::HealthPriest)
-					{
-						UE_LOG(LogTemp,Warning,TEXT("%i"),HealthTempleCount);
-						CityManager->removeResource(element.Key,GetTempleCost(element.Value,HealthTempleCount));
-						break;
-					}
-					if (jobs.Key == EJobEnum::TimePriest )
-					{
-						CityManager->removeResource(element.Key,GetTempleCost(element.Value,TimeTempleCount));
-						break;
-					}
-				}
+				CityManager->removeResource(buildingCost.Key, GetTempleCost(buildingCost.Value, HealthTempleCount));
+				break;
 			}
-			AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
-				FoundWidget->PreviewBuilding->GetActorLocation(),
-				FRotator(0, 0, 0)
-			);
-			UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
-				building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
-			);
-			material->SetScalarParameterValue(TEXT("Opacity"),1);
-			building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
-			FoundWidget->SelectedBuilding = nullptr;
-			FoundWidget->PreviewBuilding->Destroy();
+			
+			if (jobCapIncrease.Key == EJobEnum::TimePriest)
+			{
+				CityManager->removeResource(buildingCost.Key, GetTempleCost(buildingCost.Value, TimeTempleCount));
+				break;
+			}
 		}
 	}
+	
+	ABuildings* building = GetWorld()->SpawnActor<ABuildings>(
+		FoundWidget->SelectedBuilding,
+		FoundWidget->PreviewBuilding->GetActorLocation(),
+		FRotator(0, 0, 0)
+	);
+	
+	building->InitBuildings();
+	
+	UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
+		building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
+	);
+	material->SetScalarParameterValue(TEXT("Opacity"),1);
+	building->FindComponentByClass<UStaticMeshComponent>()->SetMaterial(0, material);
+	
+	FoundWidget->SelectedBuilding = nullptr;
+	FoundWidget->PreviewBuilding->Destroy();
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -156,7 +230,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	FVector cameraPosition;
 	FVector cameraDirection;
 	
-	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(cameraPosition,cameraDirection);
+	GetWorld()->GetFirstPlayerController()->DeprojectMousePositionToWorld(cameraPosition, cameraDirection);
 	FHitResult hitResult;
 	FCollisionQueryParams collisionQueryParams;
 	
@@ -177,11 +251,14 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	{
 		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
 			return;
+		
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
+			Cast<ABuildings>(hitResult.GetActor())->RemoveBuildings();
 			hitResult.GetActor()->Destroy();
 		}
 	}
+	
 	if (FoundWidget->PreviewBuilding)
 	{
 		FoundWidget->SelectedBuilding = nullptr;
@@ -191,44 +268,48 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 
 bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
 {
-	if (p_Building != nullptr)
+	if (p_Building == nullptr)
 	{
-		for (auto element : p_Building->BuildingCost)
+		MessageDebugger::WarningOnScreen(-1, "The given Building is null");
+		return false;
+	}
+	
+	for (const TTuple<EResourceEnum, int> buildingCost : p_Building->BuildingCost)
+	{
+		for (TTuple<EJobEnum, int> jobCapIncrease : p_Building->JobCapIncrease)
 		{
-			for (auto jobs:p_Building->JobCapIncrease)
+			if (jobCapIncrease.Key == EJobEnum::HealthPriest)
 			{
-				if (jobs.Key == EJobEnum::HealthPriest)
+				if (CityManager->resources[buildingCost.Key] <=
+					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],HealthTempleCount))
 				{
-					if (CityManager->resources[element.Key]
-						<=
-						GetTempleCost(p_Building->BuildingCost[element.Key],HealthTempleCount))
-						return false;
-				}
-				if (jobs.Key == EJobEnum::TimePriest )
-				{
-					if (CityManager->resources[element.Key]
-						<=
-						GetTempleCost(p_Building->BuildingCost[element.Key],TimeTempleCount))
-						return false;
+					return false;
 				}
 			}
-			if (CityManager->resources[element.Key] <= p_Building->BuildingCost[element.Key])
+			
+			if (jobCapIncrease.Key == EJobEnum::TimePriest)
 			{
-				return false;
+				if (CityManager->resources[buildingCost.Key] <=
+					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],TimeTempleCount))
+				{
+					return false;
+				}
 			}
 		}
-		return true;
+		
+		if (CityManager->resources[buildingCost.Key] <= p_Building->BuildingCost[buildingCost.Key])
+			return false;
 	}
-	return false;
+	
+	return true;
 }
 
-float ACityBuilderCharacter::GetTempleCost(int p_BaseCost,int p_TempleCount)
+float ACityBuilderCharacter::GetTempleCost(const int p_BaseCost, const int p_TempleCount)
 {
-	return p_BaseCost*exp(p_TempleCount/3);
+	return p_BaseCost * exp(p_TempleCount / 3);
 }
 
-
-void ACityBuilderCharacter::increaseBuildCount(int p_Amount, EJobEnum p_Job)
+void ACityBuilderCharacter::increaseBuildCount(const int p_Amount, const EJobEnum p_Job)
 {
 	if (p_Job == EJobEnum::HealthPriest)
 	{
@@ -240,15 +321,15 @@ void ACityBuilderCharacter::increaseBuildCount(int p_Amount, EJobEnum p_Job)
 	}
 }
 
-void ACityBuilderCharacter::decreaseBuildCount(int p_Amount, EJobEnum p_Job)
+void ACityBuilderCharacter::decreaseBuildCount(const int p_Amount, const EJobEnum p_Job)
 {
 	if (p_Job == EJobEnum::HealthPriest)
 	{
-		HealthTempleCount --;
+		HealthTempleCount--;
 	}
 	else if (p_Job == EJobEnum::TimePriest)
 	{
-		TimeTempleCount --;
+		TimeTempleCount--;
 	}
 }
 
@@ -259,16 +340,17 @@ void ACityBuilderCharacter::NotifyControllerChanged()
 	// Add Input Mapping Context
 	if (APlayerController* playerController = Cast<APlayerController>(Controller))
 	{
-		if (UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(playerController->GetLocalPlayer()))
+		if (UEnhancedInputLocalPlayerSubsystem* enhancedInputSubsystem =
+			ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(playerController->GetLocalPlayer()))
 		{
-			subsystem->AddMappingContext(_defaultMappingContext, 0);
+			enhancedInputSubsystem->AddMappingContext(_defaultMappingContext, 0);
 		}
 	}
 }
 
-void ACityBuilderCharacter::PossessedBy(AController* NewController)
+void ACityBuilderCharacter::PossessedBy(AController* p_newController)
 {
-	Super::PossessedBy(NewController);
+	Super::PossessedBy(p_newController);
 
 	if (APlayerController* playerController = Cast<APlayerController>(GetController()))
 	{

@@ -15,7 +15,32 @@ ABuildings::ABuildings(): _eventManager(nullptr)
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
+// Called every frame
+void ABuildings::Tick(const float p_deltaTime)
+{
+	Super::Tick(p_deltaTime);
+}
+
+bool ABuildings::TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType)
+{
+	p_increase = 0;
+
+	if (JobCapIncrease.IsEmpty())
+		return false;
+	
+	for (const TPair<EJobEnum, int> jobCapIncrease : JobCapIncrease)
+	{
+		p_increase = jobCapIncrease.Value;
+		p_jobType = jobCapIncrease.Key;
+	}
+	
+	return true;
+}
+
+void ABuildings::InitBuildings()
+{
 	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
 	
 	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
@@ -32,32 +57,8 @@ void ABuildings::BeginPlay()
 	_eventManager->OnBuildingEvent.Broadcast(increase, jobType);
 }
 
-// Called every frame
-void ABuildings::Tick(const float p_deltaTime)
+void ABuildings::RemoveBuildings()
 {
-	Super::Tick(p_deltaTime);
-}
-
-bool ABuildings::TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType)
-{
-	p_increase = 0;
-
-	if (JobCapIncrease.IsEmpty())
-		return false;
-	
-	for (const TPair<EJobEnum, int> element : JobCapIncrease)
-	{
-		p_increase = element.Value;
-		p_jobType = element.Key;
-	}
-	
-	return true;
-}
-
-void ABuildings::EndPlay(const EEndPlayReason::Type p_reason)
-{
-	Super::EndPlay(p_reason);
-
 	int increase;
 	EJobEnum jobType;
 	
