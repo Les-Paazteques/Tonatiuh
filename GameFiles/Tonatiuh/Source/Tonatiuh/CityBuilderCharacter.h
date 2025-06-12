@@ -3,17 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CityBuilder.h"
-#include "CityManager/CityManager.h"
 #include "GameFramework/Pawn.h"
 #include "UIs/CitySwitch.h"
 #include "CityBuilderCharacter.generated.h"
 
+// Forward declarations
 class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+
+class AGridManager;
+class ACityManager;
+class UCityBuilder;
+class ABuildings;
 
 UCLASS()
 class TONATIUH_API ACityBuilderCharacter : public APawn
@@ -21,8 +25,58 @@ class TONATIUH_API ACityBuilderCharacter : public APawn
 	GENERATED_BODY()
 
 public:
+	
+	UPROPERTY()
+	UCityBuilder* FoundWidget;
+	
+	UPROPERTY()
+	UCitySwitch* SwitchWidget;
+
+protected:
+
+	/// <summary> Camera boom positioning the camera behind the character </summary>
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	USpringArmComponent* _cameraBoom;
+
+	/// <summary> Camera SubObject </summary>
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
+	UCameraComponent* _camera;
+
+	/// <summary> MappingContext </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputMappingContext* _defaultMappingContext;
+
+	/// <summary> Upper limits of movement </summary>
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
+	FVector _boundsMax;
+
+	/// <summary> Lesser limits of movement */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
+	FVector _boundsMin;
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UCityBuilder> CityBuilderClass; // TODO: Modify name
+
+	UPROPERTY(EditAnywhere, Category = "UI")
+	TSubclassOf<UCitySwitch> SwitchClass; // TODO: Modify name
+	
+	UPROPERTY()
+	AGridManager* GridManager; // TODO: Modify name
+
+	UPROPERTY()
+	ACityManager* CityManager; // TODO: Modify name
+	
+	UPROPERTY(EditAnywhere)
+	TArray<TSubclassOf<AActor>> ActorToIgnores; // TODO: Modify name
+
+	int HealthTempleCount; // TODO: Modify name
+	int TimeTempleCount; // TODO: Modify name
+
+public:
+	
 	// Sets default values for this character's properties
 	ACityBuilderCharacter();
+	
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* MoveAction;
@@ -35,46 +89,9 @@ public:
 	UInputAction* RightClickInteraction;
 
 protected:
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	/** Camera boom positioning the camera behind the character */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* _cameraBoom;
-
-	/** camera subobject */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* _camera;
-
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputMappingContext* _defaultMappingContext;
-
-	/** Upper limits of movement */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
-	FVector _boundsMax;
-
-	/** Lesser limits of movement */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = CameraBounds, meta = (AllowPrivateAccess = "true"))
-	FVector _boundsMin;
-
-	UPROPERTY(EditAnywhere, Category="UI")
-	TSubclassOf<UCityBuilder> CityBuilderClass;
-
-	UPROPERTY(EditAnywhere, Category="UI")
-	TSubclassOf<UCitySwitch> SwitchClass;
-	
-	UPROPERTY()
-	AGridManager* GridManager;
-
-	UPROPERTY()
-	ACityManager* CityManager;
-	
-	UPROPERTY(EditAnywhere)
-	TArray<TSubclassOf<AActor>> ActorToIgnores;
-
-	int HealthTempleCount;
-	int TimeTempleCount;
 	
 	/** Called for movement input */
 	void Move(const FInputActionValue& p_value);
@@ -91,14 +108,16 @@ protected:
 
 	UFUNCTION()
 	void increaseBuildCount(int p_Amount, EJobEnum p_Job);
+	
 	UFUNCTION()
 	void decreaseBuildCount(int p_Amount, EJobEnum p_Job);
 	
 	virtual void NotifyControllerChanged() override;
 
-	void PossessedBy(AController* NewController) override;
+	void PossessedBy(AController* p_newController) override;
 
-public:	
+public:
+	
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
 
@@ -111,16 +130,10 @@ public:
 	UFUNCTION()
 	void ActivateUI();
 	
-	/** Returns CameraBoom subobject **/
+	/** Returns CameraBoom SubObject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return _cameraBoom; }
 
-	/** Returns Camera subobject **/
+	/** Returns Camera SubObject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return _camera; }
-
-	UPROPERTY()
-	UCityBuilder* FoundWidget;
-	
-	UPROPERTY()
-	UCitySwitch* SwitchWidget;
 
 };

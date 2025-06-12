@@ -4,8 +4,13 @@
 #include "CityManager.h"
 
 #include "Tonatiuh/SubSystems/TimeManager.h"
+
+#include "Tonatiuh/CityBuilder.h"
+#include "Tonatiuh/Buildings/TownHall.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/CityBuilderCharacter.h"
+
 
 // Sets default values
 ACityManager::ACityManager()
@@ -38,6 +43,7 @@ void ACityManager::BeginPlay()
 		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityManager::decreaseHouseCount);
 	}
 	GetWorldTimerManager().SetTimerForNextTick(this, &ACityManager::TryGetUi);
+	Happiness = BaseHappiness;
 }
 
 void ACityManager::produceResource(int p_hour)
@@ -61,7 +67,8 @@ void ACityManager::produceResource(int p_hour)
 	if (UI)
 	{
 		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],
-			resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood]);
+			resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood],
+			TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 	}
 }
 
@@ -125,7 +132,8 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	if (UI)
 	{
 		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food]
-			,resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood]);
+			,resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood],
+			TownHall->GetGlobalPopulation(),Happiness, HouseCount);
 	}
 }
 
@@ -159,7 +167,8 @@ void ACityManager::TryGetUi()
 			return;
 		}
 		UI = PC->FoundWidget;
-		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
+		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
+			BaseGain,TownHall->GetGlobalPopulation(),BaseHappiness,HouseCount);
 	}
 	else
 	{
@@ -170,25 +179,34 @@ void ACityManager::TryGetUi()
 void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
 {
 	if (p_Job == EJobEnum::Housing)
+	{
 		HouseCount++;
+		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
+		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+	}
 }
 
 void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
 {
 	if (p_Job == EJobEnum::Housing)
+	{
 		HouseCount--;
+		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
+		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+	}
 }
 
 // Called every frame
-void ACityManager::Tick(float DeltaTime)
+void ACityManager::Tick(float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 }
 
 void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
 {
 	resources[p_Resource] -= p_Quantity;
-	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
+	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
+		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 }
 
 int ACityManager::GetHappiness() const
