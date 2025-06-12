@@ -1,7 +1,7 @@
 // Made by 'Les Paaztèques', check out game's credits for more information.
 
 
-#include "Ressources.h"
+#include "Resource.h"
 
 // Sets default values
 AResource::AResource()

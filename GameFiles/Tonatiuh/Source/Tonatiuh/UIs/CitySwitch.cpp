@@ -3,7 +3,7 @@
 
 #include "CitySwitch.h"
 
-#include "Tonatiuh/Gamemode/SwitchGamemode.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
 void UCitySwitch::OpenExplorationPanel()
 {

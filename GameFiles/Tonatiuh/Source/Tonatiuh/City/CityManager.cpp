@@ -5,8 +5,8 @@
 
 #include "Tonatiuh/SubSystems/TimeManager.h"
 
-#include "Tonatiuh/CityManager/CityBuilder.h"
-#include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/City/CityBuilder.h"
+#include "Tonatiuh/Building/Buildings/TownHall.h"
 
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/Character/CityBuilderCharacter.h"

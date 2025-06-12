@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/Resource/Ressources.h"
+#include "Tonatiuh/Resource/Resource.h"
 #include "Tonatiuh/Enums/EJobEnum.h"
 #include "Job.generated.h"
 

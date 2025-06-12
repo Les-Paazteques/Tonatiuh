@@ -3,7 +3,7 @@
 
 #include "GridManager.h"
 
-#include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/Building/Buildings/TownHall.h"
 
 
 // Sets default values

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
-#include "Ressources.generated.h"
+#include "Resource.generated.h"
 
 UCLASS()
 class TONATIUH_API AResource : public AActor

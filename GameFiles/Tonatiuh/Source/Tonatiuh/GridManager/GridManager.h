@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/Buildings/Buildings.h"
+#include "Tonatiuh/Building/Buildings.h"
 #include "GridManager.generated.h"
 
 

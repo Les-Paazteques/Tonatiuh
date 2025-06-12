@@ -6,11 +6,11 @@
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "Tonatiuh/Gamemode/SwitchGamemode.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 #include "Tonatiuh/GridManager/GridManager.h"
-#include "Tonatiuh/CityManager/CityManager.h"
-#include "Tonatiuh/CityManager/CityBuilder.h"
-#include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/City/CityManager.h"
+#include "Tonatiuh/City/CityBuilder.h"
+#include "Tonatiuh/Building/Buildings/TownHall.h"
 #include "Tonatiuh/ExternalTools/MessageDebugger.h"
 
 

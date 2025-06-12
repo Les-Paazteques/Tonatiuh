@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Buildings.h"
-#include "../Jobs/Job.h"
+
+#include "Tonatiuh/Building/Buildings.h"
+#include "Tonatiuh/Jobs/Job.h"
 #include "Tonatiuh/GridManager/GridManager.h"
+
 #include "TownHall.generated.h"
 
 
