@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Enums/EResourceEnum.h"
+#include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Ressources.generated.h"
 
 UCLASS()

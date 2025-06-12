@@ -5,11 +5,11 @@
 
 #include "Tonatiuh/SubSystems/TimeManager.h"
 
-#include "Tonatiuh/CityBuilder.h"
+#include "Tonatiuh/CityManager/CityBuilder.h"
 #include "Tonatiuh/Buildings/TownHall.h"
 
 #include "Kismet/GameplayStatics.h"
-#include "Tonatiuh/CityBuilderCharacter.h"
+#include "Tonatiuh/Character/CityBuilderCharacter.h"
 
 
 // Sets default values

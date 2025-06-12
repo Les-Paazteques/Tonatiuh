@@ -4,8 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "../Ressources.h"
-#include "../Enums/EJobEnum.h"
+#include "Tonatiuh/Resource/Ressources.h"
+#include "Tonatiuh/Enums/EJobEnum.h"
 #include "Job.generated.h"
 
 UCLASS()

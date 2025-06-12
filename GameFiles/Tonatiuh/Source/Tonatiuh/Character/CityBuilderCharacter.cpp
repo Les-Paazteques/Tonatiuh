@@ -6,12 +6,12 @@
 #include "EnhancedInputSubsystems.h"
 #include "Kismet/GameplayStatics.h"
 
-#include "Gamemode/SwitchGamemode.h"
-#include "GridManager/GridManager.h"
-#include "CityManager/CityManager.h"
-#include "CityBuilder.h"
-#include "Buildings/TownHall.h"
-#include "ExternalTools/MessageDebugger.h"
+#include "Tonatiuh/Gamemode/SwitchGamemode.h"
+#include "Tonatiuh/GridManager/GridManager.h"
+#include "Tonatiuh/CityManager/CityManager.h"
+#include "Tonatiuh/CityManager/CityBuilder.h"
+#include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/ExternalTools/MessageDebugger.h"
 
 
 // Sets default values

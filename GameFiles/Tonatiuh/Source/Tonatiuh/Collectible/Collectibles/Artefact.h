@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tonatiuh/Collectible.h"
+#include "Tonatiuh/Collectible/Collectible.h"
 #include "Artefact.generated.h"
 
 UCLASS()
