@@ -20,7 +20,7 @@ void AGridManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	_grid = TMap<FIntPoint,TSubclassOf<ABuildings>>();
+	_grid = TMap<FIntPoint,TSubclassOf<ABuilding>>();
 	for (int i = -_gridSize/2; i <= _gridSize/2; i++)
 	{
 		for (int j = -_gridSize/2; j <= _gridSize/2; j++)
@@ -77,7 +77,7 @@ FVector AGridManager::SnapToGrid(const FVector& p_worldPosition) const
 /// @param p_cell cell you want to set
 /// @param p_actorToSet what you want to set the cell to
 /// @return return true if successfully set cell
-bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet)
+bool AGridManager::SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuilding>& p_actorToSet)
 {
 	if (!IsInGrid(p_cell))
 		return false;
@@ -109,7 +109,7 @@ bool AGridManager::UnSetCell(const FIntPoint& p_cell)
 /// 
 /// @param p_cell cell you want see what it contains
 /// @return returns the content of the specified cell (can return nullptr)
-TSubclassOf<ABuildings> AGridManager::GetCell(const FIntPoint& p_cell)
+TSubclassOf<ABuilding> AGridManager::GetCell(const FIntPoint& p_cell)
 {
 	if (!IsInGrid(p_cell))
 		return nullptr;

@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 
-#include "Tonatiuh/Building/Buildings.h"
+#include "Tonatiuh/Building/Building.h"
 #include "Tonatiuh/Jobs/Job.h"
 #include "Tonatiuh/GridManager/GridManager.h"
 
@@ -12,7 +12,7 @@
 
 
 UCLASS()
-class TONATIUH_API ATownHall : public ABuildings
+class TONATIUH_API ATownHall : public ABuilding
 {
 	GENERATED_BODY()
 

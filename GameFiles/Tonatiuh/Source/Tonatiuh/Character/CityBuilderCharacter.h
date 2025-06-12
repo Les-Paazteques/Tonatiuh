@@ -19,7 +19,7 @@ struct FInputActionValue;
 class AGridManager;
 class ACityManager;
 class UCityBuilder;
-class ABuildings;
+class ABuilding;
 
 UCLASS()
 class TONATIUH_API ACityBuilderCharacter : public APawn
@@ -104,7 +104,7 @@ protected:
 	/** Called to removing building */
 	void RemoveBuilding(const FInputActionValue& p_value);
 
-	bool HasResources(ABuildings* p_Building) const;
+	bool HasResources(ABuilding* p_Building) const;
 
 	static float GetTempleCost(int p_BaseCost,int p_TempleCount);
 

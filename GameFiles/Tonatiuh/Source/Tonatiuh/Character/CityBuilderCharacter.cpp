@@ -161,7 +161,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	if (FoundWidget == nullptr || FoundWidget->SelectedBuilding == nullptr || FoundWidget->PreviewBuilding == nullptr)
 		return;
 
-	ABuildings* previewBuilding = Cast<ABuildings>(FoundWidget->PreviewBuilding);
+	ABuilding* previewBuilding = Cast<ABuilding>(FoundWidget->PreviewBuilding);
 
 	if (previewBuilding == nullptr)
 	{
@@ -207,7 +207,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 		}
 	}
 	
-	ABuildings* building = GetWorld()->SpawnActor<ABuildings>(
+	ABuilding* building = GetWorld()->SpawnActor<ABuilding>(
 		FoundWidget->SelectedBuilding,
 		FoundWidget->PreviewBuilding->GetActorLocation(),
 		FRotator(0, 0, 0)
@@ -254,7 +254,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
-			Cast<ABuildings>(hitResult.GetActor())->RemoveBuildings();
+			Cast<ABuilding>(hitResult.GetActor())->RemoveBuildings();
 			hitResult.GetActor()->Destroy();
 		}
 	}
@@ -266,7 +266,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	}
 }
 
-bool ACityBuilderCharacter::HasResources(ABuildings* p_Building) const
+bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 {
 	if (p_Building == nullptr)
 	{
