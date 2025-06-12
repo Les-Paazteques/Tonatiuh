@@ -15,6 +15,14 @@ public:
 	// Sets default values for this actor's properties
 	AArtefact();
 
+	/** Will define the wall climb boolean when this artifact is added to or taken away from inventory */
+	UPROPERTY(EditAnywhere)
+	bool WallClimbKey;
+
+	/** Will be added to the maxJump int when this artifact is added to inventory and taken away when the artifact is lost */
+	UPROPERTY(EditAnywhere)
+	int DoubleJumpKey;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
