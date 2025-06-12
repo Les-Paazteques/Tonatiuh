@@ -7,6 +7,7 @@
 #include "Tonatiuh/CityBuilder.h"
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Buildings/TownHall.h"
+#include "Tonatiuh/Enums/EHappinessEnum.h"
 #include "CityManager.generated.h"
 
 UCLASS()
@@ -30,6 +31,12 @@ protected:
 	void UpdateNightDebuff(int p_hour);
 
 	void TryGetUi();
+
+	UFUNCTION()
+	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
+
+	UFUNCTION()
+	void decreaseHouseCount(int p_Amount, EJobEnum p_Job);
 	
 	UFUNCTION()
 	void produceResource(int p_hour);
@@ -43,11 +50,27 @@ protected:
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> JobGain;
 
-	
+	UPROPERTY(EditAnywhere)
+	int BaseHappiness = 10;
+
+	UPROPERTY(EditAnywhere)
+	int LowHappinessThreshold  = 0;
+
+	UPROPERTY(EditAnywhere)
+	int HighHappinessThreshold = 10;
+
+	UPROPERTY(EditAnywhere)
+	int UnHappyDelay = 24;
+
+	UPROPERTY(EditAnywhere)
+	int HappyDelay = 48;
 	
 	UPROPERTY(EditAnywhere)
 	int BaseGain;
 
+	UPROPERTY(EditAnywhere)
+	int MaxHappiness = 100;
+	
 	UPROPERTY(EditAnywhere)
 	float MaxDebuff;
 
@@ -72,12 +95,22 @@ protected:
 	UCityBuilder* UI;
 	
 	float debuff;
+
+	int Happiness;
+
+	int HappinessTimer;
+
+	int HouseCount = 0;
+	
+	EHappinessEnum Mood = EHappinessEnum::Neutral;
+
 	
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
-	
+
+	int GetHappiness() const;
 	
 };

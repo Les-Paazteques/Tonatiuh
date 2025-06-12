@@ -7,7 +7,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/CityBuilderCharacter.h"
 
-
 // Sets default values
 ACityManager::ACityManager()
 {
@@ -32,6 +31,12 @@ void ACityManager::BeginPlay()
 	}
 	resourcesGain.Add(EResourceEnum::Food,0);
 	resourcesGain.Add(EResourceEnum::Wood,0);
+	UBuildingEventManager* buildingEventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	if (buildingEventManager != nullptr)
+	{
+		buildingEventManager->OnBuildingEvent.AddDynamic(this,&ACityManager::increaseHouseCount);
+		buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityManager::decreaseHouseCount);
+	}
 	GetWorldTimerManager().SetTimerForNextTick(this, &ACityManager::TryGetUi);
 }
 
@@ -67,6 +72,27 @@ void ACityManager::UpdateResourceGain(int p_hour)
 		UE_LOG(LogTemp, Error, TEXT("TownHall is null"));
 		return;
 	}
+	int homeless = FMath::Clamp(TownHall->GetGlobalPopulation() - HouseCount *2,-  TownHall->GetGlobalPopulation()/2,INT_MAX);
+	Happiness = BaseHappiness - homeless;
+	if (resourcesGain[EResourceEnum::Food] < 0)
+	{
+		Happiness += resourcesGain[EResourceEnum::Food]*5;
+	}
+	if (Happiness >= HighHappinessThreshold && Mood != EHappinessEnum::Happy)
+	{
+		HappinessTimer = 0;
+		Mood = EHappinessEnum::Happy;
+	}
+	else if (Happiness <= LowHappinessThreshold && Mood != EHappinessEnum::Unhappy)
+	{
+		HappinessTimer = 0;
+		Mood = EHappinessEnum::Unhappy;
+	}
+	else
+	{
+		Mood = EHappinessEnum::Neutral;
+	}
+	HappinessTimer ++;
 	UpdateNightDebuff(p_hour);
 	for (auto[Name,value]: resourcesGain)
 	{
@@ -81,12 +107,20 @@ void ACityManager::UpdateResourceGain(int p_hour)
 			TownHall->AddToPopulation(1);
 		}
 	}
-	if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
+	else if (p_hour == 0 || (p_hour % PopDeclineTime) == 0)
 	{
 		if (resourcesGain[EResourceEnum::Food] < 0 && resources[EResourceEnum::Food] == 0)
 		{
 			TownHall->RemoveFromPopulation(1);
 		}
+	}
+	if (Mood == EHappinessEnum::Happy && HappinessTimer >= HappyDelay)
+	{
+		TownHall->AddToPopulation(1);
+	}
+	else if (Mood == EHappinessEnum::Unhappy && HappinessTimer >= UnHappyDelay)
+	{
+		TownHall->RemoveFromPopulation(1);
 	}
 	if (UI)
 	{
@@ -105,12 +139,12 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	}
 	else if (p_hour < NightEnd)
 	{
-		//night to morning
+		//night to day
 		debuff = 1 - MaxDebuff * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
-		//morning to night
+		//day to night
 		debuff = 1 - MaxDebuff * p_hour/nightLength;
 	}
 }
@@ -133,6 +167,18 @@ void ACityManager::TryGetUi()
 	}
 }
 
+void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::Housing)
+		HouseCount++;
+}
+
+void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
+{
+	if (p_Job == EJobEnum::Housing)
+		HouseCount--;
+}
+
 // Called every frame
 void ACityManager::Tick(float DeltaTime)
 {
@@ -143,5 +189,10 @@ void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
 {
 	resources[p_Resource] -= p_Quantity;
 	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],BaseGain);
+}
+
+int ACityManager::GetHappiness() const
+{
+	return Happiness;
 }
 
