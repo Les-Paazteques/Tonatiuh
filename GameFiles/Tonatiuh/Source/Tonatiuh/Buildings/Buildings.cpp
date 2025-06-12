@@ -30,10 +30,10 @@ bool ABuildings::TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_
 	if (JobCapIncrease.IsEmpty())
 		return false;
 	
-	for (const TPair<EJobEnum, int> element : JobCapIncrease)
+	for (const TPair<EJobEnum, int> jobCapIncrease : JobCapIncrease)
 	{
-		p_increase = element.Value;
-		p_jobType = element.Key;
+		p_increase = jobCapIncrease.Value;
+		p_jobType = jobCapIncrease.Key;
 	}
 	
 	return true;

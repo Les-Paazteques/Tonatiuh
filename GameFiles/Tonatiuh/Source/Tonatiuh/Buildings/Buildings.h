@@ -21,12 +21,20 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TMap<EJobEnum, int> JobCapIncrease;
+
+protected:
+
+	UPROPERTY()
+	UBuildingEventManager* _eventManager;
+	
+public:
 	
 	// Sets default values for this actor's properties
 	ABuildings();
 	
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
+	
 	bool TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType);
 	void InitBuildings();
 	void RemoveBuildings();
@@ -35,8 +43,5 @@ protected:
 	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY()
-	UBuildingEventManager* _eventManager;
 	
 };

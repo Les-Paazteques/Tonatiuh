@@ -4,8 +4,13 @@
 #include "CityManager.h"
 
 #include "Tonatiuh/SubSystems/TimeManager.h"
+
+#include "Tonatiuh/CityBuilder.h"
+#include "Tonatiuh/Buildings/TownHall.h"
+
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/CityBuilderCharacter.h"
+
 
 // Sets default values
 ACityManager::ACityManager()
@@ -192,9 +197,9 @@ void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
 }
 
 // Called every frame
-void ACityManager::Tick(float DeltaTime)
+void ACityManager::Tick(float p_deltaTime)
 {
-	Super::Tick(DeltaTime);
+	Super::Tick(p_deltaTime);
 }
 
 void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)

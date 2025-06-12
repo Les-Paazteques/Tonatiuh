@@ -4,11 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/CityBuilder.h"
+
 #include "Tonatiuh/Enums/EResourceEnum.h"
-#include "Tonatiuh/Buildings/TownHall.h"
 #include "Tonatiuh/Enums/EHappinessEnum.h"
+
 #include "CityManager.generated.h"
+
+class UCityBuilder;
+class ATownHall;
 
 UCLASS()
 class TONATIUH_API ACityManager : public AActor
@@ -16,30 +19,11 @@ class TONATIUH_API ACityManager : public AActor
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this actor's properties
-	ACityManager();
 
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resources;
 	
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	
-	void UpdateResourceGain(int p_hour);
-
-	void UpdateNightDebuff(int p_hour);
-
-	void TryGetUi();
-
-	UFUNCTION()
-	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
-
-	UFUNCTION()
-	void decreaseHouseCount(int p_Amount, EJobEnum p_Job);
-	
-	UFUNCTION()
-	void produceResource(int p_hour);
 
 	UPROPERTY(EditAnywhere)
 	TMap<EResourceEnum, int> resourcesCap;
@@ -103,11 +87,36 @@ protected:
 	int HouseCount = 0;
 	
 	EHappinessEnum Mood = EHappinessEnum::Neutral;
+	
+public:
+	
+	// Sets default values for this actor's properties
+	ACityManager();
+	
+protected:
+	
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+	
+	void UpdateResourceGain(int p_hour);
+
+	void UpdateNightDebuff(int p_hour);
+
+	void TryGetUi();
+
+	UFUNCTION()
+	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
+
+	UFUNCTION()
+	void decreaseHouseCount(int p_Amount, EJobEnum p_Job);
+	
+	UFUNCTION()
+	void produceResource(int p_hour);
 
 	
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float p_deltaTime) override;
 
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
 
