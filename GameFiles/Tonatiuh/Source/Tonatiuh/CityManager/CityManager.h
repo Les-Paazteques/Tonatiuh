@@ -112,5 +112,4 @@ public:
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
 
 	int GetHappiness() const;
-	
 };

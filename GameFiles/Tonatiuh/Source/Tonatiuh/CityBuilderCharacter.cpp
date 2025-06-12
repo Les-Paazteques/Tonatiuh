@@ -20,7 +20,7 @@ void ACityBuilderCharacter::BeginPlay()
 	Super::BeginPlay();
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
 	FoundWidget->AddToViewport();
-	FoundWidget->SetResourceGainText(0,0,0,0);
+	FoundWidget->SetResourceGainText(0,0,0,0,0,0,0);
 
 	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
 	SwitchWidget->AddToViewport();
@@ -136,10 +136,11 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 					}
 				}
 			}
-			AActor* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
+			ABuildings* building = GetWorld()->SpawnActor<ABuildings>(FoundWidget->SelectedBuilding,
 				FoundWidget->PreviewBuilding->GetActorLocation(),
 				FRotator(0, 0, 0)
 			);
+			building->InitBuildings();
 			UMaterialInstanceDynamic* material = UMaterialInstanceDynamic::Create(
 				building->FindComponentByClass<UStaticMeshComponent>()->GetMaterial(0), this
 			);
@@ -179,6 +180,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 			return;
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
+			Cast<ABuildings>(hitResult.GetActor())->RemoveBuildings();
 			hitResult.GetActor()->Destroy();
 		}
 	}

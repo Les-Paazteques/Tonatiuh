@@ -15,21 +15,6 @@ ABuildings::ABuildings(): _eventManager(nullptr)
 void ABuildings::BeginPlay()
 {
 	Super::BeginPlay();
-
-	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
-	
-	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
-	{
-		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
-	}
-	
-	int increase = 0;
-	EJobEnum jobType;
-	
-	if (!TryGetResourceIncreasedAndJobType(increase, jobType))
-		return;
-	
-	_eventManager->OnBuildingEvent.Broadcast(increase, jobType);
 }
 
 // Called every frame
@@ -54,10 +39,26 @@ bool ABuildings::TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_
 	return true;
 }
 
-void ABuildings::EndPlay(const EEndPlayReason::Type p_reason)
+void ABuildings::InitBuildings()
 {
-	Super::EndPlay(p_reason);
+	_eventManager = GetWorld()->GetSubsystem<UBuildingEventManager>();
+	
+	if (BuildingCost.IsEmpty() || JobCapIncrease.IsEmpty())
+	{
+		UE_LOG(LogTemp, Error, TEXT("Either BuildingCost or and JobCapIncrease is empty"));
+	}
+	
+	int increase = 0;
+	EJobEnum jobType;
+	
+	if (!TryGetResourceIncreasedAndJobType(increase, jobType))
+		return;
+	
+	_eventManager->OnBuildingEvent.Broadcast(increase, jobType);
+}
 
+void ABuildings::RemoveBuildings()
+{
 	int increase;
 	EJobEnum jobType;
 	
