@@ -41,5 +41,6 @@ void ACheckpoint::OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* 
 	if (playerHealthComponent)
 	{
 		playerHealthComponent->SetRespawnLocation(GetActorLocation());
+		playerHealthComponent->HealDamage(99);
 	}
 }
