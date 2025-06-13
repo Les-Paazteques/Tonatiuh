@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Tonatiuh/Collectible/Collectible.h"
+#include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Artefact.generated.h"
 
 UCLASS()
@@ -23,6 +24,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	int DoubleJumpKey;
 
+	UFUNCTION(BlueprintCallable)
+	int GetCostOfKey(EResourceEnum p_resource);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -30,4 +34,8 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+private:
+	UPROPERTY(EditAnywhere)
+	TMap<EResourceEnum, int> _cost;
 };
