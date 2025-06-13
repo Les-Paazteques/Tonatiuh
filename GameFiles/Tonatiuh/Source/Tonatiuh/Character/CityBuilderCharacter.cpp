@@ -99,6 +99,8 @@ void ACityBuilderCharacter::BeginPlay()
 	buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
 
 	#pragma endregion
+
+	
 }
 
 // Called every frame
@@ -254,8 +256,8 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		
 		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
 		{
-			Cast<ABuilding>(hitResult.GetActor())->RemoveBuildings();
-			hitResult.GetActor()->Destroy();
+			if (Cast<ABuilding>(hitResult.GetActor()) != nullptr)
+				hitResult.GetActor()->Destroy();
 		}
 	}
 	
