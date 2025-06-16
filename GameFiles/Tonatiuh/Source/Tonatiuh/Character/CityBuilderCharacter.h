@@ -104,7 +104,7 @@ protected:
 	/** Called to removing building */
 	void RemoveBuilding(const FInputActionValue& p_value);
 
-	bool HasResources(ABuilding* p_Building) const;
+	
 
 	static float GetTempleCost(int p_BaseCost,int p_TempleCount);
 
@@ -126,6 +126,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* p_playerInputComponent) override;
 
+	bool HasResources(ABuilding* p_Building) const;
+	
 	UFUNCTION()
 	void DeactivateUI();
 

@@ -183,7 +183,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	}
 
 	// TODO: Note from the LeadDev : The code below (the 'for') should be explain because I'm having a bad time understanding this
-	
+	// for each resources in building remove the resources from the stock with the special case of temples costing more for each temple that already exist
 	for (const TTuple<EResourceEnum, int> buildingCost : previewBuilding->BuildingCost)
 	{
 		if (!(previewBuilding->JobCapIncrease.Contains(EJobEnum::HealthPriest) ||
