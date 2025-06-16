@@ -54,15 +54,15 @@ public:
 	const int DAY_START_TIME_IN_GAME_HOUR = 6;
 	const int NIGHT_START_TIME_IN_GAME_HOUR = 18;
 
-	UPROPERTY(EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
 	int DayCycleLengthIRL = 5;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TObjectPtr<UWorld> CurrentWorld;
 
 private:
 	
-	bool _isInGameTimePaused = true;
+	bool _isInGameTimePaused = false;
 	
 	float _dayCycleInSecondsIRL;
 	float _inGameHourInSecondsIRL;
