@@ -47,15 +47,17 @@ public:
 
 	UPROPERTY(BlueprintAssignable) FOnInGameTimeSkipEvent OnSkipInGameTimeEvent;
 
-	const bool IS_DEBUG_MODE_ON = false;
-
-	const int START_TIME_IN_GAME_HOUR = 6;
 	
-	const int DAY_START_TIME_IN_GAME_HOUR = 6;
-	const int NIGHT_START_TIME_IN_GAME_HOUR = 18;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IS_DEBUG_MODE_ON = false;
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int START_TIME_IN_GAME_HOUR = 6;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int DAY_START_TIME_IN_GAME_HOUR = 6;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int NIGHT_START_TIME_IN_GAME_HOUR = 18;
+	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
-	int DayCycleLengthIRL = 5;
+	int DAY_CYCLE_LENGHT_IRL = 5;
+
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TObjectPtr<UWorld> CurrentWorld;
