@@ -1,7 +1,205 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="6cecd79f-c469-47f0-aadd-980314f2fdac" name="Changes" comment="" />
+    <list default="true" id="6cecd79f-c469-47f0-aadd-980314f2fdac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Content/BPI_Collectibles.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BP_Buildings.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_001.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_002.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_003.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_004.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_005.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_006.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_007.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_008.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_009.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_010.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_011.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_012.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_020.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_021.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_023.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_024.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material_025.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Materials/Material_002.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Materials/Material_003.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Test.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/feuilage_005.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/feuilage_006.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/feuilage_007.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/feuilage_008.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/tronc_arbre_005.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/tronc_arbre_006.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/tronc_arbre_007.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/tronc_arbre_008.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_Housing.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/City/BP_CityManager.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Collectible/Collectibles/Artefact/Artefacts/BP_DoubleJumpArtefact.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Collectible/Collectibles/Artefact/Artefacts/BP_WallClimbArtefact.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/DayNightCycle/BP_DirectionalLightManager.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Levels/MainMenu.umap" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Levels/SubLevels/TestArtefacts.umap" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Map/ArtefactRooms/BP_ArtefactRoom.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Map/Trap/Traps/GitKeep.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/Material/GridVisibility.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/BuildingUI/WBP_SelectionBarHUD.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/BuildingUI/WBP_SelectionButton.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/BuildingUI/WBP_TownHallHUD.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/CitySwitch/WBP_CitySwitch.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/CitySwitch/WBP_SwitchButton.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/HUD/GameHUD.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/MainMenu/CreditsMenu.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/MainMenu/MainMenu.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/MainMenu/MainMenuProject.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/MainMenu/OptionsMenu.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/UIs/WBP_BuildingBar.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/WBP_Artifact.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/WBP_Blueprint.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/WBP_CollectibleBar.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Content/WBP_Tablet.uasset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Tonatiuh/Character/CityBuilderCharacter.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Tonatiuh/Enums/EHappinessEnum.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Tonatiuh/Enums/EHappinessEnum.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Source/Tonatiuh/GameMode/SwitchGamemode.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultEngine.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultEngine.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Config/DefaultGame.ini" beforeDir="false" afterPath="$PROJECT_DIR$/Config/DefaultGame.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/Farm.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Farm.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/House.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/House.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Material.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/Sawmill.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Sawmill.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/Temple.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/Temple.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/BuildingAssets/TownHall.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/BuildingAssets/TownHall.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/Buildings/BP_Farm.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_Farm.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/Buildings/BP_Forestry.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_Forestry.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/Buildings/BP_HealthTemple.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_HealthTemple.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/Buildings/BP_TimeTemple.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_TimeTemple.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/Buildings/BP_TownHall.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Building/Buildings/BP_TownHall.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Building/PB_Buildings.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Collectible/Collectibles/Artefact/Artefacts/GitKeep.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GameModes/BP_SwitchGamemode.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GameModes/BP_SwitchGamemode.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/GridManager/BP_GridManager.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/GridManager/BP_GridManager.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/City.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/City.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/MayaTempleLevel1.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/MayaTempleLevel1.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/MayaTempleLevel2.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/MayaTempleLevel2.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/CityBuilderGrid.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/CityBuilderGrid.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaFullLevelsImplementation.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaFullLevelsImplementation.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaLevel1Implementation.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaLevel1Implementation.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaLevel2Implementation.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaLevel2Implementation.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaTraps.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaTraps.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaUnclimbableWall.umap" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Levels/subLevels/MetroidVaniaUnclimbableWall.umap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Map/GitKeep.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Map/Transitions/BP_Transition.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Transitions/BP_Transition.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/PBCityManager.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Player/Camera/BP_CityBuilderCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Camera/BP_CityBuilderCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Player/Character/BP_MetroidVaniaCharacter.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Character/BP_MetroidVaniaCharacter.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Player/Health/UI/W_HealthBar.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Health/UI/W_HealthBar.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Player/Health/UI/W_Heart.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Player/Health/UI/W_Heart.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Input/Actions/IA_Jump.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Input/Actions/IA_Look.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Input/Actions/IA_Move.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Input/IMC_Default.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/ThirdPerson/Maps/ThirdPersonMap.umap" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Trap/Traps/BP_Arrow.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Trap/Traps/BP_Arrow.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Trap/Traps/BP_ArrowTrap.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Trap/Traps/BP_ArrowTrap.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Trap/Traps/BP_PressurePlate.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Trap/Traps/BP_PressurePlate.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Trap/Traps/BP_SpikeTrap.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Trap/Traps/BP_SpikeTrap.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Trap/Traps/GitKeep.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/BuildingUI/WBP_TownHallHUD.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/CitySwitch/WBP_CitySwitch.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/UI/HUD/GameHUD.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/WBP_BuildingBar.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/Walls/BP_UnclimbableWalls.uasset" beforeDir="false" afterPath="$PROJECT_DIR$/Content/Map/Walls/BP_UnclimbableWalls.uasset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/0/43/HYQWORMY4JDQ5X3OKZXFLC.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/0/FZ/4XWWUGWFDLX56REQRH8Z9W.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/0/SX/SKO7AH9HKZVPN4OMFO4DV3.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/0G/HOAJZN9E4DDI6Y1W3JU13K.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/2J/AQ1PWWT9TBAI7AA470T014.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/AZ/A7GPT109Y6ZTTJD4A7TXER.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/EJ/PGUWWHRTS59S34GKBX0OUI.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/HF/YFYBQ72OYLHJQS0TSSXGBV.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/QS/VHQF8JWOATZI5V3ZVY5YTM.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/1/WU/NB37RT5Q32Z8MJWD8BD2SO.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/2/66/0OP5U85W4H0R7CHG999ZDN.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/1V/XSFYSB2EC9Z21RQOBXZLMO.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/B1/9G3WNX7WIR7UKI26T9LK5O.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/HE/U35NZS5A9W1UXP1E3FF2GW.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/OG/KDQDMXAXZXD8VLDDU4K3JL.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/3/P3/O43ETCZTFMLWWH1CJ941H2.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/5/Q1/5IZD4L3UPM3EEODZK67MH1.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/0D/0WM78RPJCXHX477YOZXKQE.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/HF/9H7TKAXH9DD8KI3TIXGI2I.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/NC/UUYHDUFQAXTRRN4RVOPIUF.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/NP/Z9EK2TXQ1TFO26WFZHWZII.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/6/UV/1C6W14EIHMXOXXB657JYKB.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/8/7Y/C94R5C0R01QSL2SVHUG3KD.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/8/H9/GITN2HJQNERMM41FAE68W0.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/8/P1/NN84RP20JNUCL0SHI5W2B8.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/21/WWYX44RDCCS98492P9K9O3.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/6I/RU1L28PS820IOVH625A0DA.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/CI/KST702KSCRZWYV56G3VJBD.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/9/MO/72II2GSLK9VS0ULW9SACWH.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/BW/M7Z5RX3O7568TBJFK5R76I.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/A/IO/07IVU4EY14FMETPGTJULEO.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/B/CJ/ZQ5BFL59YGMQUT9ZD7CAHJ.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/B/KW/9YH18EUCJFK5CZXL6H3W3R.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/C/0I/VIQQWOEJKSKV1EK1XGX3EY.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/DE/SWSI13675DVYIZ0N4NF7Y3.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/MM/5416TNIX8GKJW3B714Y6WF.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/OI/BVNTLHAPOPDXURSVGR63ME.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/D/VL/KUT2U1MQ1ND9CXN070OTDM.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/FR/LBG6LPN5JCL3FMVSI2CK6R.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalActors__/ThirdPerson/Maps/ThirdPersonMap/E/T8/46ZIBNTTDDR3AOR2XC9VO6.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/3/DH/JQTP3L9HHXRN8IUHATI906.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/4/4A/NCNZF2U4ZTZ8XZJNF86FNT.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/8/05/U8OLLG133BEQMR58UPHM3P.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/A/KP/VZTB4WP3P1L1F1WL9R6XLZ.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/B/AN/0Z4D0BFPHEXAYK76DY0WLL.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Content/__ExternalObjects__/ThirdPerson/Maps/ThirdPersonMap/D/13/KQB15WT334LUGWVAUX80XH.uasset" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Buildings/Buildings.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Building/Building.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Buildings/Buildings.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Building/Building.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Buildings/TownHall.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Building/Buildings/TownHall.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Buildings/TownHall.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Building/Buildings/TownHall.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Character/MetroidVaniaCharacter.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Character/MetroidVaniaCharacter.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Character/MetroidVaniaCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Character/MetroidVaniaCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Checkpoint/Checkpoint.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Checkpoint/Checkpoint.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Checkpoint/Checkpoint.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Checkpoint/Checkpoint.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityBuilder.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/City/CityBuilder.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityBuilder.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/City/CityBuilder.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityBuilderCharacter.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityBuilderCharacter.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Character/CityBuilderCharacter.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityManager/CityManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/City/CityManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/CityManager/CityManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/City/CityManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Collectible.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Collectible/Collectible.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Collectible.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Collectible/Collectible.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Collectibles/Artefact.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Collectible/Collectibles/Artefact.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Collectibles/Artefact.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Collectible/Collectibles/Artefact.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Debugger.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Debugger.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Enums/EJobEnum.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Enums/EJobEnum.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Gamemode/SwitchGamemode.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Gamemode/SwitchGamemode.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/GameMode/SwitchGamemode.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/GridManager/GridManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/GridManager/GridManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/GridManager/GridManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/GridManager/GridManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Jobs/Job.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Jobs/Job.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Ressources.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Resource/Resource.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Ressources.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Resource/Resource.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/SubSystems/InventoryManager.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/SubSystems/InventoryManager.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/SubSystems/InventoryManager.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/SubSystems/InventoryManager.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/Arrow.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/Arrow.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/Arrow.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/Arrow.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/ArrowTrap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/ArrowTrap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/ArrowTrap.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/ArrowTrap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/PressurePlate.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/PressurePlate.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/PressurePlate.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/PressurePlate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/SpikeTrap.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/SpikeTrap.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/Traps/SpikeTrap.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/Map/Traps/SpikeTrap.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/UIs/CitySwitch.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/UIs/CitySwitch.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Source/Tonatiuh/UIs/CitySwitch.h" beforeDir="false" afterPath="$PROJECT_DIR$/Source/Tonatiuh/UIs/CitySwitch.h" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +208,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2xwrY6IpwkUpMyJanby1Wvbr8su" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,7 +220,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "merge-TimeManager"
+    "git-widget-placeholder": "Merging merge-TimeManagerUpgrades"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
