@@ -26,6 +26,13 @@ void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	#pragma region - SwitchWidget setup -
+	
+	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
+	SwitchWidget->AddToViewport();
+
+	#pragma endregion
+
 	#pragma region - FoundWidget setup -
 	
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
@@ -38,19 +45,12 @@ void ACityBuilderCharacter::BeginPlay()
 	);
 
 	#pragma endregion
-
-	#pragma region - SwitchWidget setup -
 	
-	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
-	SwitchWidget->AddToViewport();
-
 	if (ASwitchGamemode* switchGameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode()))
 	{
 		switchGameMode->OnMetroidVaniaEnterEvent.AddDynamic(this, &ACityBuilderCharacter::DeactivateUI);
 		switchGameMode->OnCityBuilderEnterEvent.AddDynamic(this, &ACityBuilderCharacter::ActivateUI);
 	}
-
-	#pragma endregion
 
 	#pragma region - GridManager setup -
 	
@@ -362,12 +362,12 @@ void ACityBuilderCharacter::PossessedBy(AController* p_newController)
 
 void ACityBuilderCharacter::ActivateUI()
 {
-	FoundWidget->SetVisibility(ESlateVisibility::Visible);
-	SwitchWidget->SetVisibility(ESlateVisibility::Visible);
+	SwitchWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	FoundWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
 
 void ACityBuilderCharacter::DeactivateUI()
 {
-	FoundWidget->SetVisibility(ESlateVisibility::Hidden);
 	SwitchWidget->SetVisibility(ESlateVisibility::Hidden);
+	FoundWidget->SetVisibility(ESlateVisibility::Hidden);
 }
