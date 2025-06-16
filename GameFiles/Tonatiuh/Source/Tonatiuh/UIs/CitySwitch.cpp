@@ -3,17 +3,19 @@
 
 #include "CitySwitch.h"
 
-#include "Tonatiuh/Gamemode/SwitchGamemode.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
-void UCitySwitch::SwitchToMetroidvania() //Test the transition, will need the name of the sector later
+void UCitySwitch::OpenExplorationPanel()
 {
-	AGameModeBase* gamemode = GetWorld()->GetAuthGameMode();
+	AGameModeBase* gameMode = GetWorld()->GetAuthGameMode();
 
-	if (gamemode == nullptr) return;
+	if (gameMode == nullptr)
+		return;
 	
-	ASwitchGamemode* switchGamemode = Cast<ASwitchGamemode>(gamemode);
+	ASwitchGamemode* switchGameMode = Cast<ASwitchGamemode>(gameMode);
 
-	if (switchGamemode == nullptr) return;
+	if (switchGameMode == nullptr)
+		return;
 
-	switchGamemode->SwitchToMetroidvania();
+	switchGameMode->SwitchToMetroidvania();
 }
