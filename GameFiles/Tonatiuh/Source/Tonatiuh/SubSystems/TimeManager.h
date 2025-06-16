@@ -8,6 +8,15 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHourPassedEvent, int, p_currentTimeInHour);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDayStartedEvent, int, p_currentTimeInHour);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNightStartedEvent, int, p_currentTimeInHour);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInGameTimeStopEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInGameTimeResumeEvent);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInGameTimeSkipEvent, int, p_howManyHours);
+
+
 /**
  * 
  */
@@ -28,10 +37,22 @@ public:
 	/// }
 	/// </code>
 	/// </summary>
-	UPROPERTY(BlueprintAssignable)
-	FOnHourPassedEvent OnHourPassedEvent;
+	UPROPERTY(BlueprintAssignable) FOnHourPassedEvent OnHourPassedEvent;
+	
+	UPROPERTY(BlueprintAssignable) FOnDayStartedEvent OnDayStartedEvent;
+	UPROPERTY(BlueprintAssignable) FOnNightStartedEvent OnNightStartedEvent;
+	
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeStopEvent OnStopInGameTimeEvent;
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeResumeEvent OnResumeInGameTimeEvent;
+
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeSkipEvent OnSkipInGameTimeEvent;
 
 	const bool IS_DEBUG_MODE_ON = false;
+
+	const int START_TIME_IN_GAME_HOUR = 6;
+	
+	const int DAY_START_TIME_IN_GAME_HOUR = 6;
+	const int NIGHT_START_TIME_IN_GAME_HOUR = 18;
 
 	UPROPERTY(EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
 	int DayCycleLengthIRL = 5;
@@ -40,6 +61,9 @@ public:
 	TObjectPtr<UWorld> CurrentWorld;
 
 private:
+	
+	bool _isInGameTimePaused = true;
+	
 	float _dayCycleInSecondsIRL;
 	float _inGameHourInSecondsIRL;
 	
@@ -65,9 +89,21 @@ public:
 		RETURN_QUICK_DECLARE_CYCLE_STAT(UTimeManager, STATGROUP_Tickables);
 	}
 
+	UFUNCTION(BlueprintCallable)
+	void StopInGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void ResumeInGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void SkipInGameTime(int p_howManyHours);
+
 private:
 
 	bool IsDebugModeOn() const;
+
+	bool IsInGameTimePaused() const;
 	
-	void HourPassed() const;
+	void HourPassed();
+	
 };
