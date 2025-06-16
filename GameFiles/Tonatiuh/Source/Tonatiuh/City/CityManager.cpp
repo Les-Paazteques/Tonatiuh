@@ -181,8 +181,8 @@ void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
 	if (p_Job == EJobEnum::Housing)
 	{
 		HouseCount++;
-		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
-		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],resources[EResourceEnum::Wood],
+		resourcesGain[EResourceEnum::Wood],TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 	}
 }
 
@@ -191,8 +191,8 @@ void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
 	if (p_Job == EJobEnum::Housing)
 	{
 		HouseCount--;
-		UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
-		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],resources[EResourceEnum::Wood],
+		resourcesGain[EResourceEnum::Wood],TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 	}
 }
 
@@ -205,8 +205,8 @@ void ACityManager::Tick(float p_deltaTime)
 void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
 {
 	resources[p_Resource] -= p_Quantity;
-	UI->SetResourceGainText(resources[EResourceEnum::Food],BaseGain,resources[EResourceEnum::Wood],
-		BaseGain,TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+	UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],resources[EResourceEnum::Wood],
+		resourcesGain[EResourceEnum::Wood],TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 }
 
 int ACityManager::GetHappiness() const
