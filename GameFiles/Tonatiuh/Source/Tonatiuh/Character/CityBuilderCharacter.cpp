@@ -254,9 +254,10 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
 			return;
 		
-		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
+		if (Cast<ABuilding>(hitResult.GetActor()) != nullptr)
 		{
-			if (Cast<ABuilding>(hitResult.GetActor()) != nullptr)
+			if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
+				Cast<ABuilding>(hitResult.GetActor())->RemoveBuildings();
 				hitResult.GetActor()->Destroy();
 		}
 	}
