@@ -32,6 +32,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health")
 	int32 CurrentHealth;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
+	float NightStartDamaging;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Time")
+	float NightEndDamaging;
+
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerDamaged OnDamaged;
 
@@ -68,6 +74,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void DecreaseMaxHealth(int p_healthAmount);
+
+	UFUNCTION(BlueprintCallable, Category = "Health")
+	void HandleHourPassed(int p_currentHour);
 	
 protected:
 	// Called when the game starts
