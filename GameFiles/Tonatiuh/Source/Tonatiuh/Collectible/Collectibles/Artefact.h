@@ -24,6 +24,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	int DoubleJumpKey;
 
+	/** If set to true the artefact will end the game when used in the research center */
+	UPROPERTY(EditAnywhere)
+	bool EndGameKey;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	FString ResearchDescription;
+
 	UFUNCTION(BlueprintCallable)
 	int GetCostOfKey(EResourceEnum p_resource);
 
