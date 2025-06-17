@@ -161,7 +161,8 @@ void ACityManager::UpdateResourceGain(int p_hour)
 void ACityManager::UpdateNightDebuff(int p_hour)
 {
 	float nightLength = 24-NightStart + NightEnd;
-	if (p_hour >= NightEnd && p_hour <= NightStart)
+	if (p_hour >= NightEnd && p_hour <= NightStart
+		|| Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->GetCurrentMode() == EGameplayMode::CityBuilder)
 	{
 		//no debuff
 		debuff = 1;
@@ -169,12 +170,12 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	else if (p_hour < NightEnd)
 	{
 		//night to day
-		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()) * (nightLength-p_hour)/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2) * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
 		//day to night
-		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()) * p_hour/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2) * p_hour/nightLength;
 	}
 }
 
