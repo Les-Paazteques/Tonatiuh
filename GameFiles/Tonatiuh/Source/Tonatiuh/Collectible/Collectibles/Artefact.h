@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	int GetCostOfKey(EResourceEnum p_resource);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool IsPermanent = false;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
