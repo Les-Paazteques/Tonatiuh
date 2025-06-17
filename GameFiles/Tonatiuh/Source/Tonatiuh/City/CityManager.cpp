@@ -70,13 +70,26 @@ void ACityManager::produceResource(int p_hour)
 			resources[Name] += resourcesGain[Name];
 		}
 	}
-	//MetroidvaniaCharacter;
+	IncreaseHealth(TownHall->GetJobByType(EJobEnum::HealthPriest)->GetJobNumber());
 	if (UI)
 	{
 		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],
 			resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood],
 			TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 	}
+}
+
+void ACityManager::IncreaseHealth(int p_NewHealthWorker)
+{
+	if (p_NewHealthWorker > CurrentHealthWorker)
+	{
+		MetroidvaniaCharacter->PlayerHealthComponent->IncreaseMaxHealth((p_NewHealthWorker-CurrentHealthWorker)/2);
+	}
+	else if (p_NewHealthWorker < CurrentHealthWorker)
+	{
+		MetroidvaniaCharacter->PlayerHealthComponent->DecreaseMaxHealth((p_NewHealthWorker-CurrentHealthWorker)/2);	
+	}
+	CurrentHealthWorker = p_NewHealthWorker;
 }
 
 void ACityManager::UpdateResourceGain(int p_hour)

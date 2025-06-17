@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <rapidjson/internal/meta.h>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Tonatiuh/Character/MetroidVaniaCharacter.h"
@@ -118,7 +120,10 @@ protected:
 	UFUNCTION()
 	void produceResource(int p_hour);
 
-	
+	void IncreaseHealth(int p_NewHealthWorker);
+
+	int CurrentHealthWorker = 0;
+
 public:
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
