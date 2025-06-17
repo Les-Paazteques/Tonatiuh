@@ -30,6 +30,23 @@ void AGridManager::BeginPlay()
 	}
 	Instance = this;
 	
+	UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Plane.Plane"));
+	if (!Mesh) { UE_LOG(LogTemp, Error, TEXT("Plane mesh not found!")); return; }
+	
+	UStaticMeshComponent* GridPlane = NewObject<UStaticMeshComponent>(this);
+	GridPlane->RegisterComponent();
+	GridPlane->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	GridPlane->SetStaticMesh(Mesh);
+	GridPlane->SetWorldScale3D(FVector(_gridSize+1, _gridSize+1, 1.f));
+
+	UMaterialInterface* GridMat = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/Material/GridVisibility.GridVisibility"));
+	UMaterialInstanceDynamic* GridDynMAt = UMaterialInstanceDynamic::Create(GridMat, this);
+	if (GridMat)
+	{
+		GridPlane->SetMaterial(0, GridDynMAt);
+		GridDynMAt->SetScalarParameterValue("GridSize",(_cellSize));
+	}
+	
 }
 
 // Called every frame

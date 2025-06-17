@@ -26,6 +26,13 @@ void ACityBuilderCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	#pragma region - SwitchWidget setup -
+	
+	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
+	SwitchWidget->AddToViewport();
+
+	#pragma endregion
+
 	#pragma region - FoundWidget setup -
 	
 	FoundWidget = CreateWidget<UCityBuilder>(GetWorld(), CityBuilderClass);
@@ -38,19 +45,12 @@ void ACityBuilderCharacter::BeginPlay()
 	);
 
 	#pragma endregion
-
-	#pragma region - SwitchWidget setup -
 	
-	SwitchWidget = CreateWidget<UCitySwitch>(GetWorld(), SwitchClass);
-	SwitchWidget->AddToViewport();
-
 	if (ASwitchGamemode* switchGameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode()))
 	{
 		switchGameMode->OnMetroidVaniaEnterEvent.AddDynamic(this, &ACityBuilderCharacter::DeactivateUI);
 		switchGameMode->OnCityBuilderEnterEvent.AddDynamic(this, &ACityBuilderCharacter::ActivateUI);
 	}
-
-	#pragma endregion
 
 	#pragma region - GridManager setup -
 	
@@ -99,6 +99,8 @@ void ACityBuilderCharacter::BeginPlay()
 	buildingEventManager->OnDestroyEvent.AddDynamic(this,&ACityBuilderCharacter::decreaseBuildCount);
 
 	#pragma endregion
+
+	
 }
 
 // Called every frame
@@ -181,7 +183,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	}
 
 	// TODO: Note from the LeadDev : The code below (the 'for') should be explain because I'm having a bad time understanding this
-	
+	// for each resources in building remove the resources from the stock with the special case of temples costing more for each temple that already exist
 	for (const TTuple<EResourceEnum, int> buildingCost : previewBuilding->BuildingCost)
 	{
 		if (!(previewBuilding->JobCapIncrease.Contains(EJobEnum::HealthPriest) ||
@@ -252,10 +254,11 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
 			return;
 		
-		if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
+		if (Cast<ABuilding>(hitResult.GetActor()) != nullptr)
 		{
-			Cast<ABuilding>(hitResult.GetActor())->RemoveBuildings();
-			hitResult.GetActor()->Destroy();
+			if (GridManager->UnSetCell(GridManager->WorldToCell(hitResult.GetActor()->GetActorLocation())))
+				Cast<ABuilding>(hitResult.GetActor())->RemoveBuildings();
+				hitResult.GetActor()->Destroy();
 		}
 	}
 	
@@ -360,12 +363,12 @@ void ACityBuilderCharacter::PossessedBy(AController* p_newController)
 
 void ACityBuilderCharacter::ActivateUI()
 {
-	FoundWidget->SetVisibility(ESlateVisibility::Visible);
-	SwitchWidget->SetVisibility(ESlateVisibility::Visible);
+	SwitchWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	FoundWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 }
 
 void ACityBuilderCharacter::DeactivateUI()
 {
-	FoundWidget->SetVisibility(ESlateVisibility::Hidden);
 	SwitchWidget->SetVisibility(ESlateVisibility::Hidden);
+	FoundWidget->SetVisibility(ESlateVisibility::Hidden);
 }
