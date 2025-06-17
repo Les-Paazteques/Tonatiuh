@@ -59,7 +59,10 @@ FVector UPlayerHealthComponent::GetRespawnLocation() const
 void UPlayerHealthComponent::Die()
 {
 	CurrentHealth = MaxHealth;
+	GetWorld()->GetSubsystem<UTimeManager>()->SkipInGameTime(TimeInGameHourSkippedWhenDeath);
+	
 	OnDeath.Broadcast();
+	
 	Respawn();
 }
 

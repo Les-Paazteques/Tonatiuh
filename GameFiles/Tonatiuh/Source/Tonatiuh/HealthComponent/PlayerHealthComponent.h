@@ -21,7 +21,11 @@ public:
 	UPROPERTY(EditAnywhere)
 	float MaxInvincibilityCooldown = 1.f;
 
+	UPROPERTY(EditAnywhere)
 	float InvincibilityCooldown = 0.0f;
+	
+	UPROPERTY(EditAnywhere)
+	int TimeInGameHourSkippedWhenDeath = 4;
 
 	UPROPERTY(VisibleAnywhere)
 	FVector RespawnLocation;
