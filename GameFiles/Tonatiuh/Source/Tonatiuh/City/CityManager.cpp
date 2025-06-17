@@ -169,12 +169,12 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	else if (p_hour < NightEnd)
 	{
 		//night to day
-		debuff = 1 - MaxDebuff * (nightLength-p_hour)/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()) * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
 		//day to night
-		debuff = 1 - MaxDebuff * p_hour/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()) * p_hour/nightLength;
 	}
 }
 
