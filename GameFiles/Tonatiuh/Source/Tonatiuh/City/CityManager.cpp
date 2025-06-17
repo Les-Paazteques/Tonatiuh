@@ -27,7 +27,8 @@ void ACityManager::BeginPlay()
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATownHall::StaticClass(), FoundActors);
 
-	//MetroidvaniaCharacter = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
+	//i want the metroidvania player character. this is bad
+	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->MetroidVaniaCharacterReference);
 	if (FoundActors.Num() > 0)
 	{
 		TownHall = Cast<ATownHall>(FoundActors[0]);
@@ -69,6 +70,7 @@ void ACityManager::produceResource(int p_hour)
 			resources[Name] += resourcesGain[Name];
 		}
 	}
+	//MetroidvaniaCharacter;
 	if (UI)
 	{
 		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],
