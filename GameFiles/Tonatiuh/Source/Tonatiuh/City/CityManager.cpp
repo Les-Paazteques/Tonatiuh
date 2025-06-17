@@ -10,9 +10,10 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/Character/CityBuilderCharacter.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
 
-// Sets default values
+// Sets default valuess
 ACityManager::ACityManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -25,7 +26,8 @@ void ACityManager::BeginPlay()
 	Super::BeginPlay();
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATownHall::StaticClass(), FoundActors);
-	
+
+	//MetroidvaniaCharacter = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
 	if (FoundActors.Num() > 0)
 	{
 		TownHall = Cast<ATownHall>(FoundActors[0]);
@@ -58,11 +60,14 @@ void ACityManager::produceResource(int p_hour)
 		{
 			resources[Name] += resourcesCap[Name]-resourcesGain[Name];
 		}*/
-		if (resources[Name]-resourcesGain[Name] < 0)
+		if (resources[Name]+resourcesGain[Name] < 0)
 		{
 			resources[Name] = 0;
 		}
-		resources[Name] += resourcesGain[Name];
+		else
+		{
+			resources[Name] += resourcesGain[Name];
+		}
 	}
 	if (UI)
 	{
@@ -101,6 +106,7 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	}
 	HappinessTimer ++;
 	UpdateNightDebuff(p_hour);
+	
 	for (auto[Name,value]: resourcesGain)
 	{
 		resourcesGain[Name] = BaseGain

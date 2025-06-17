@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tonatiuh/Character/MetroidVaniaCharacter.h"
 
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Enums/EHappinessEnum.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
 #include "CityManager.generated.h"
 
@@ -77,6 +79,9 @@ protected:
 
 	UPROPERTY()
 	UCityBuilder* UI;
+
+	UPROPERTY()
+	AMetroidVaniaCharacter* MetroidvaniaCharacter;
 	
 	float debuff;
 
