@@ -11,7 +11,7 @@ UTimeManager::UTimeManager()
 {
 	_isInGameTimePaused = false;
 	
-	_dayCycleInSecondsIRL = DayCycleLengthIRL * 60;
+	_dayCycleInSecondsIRL = DAY_CYCLE_LENGHT_IRL * 60;
 	_inGameHourInSecondsIRL = _dayCycleInSecondsIRL / 24;
 
 	if (IsDebugModeOn())
