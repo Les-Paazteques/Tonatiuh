@@ -81,6 +81,10 @@ void ACityManager::produceResource(int p_hour)
 
 void ACityManager::IncreaseHealth(int p_NewHealthWorker)
 {
+	if (MetroidvaniaCharacter == nullptr)
+	{
+		return;
+	}
 	if (p_NewHealthWorker > CurrentHealthWorker)
 	{
 		MetroidvaniaCharacter->PlayerHealthComponent->IncreaseMaxHealth((p_NewHealthWorker-CurrentHealthWorker)/2);
