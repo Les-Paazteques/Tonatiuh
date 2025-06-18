@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "PlayerHealthComponent.generated.h"
 
+class AMetroidVaniaCharacter;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDamaged, int, p_damageAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerMaxHealthChange, int, p_healthAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeath);
@@ -20,9 +21,14 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float MaxInvincibilityCooldown = 1.f;
+	float InvincibilityCooldown = 0.0f;
 
 	UPROPERTY(EditAnywhere)
-	float InvincibilityCooldown = 0.0f;
+	float KnockbackForce = 50.f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxBlinkingSpeed = 0.2f;
+	float BlinkingCooldown = 0.f;
 	
 	UPROPERTY(EditAnywhere)
 	int TimeInGameHourSkippedWhenDeath = 4;
@@ -94,4 +100,7 @@ protected:
 
 	UPROPERTY(EditAnywhere);
 	int _nightDamageAmount = 1;
+
+	UPROPERTY()
+	AMetroidVaniaCharacter* _character = nullptr;
 };
