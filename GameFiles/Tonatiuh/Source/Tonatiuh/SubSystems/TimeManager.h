@@ -8,6 +8,15 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHourPassedEvent, int, p_currentTimeInHour);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDayStartedEvent, int, p_currentTimeInHour);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNightStartedEvent, int, p_currentTimeInHour);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInGameTimeStopEvent);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnInGameTimeResumeEvent);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInGameTimeSkipEvent, int, p_howManyHours);
+
+
 /**
  * 
  */
@@ -28,18 +37,37 @@ public:
 	/// }
 	/// </code>
 	/// </summary>
-	UPROPERTY(BlueprintAssignable)
-	FOnHourPassedEvent OnHourPassedEvent;
-
-	const bool IS_DEBUG_MODE_ON = false;
-
-	UPROPERTY(EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
-	int DayCycleLengthIRL = 5;
+	UPROPERTY(BlueprintAssignable) FOnHourPassedEvent OnHourPassedEvent;
 	
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintAssignable) FOnDayStartedEvent OnDayStartedEvent;
+	UPROPERTY(BlueprintAssignable) FOnNightStartedEvent OnNightStartedEvent;
+	
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeStopEvent OnStopInGameTimeEvent;
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeResumeEvent OnResumeInGameTimeEvent;
+
+	UPROPERTY(BlueprintAssignable) FOnInGameTimeSkipEvent OnSkipInGameTimeEvent;
+
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) bool IS_DEBUG_MODE_ON = false;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int START_TIME_IN_GAME_HOUR = 6;
+
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int DAY_START_TIME_IN_GAME_HOUR = 6;
+	UPROPERTY(BlueprintReadOnly, EditAnywhere) int NIGHT_START_TIME_IN_GAME_HOUR = 18;
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, meta = (Units = "Minutes", ToolTip = "The duration of an in-game day in IRL minutes"))
+	int DAY_CYCLE_LENGHT_IRL = 5;
+
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TObjectPtr<UWorld> CurrentWorld;
 
 private:
+
+	bool _hasAlreadyCalledStartMethod = false;
+	
+	bool _isInGameTimePaused = false;
+	
 	float _dayCycleInSecondsIRL;
 	float _inGameHourInSecondsIRL;
 	
@@ -65,9 +93,23 @@ public:
 		RETURN_QUICK_DECLARE_CYCLE_STAT(UTimeManager, STATGROUP_Tickables);
 	}
 
+	UFUNCTION(BlueprintCallable)
+	void StopInGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void ResumeInGameTime();
+
+	UFUNCTION(BlueprintCallable)
+	void SkipInGameTime(int p_howManyHours);
+
 private:
 
 	bool IsDebugModeOn() const;
+
+	void Start();
 	
-	void HourPassed() const;
+	bool IsInGameTimePaused() const;
+	
+	void HourPassed();
+	
 };

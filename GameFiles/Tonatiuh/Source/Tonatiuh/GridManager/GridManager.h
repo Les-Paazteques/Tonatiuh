@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Tonatiuh/Buildings/Buildings.h"
+#include "Tonatiuh/Building/Building.h"
 #include "GridManager.generated.h"
 
 
@@ -28,7 +28,7 @@ protected:
 	int _gridSize = 0;
 	UPROPERTY(EditAnywhere)
 	int _cellSize = 0;
-	TMap<FIntPoint, TSubclassOf<ABuildings>> _grid;
+	TMap<FIntPoint, TSubclassOf<ABuilding>> _grid;
 
 public:
 	// Called every frame
@@ -37,9 +37,9 @@ public:
 	FIntPoint WorldToCell(const FVector& p_worldPosition) const;
 	FVector CellToWorld(const FIntPoint& p_cell) const;
 	FVector SnapToGrid(const FVector& p_worldPosition) const;
-	bool SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuildings>& p_actorToSet);
+	bool SetCell(const FIntPoint& p_cell, const TSubclassOf<ABuilding>& p_actorToSet);
 	bool UnSetCell(const FIntPoint& p_cell);
-	TSubclassOf<ABuildings> GetCell(const FIntPoint& p_cell);
+	TSubclassOf<ABuilding> GetCell(const FIntPoint& p_cell);
 	
 	bool IsInGrid(const FIntPoint& p_cell) const;
 
