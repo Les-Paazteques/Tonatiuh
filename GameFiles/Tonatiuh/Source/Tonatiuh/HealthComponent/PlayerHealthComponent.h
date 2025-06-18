@@ -6,7 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "PlayerHealthComponent.generated.h"
 
+class AMetroidVaniaCharacter;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDamaged, int, p_damageAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerHealed, int, p_healAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerMaxHealthChange, int, p_healthAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerRespawn);
@@ -20,8 +22,17 @@ public:
 
 	UPROPERTY(EditAnywhere)
 	float MaxInvincibilityCooldown = 1.f;
-
 	float InvincibilityCooldown = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+	float KnockbackForce = 500.f;
+
+	UPROPERTY(EditAnywhere)
+	float MaxBlinkingSpeed = 0.1f;
+	float BlinkingCooldown = 0.f;
+	
+	UPROPERTY(EditAnywhere)
+	int TimeInGameHourSkippedWhenDeath = 4;
 
 	UPROPERTY(VisibleAnywhere)
 	FVector RespawnLocation;
@@ -43,6 +54,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerDeath OnDeath;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnPlayerHealed OnHeal;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerRespawn OnRespawn;
@@ -90,4 +104,7 @@ protected:
 
 	UPROPERTY(EditAnywhere);
 	int _nightDamageAmount = 1;
+
+	UPROPERTY()
+	AMetroidVaniaCharacter* _character = nullptr;
 };

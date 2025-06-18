@@ -6,6 +6,8 @@
 #include "Tonatiuh/SubSystems/TimeManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/GameSession.h"
 #include "Tonatiuh/Character/MetroidVaniaCharacter.h"
 
 
@@ -13,13 +15,15 @@ UPlayerHealthComponent::UPlayerHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
 	RespawnLocation = FVector::ZeroVector;
-	MaxHealth = 5;
 	CurrentHealth = MaxHealth;
+	BlinkingCooldown = MaxBlinkingSpeed;
 }
 
 void UPlayerHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	_character = Cast<AMetroidVaniaCharacter>(GetOwner());
 
 	RespawnLocation = GetOwner()->GetActorLocation();
 
@@ -43,6 +47,28 @@ void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevel
 	if (InvincibilityCooldown > 0)
 	{
 		InvincibilityCooldown -= p_deltaTime;
+		BlinkingCooldown -= p_deltaTime;
+		
+		//Blink
+		if (BlinkingCooldown > 0)
+		{
+			_character->GetMesh()->SetVisibility(false);
+		}
+		else if (BlinkingCooldown > -MaxBlinkingSpeed)
+		{
+			_character->GetMesh()->SetVisibility(true);
+		}
+		else
+		{
+			BlinkingCooldown = MaxBlinkingSpeed;
+		}
+		
+		if (InvincibilityCooldown <= 0)
+		{
+			//Stop blinking
+			_character->GetMesh()->SetVisibility(true);
+			BlinkingCooldown = MaxBlinkingSpeed;
+		}
 	}
 }
 
@@ -59,7 +85,10 @@ FVector UPlayerHealthComponent::GetRespawnLocation() const
 void UPlayerHealthComponent::Die()
 {
 	CurrentHealth = MaxHealth;
+	GetWorld()->GetSubsystem<UTimeManager>()->SkipInGameTime(TimeInGameHourSkippedWhenDeath);
+	
 	OnDeath.Broadcast();
+	
 	Respawn();
 }
 
@@ -80,8 +109,18 @@ void UPlayerHealthComponent::TakeDamage(int p_damageAmount)
 	CurrentHealth -= p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
 	InvincibilityCooldown = MaxInvincibilityCooldown;
-
+	
 	OnDamaged.Broadcast(p_damageAmount);
+
+	if (_character != nullptr)
+	{
+		FVector velocity = FVector::ZeroVector;
+		
+		velocity = (-_character->GetActorForwardVector() + _character->GetActorUpVector()) * KnockbackForce;
+		
+		_character->GetCharacterMovement()->SetMovementMode(MOVE_Falling);
+		_character->GetCharacterMovement()->Velocity = velocity;
+	}
 
 	if (CurrentHealth <= 0)
 	{
@@ -96,6 +135,8 @@ void UPlayerHealthComponent::HealDamage(int p_damageAmount)
 
 	CurrentHealth += p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
+
+	OnHeal.Broadcast(p_damageAmount);
 
 	// Optionnel : créer un OnHealed event ici si besoin
 }
@@ -115,9 +156,9 @@ void UPlayerHealthComponent::DecreaseMaxHealth(int p_healthAmount)
 {
 	if (p_healthAmount <= 0 || MaxHealth <= 0 || CurrentHealth <= 0)
 		return;
-
+	
 	MaxHealth = FMath::Max(0, MaxHealth - p_healthAmount);
-	CurrentHealth = FMath::Clamp(CurrentHealth - p_healthAmount, 0, MaxHealth);
+	CurrentHealth = FMath::Clamp(CurrentHealth , 0, MaxHealth);
 
 	OnMaxHealthChange.Broadcast(-p_healthAmount);
 }
