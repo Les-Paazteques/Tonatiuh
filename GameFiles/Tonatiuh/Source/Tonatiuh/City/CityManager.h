@@ -2,11 +2,15 @@
 
 #pragma once
 
+#include <rapidjson/internal/meta.h>
+
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Tonatiuh/Character/MetroidVaniaCharacter.h"
 
 #include "Tonatiuh/Enums/EResourceEnum.h"
 #include "Tonatiuh/Enums/EHappinessEnum.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
 #include "CityManager.generated.h"
 
@@ -77,6 +81,9 @@ protected:
 
 	UPROPERTY()
 	UCityBuilder* UI;
+
+	UPROPERTY()
+	AMetroidVaniaCharacter* MetroidvaniaCharacter;
 	
 	float debuff;
 
@@ -113,7 +120,10 @@ protected:
 	UFUNCTION()
 	void produceResource(int p_hour);
 
-	
+	void IncreaseHealth(int p_NewHealthWorker);
+
+	int CurrentHealthWorker = 0;
+
 public:
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
