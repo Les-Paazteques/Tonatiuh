@@ -136,6 +136,8 @@ void UPlayerHealthComponent::HealDamage(int p_damageAmount)
 	CurrentHealth += p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
 
+	OnHeal.Broadcast(p_damageAmount);
+
 	// Optionnel : créer un OnHealed event ici si besoin
 }
 

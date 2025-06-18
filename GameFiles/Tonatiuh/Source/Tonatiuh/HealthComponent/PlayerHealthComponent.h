@@ -8,6 +8,7 @@
 
 class AMetroidVaniaCharacter;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDamaged, int, p_damageAmount);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerHealed, int, p_healAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerMaxHealthChange, int, p_healthAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerDeath);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnPlayerRespawn);
@@ -24,10 +25,10 @@ public:
 	float InvincibilityCooldown = 0.0f;
 
 	UPROPERTY(EditAnywhere)
-	float KnockbackForce = 50.f;
+	float KnockbackForce = 500.f;
 
 	UPROPERTY(EditAnywhere)
-	float MaxBlinkingSpeed = 0.2f;
+	float MaxBlinkingSpeed = 0.1f;
 	float BlinkingCooldown = 0.f;
 	
 	UPROPERTY(EditAnywhere)
@@ -53,6 +54,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerDeath OnDeath;
+
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnPlayerHealed OnHeal;
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnPlayerRespawn OnRespawn;
