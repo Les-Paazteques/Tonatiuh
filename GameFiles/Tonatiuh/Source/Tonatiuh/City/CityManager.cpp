@@ -10,9 +10,10 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "Tonatiuh/Character/CityBuilderCharacter.h"
+#include "Tonatiuh/GameMode/SwitchGamemode.h"
 
 
-// Sets default values
+// Sets default valuess
 ACityManager::ACityManager()
 {
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -58,18 +59,41 @@ void ACityManager::produceResource(int p_hour)
 		{
 			resources[Name] += resourcesCap[Name]-resourcesGain[Name];
 		}*/
-		if (resources[Name]-resourcesGain[Name] < 0)
+		if (resources[Name]+resourcesGain[Name] < 0)
 		{
 			resources[Name] = 0;
 		}
-		resources[Name] += resourcesGain[Name];
+		else
+		{
+			resources[Name] += resourcesGain[Name];
+		}
 	}
+	IncreaseHealth(TownHall->GetJobByType(EJobEnum::HealthPriest)->GetJobNumber());
 	if (UI)
 	{
 		UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],
 			resources[EResourceEnum::Wood],resourcesGain[EResourceEnum::Wood],
 			TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 	}
+}
+
+void ACityManager::IncreaseHealth(int p_NewHealthWorker)
+{
+	if (MetroidvaniaCharacter == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("MetroicvaniaCharacter is null"));
+		return;
+	}
+	if (p_NewHealthWorker > CurrentHealthWorker)
+	{
+		MetroidvaniaCharacter->PlayerHealthComponent->IncreaseMaxHealth((p_NewHealthWorker-CurrentHealthWorker)/2);
+	}
+	else if (p_NewHealthWorker < CurrentHealthWorker)
+	{
+		
+		MetroidvaniaCharacter->PlayerHealthComponent->DecreaseMaxHealth((CurrentHealthWorker-p_NewHealthWorker)/2);	
+	}
+	CurrentHealthWorker = p_NewHealthWorker;
 }
 
 void ACityManager::UpdateResourceGain(int p_hour)
@@ -140,7 +164,8 @@ void ACityManager::UpdateResourceGain(int p_hour)
 void ACityManager::UpdateNightDebuff(int p_hour)
 {
 	float nightLength = 24-NightStart + NightEnd;
-	if (p_hour >= NightEnd && p_hour <= NightStart)
+	if (p_hour >= NightEnd && p_hour <= NightStart
+		|| Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->GetCurrentMode() == EGameplayMode::CityBuilder)
 	{
 		//no debuff
 		debuff = 1;
@@ -148,17 +173,19 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	else if (p_hour < NightEnd)
 	{
 		//night to day
-		debuff = 1 - MaxDebuff * (nightLength-p_hour)/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * (TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2)) * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
 		//day to night
-		debuff = 1 - MaxDebuff * p_hour/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * (TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2)) * (p_hour-nightLength)/nightLength;
 	}
 }
 
 void ACityManager::TryGetUi()
 {
+	//i want the metroidvania player character. this is bad
+	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->MetroidVaniaCharacterReference);
 	if (ACityBuilderCharacter* PC = Cast<ACityBuilderCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
 	{
 		if (!PC->FoundWidget)
