@@ -26,9 +26,7 @@ void ACityManager::BeginPlay()
 	Super::BeginPlay();
 	TArray<AActor*> FoundActors;
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATownHall::StaticClass(), FoundActors);
-
-	//i want the metroidvania player character. this is bad
-	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->MetroidVaniaCharacterReference);
+	
 	if (FoundActors.Num() > 0)
 	{
 		TownHall = Cast<ATownHall>(FoundActors[0]);
@@ -83,6 +81,7 @@ void ACityManager::IncreaseHealth(int p_NewHealthWorker)
 {
 	if (MetroidvaniaCharacter == nullptr)
 	{
+		UE_LOG(LogTemp, Error, TEXT("MetroicvaniaCharacter is null"));
 		return;
 	}
 	if (p_NewHealthWorker > CurrentHealthWorker)
@@ -91,7 +90,8 @@ void ACityManager::IncreaseHealth(int p_NewHealthWorker)
 	}
 	else if (p_NewHealthWorker < CurrentHealthWorker)
 	{
-		MetroidvaniaCharacter->PlayerHealthComponent->DecreaseMaxHealth((p_NewHealthWorker-CurrentHealthWorker)/2);	
+		
+		MetroidvaniaCharacter->PlayerHealthComponent->DecreaseMaxHealth((CurrentHealthWorker-p_NewHealthWorker)/2);	
 	}
 	CurrentHealthWorker = p_NewHealthWorker;
 }
@@ -125,7 +125,6 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	}
 	HappinessTimer ++;
 	UpdateNightDebuff(p_hour);
-	
 	for (auto[Name,value]: resourcesGain)
 	{
 		resourcesGain[Name] = BaseGain
@@ -174,17 +173,19 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 	else if (p_hour < NightEnd)
 	{
 		//night to day
-		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2) * (nightLength-p_hour)/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * (TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2)) * (nightLength-p_hour)/nightLength;
 	}
 	else
 	{
 		//day to night
-		debuff = 1 - MaxDebuff * (1 - 0.05 * TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2) * p_hour/nightLength;
+		debuff = 1 - MaxDebuff * (1 - 0.05 * (TownHall->GetJobByType(EJobEnum::TimePriest)->GetJobNumber()/2)) * (p_hour-nightLength)/nightLength;
 	}
 }
 
 void ACityManager::TryGetUi()
 {
+	//i want the metroidvania player character. this is bad
+	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->MetroidVaniaCharacterReference);
 	if (ACityBuilderCharacter* PC = Cast<ACityBuilderCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
 	{
 		if (!PC->FoundWidget)

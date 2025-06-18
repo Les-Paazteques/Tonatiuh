@@ -116,9 +116,9 @@ void UPlayerHealthComponent::IncreaseMaxHealth(int p_healthAmount)
 
 void UPlayerHealthComponent::DecreaseMaxHealth(int p_healthAmount)
 {
+	UE_LOG(LogTemp, Warning, TEXT("DecreaseMaxHealth"));
 	if (p_healthAmount <= 0 || MaxHealth <= 0 || CurrentHealth <= 0)
 		return;
-
 	MaxHealth = FMath::Max(0, MaxHealth - p_healthAmount);
 	CurrentHealth = FMath::Clamp(CurrentHealth - p_healthAmount, 0, MaxHealth);
 
