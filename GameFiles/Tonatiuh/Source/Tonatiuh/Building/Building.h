@@ -38,6 +38,7 @@ public:
 	bool TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType);
 	void InitBuildings();
 	void RemoveBuildings();
+	virtual void GetCityManager(AActor* p_cityManager);
 
 protected:
 	
