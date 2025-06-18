@@ -118,7 +118,6 @@ void UPlayerHealthComponent::DecreaseMaxHealth(int p_healthAmount)
 {
 	if (p_healthAmount <= 0 || MaxHealth <= 0 || CurrentHealth <= 0)
 		return;
-	
 	MaxHealth = FMath::Max(0, MaxHealth - p_healthAmount);
 	CurrentHealth = FMath::Clamp(CurrentHealth - p_healthAmount, 0, MaxHealth);
 
