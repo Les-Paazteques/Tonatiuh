@@ -9,5 +9,6 @@ enum class EJobEnum: uint8
 	WoodCutter = 1 UMETA(DisplayName = "WoodCutter"),
 	HealthPriest = 2 UMETA(DisplayName = "Health Priest"),
 	TimePriest = 3 UMETA(DisplayName = "Time Priest"),
-	Housing = 4 UMETA(DisplayName = "Housing")
+	Housing = 4 UMETA(DisplayName = "Housing"),
+	Researcher = 5 UMETA(DisplayName = "Researcher")
 };
