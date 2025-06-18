@@ -3,11 +3,19 @@
 
 #include "TownHall.h"
 
+#include "Components/BillboardComponent.h"
+
 
 ATownHall::ATownHall()
 {
 	_jobs.SetNum(1);
 	OnClicked.AddDynamic(this, &ATownHall::ActivateUI);
+
+	_mesh = CreateDefaultSubobject<UStaticMeshComponent>("Cube");
+	SetRootComponent(_mesh);
+	
+	_display = CreateDefaultSubobject<UBillboardComponent>(TEXT("Display"));
+	_display->SetupAttachment(_mesh);
 }
 
 // Called when the game starts or when spawned
@@ -54,7 +62,8 @@ void ATownHall::BeginPlay()
 	_eventManager->OnBuildingEvent.AddDynamic(this, &ATownHall::AddToJobMaxPop);
 
 	_eventManager->OnDestroyEvent.AddDynamic(this, &ATownHall::SubtractFromJobMaxPop);
-	
+
+	UpdateDisplay();
 }
 
 int ATownHall::GetGlobalPopulation() const
@@ -100,6 +109,7 @@ void ATownHall::AddToPopulation(const int p_value)
 	_unemployedPopulation += p_value;
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
 	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, 0, INT_MAX);
+	UpdateDisplay();
 }
 
 void ATownHall::RemoveFromPopulation(const int p_value)
@@ -109,6 +119,7 @@ void ATownHall::RemoveFromPopulation(const int p_value)
 	
 	_globalPopulation = FMath::Clamp(_globalPopulation, _basePopulation, INT_MAX);
 	_unemployedPopulation = FMath::Clamp(_unemployedPopulation, _basePopulation, INT_MAX);
+	UpdateDisplay();
 }
 
 void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
@@ -127,6 +138,7 @@ void ATownHall::AssignPopToJob(const int p_populationToAdd, AJob* p_jobToAssign)
 	}
 	_unemployedPopulation -= tempPopulation;
 	_unemployedPopulation += p_jobToAssign->AddPopulation(tempPopulation);
+	UpdateDisplay();
 }
 
 void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
@@ -146,6 +158,7 @@ void ATownHall::RemovePopFromJob(const int p_popToRemove, AJob* p_jobAffected)
 	
 	p_jobAffected->AddPopulation(-tempPopulation);
 	_unemployedPopulation += tempPopulation;
+	UpdateDisplay();
 }
 
 
@@ -217,6 +230,7 @@ void ATownHall::SubtractFromJobMaxPop(const int p_population, const EJobEnum p_j
 	}
 	
 	job->SetMaxNumber(tempPopulation - p_population);
+	UpdateDisplay();
 }
 
 void ATownHall::FindGridManager()
@@ -230,4 +244,16 @@ void ATownHall::FindGridManager()
 	}
 	
 	GetWorldTimerManager().SetTimerForNextTick(this, &ATownHall::FindGridManager);
+}
+
+void ATownHall::UpdateDisplay()
+{
+	if (_unemployedPopulation > 0)
+	{
+		_display->SetSprite(_texturesDisplay[0]);
+	}
+	else
+	{
+		_display->SetSprite(nullptr);
+	}
 }
