@@ -17,6 +17,14 @@ class TONATIUH_API ATownHall : public ABuilding
 	GENERATED_BODY()
 
 protected:
+	UPROPERTY(EditAnywhere)
+	UBillboardComponent* _display;
+
+	UPROPERTY(EditAnywhere)
+	UStaticMeshComponent* _mesh;
+
+	UPROPERTY(EditAnywhere)
+	TArray<UTexture2D*> _texturesDisplay;
 	
 	/** Array containing all the jobs of the city */
 	UPROPERTY(EditAnywhere)
@@ -91,6 +99,8 @@ public:
 protected:
 
 	void FindGridManager();
+
+	void UpdateDisplay();
 	
 	UFUNCTION(Blueprintable, BlueprintImplementableEvent, BlueprintCallable)
 	void ActivateUI(AActor* p_touchedActor, FKey p_keyPressed);
