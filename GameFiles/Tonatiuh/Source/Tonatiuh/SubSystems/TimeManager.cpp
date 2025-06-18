@@ -38,6 +38,9 @@ void UTimeManager::Deinitialize()
 
 void UTimeManager::Tick(const float p_deltaTime)
 {
+	if (!_hasAlreadyCalledStartMethod)
+		Start();
+	
 	if (IsInGameTimePaused())
 		return;
 	
@@ -147,6 +150,16 @@ bool UTimeManager::IsDebugModeOn() const
 	// that's why there is a method
 	
 	return IS_DEBUG_MODE_ON;
+}
+
+void UTimeManager::Start()
+{
+	_hasAlreadyCalledStartMethod = true;
+
+	// Because the method 'HourPassed' pass an hour, we cancel that
+	_inGameCurrentTimeInHours--;
+	
+	HourPassed();
 }
 
 bool UTimeManager::IsInGameTimePaused() const
