@@ -72,7 +72,10 @@ void UTimeManager::HourPassed()
 	_inGameCurrentTimeInHours++;
 
 	if (_inGameCurrentTimeInHours >= 24)
-		_inGameCurrentTimeInHours = 0;	
+	{
+		_inGameCurrentTimeInHours = 0;
+		OnNewDayStartedEvent.Broadcast(_inGameCurrentTimeInHours);
+	}
 	
 	OnHourPassedEvent.Broadcast(_inGameCurrentTimeInHours);
 
