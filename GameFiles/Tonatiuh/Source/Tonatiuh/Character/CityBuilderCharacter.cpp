@@ -214,6 +214,11 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 		FoundWidget->PreviewBuilding->GetActorLocation(),
 		FRotator(0, 0, 0)
 	);
+
+	if (building->JobCapIncrease.Contains(EJobEnum::Researcher))
+	{
+		building->GetCityManager(CityManager);
+	}
 	
 	building->InitBuildings();
 	

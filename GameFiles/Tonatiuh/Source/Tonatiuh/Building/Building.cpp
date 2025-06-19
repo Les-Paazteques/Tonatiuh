@@ -67,3 +67,8 @@ void ABuilding::RemoveBuildings()
 
 	_eventManager->OnDestroyEvent.Broadcast(increase, jobType);
 }
+
+void ABuilding::GetCityManager(AActor* p_cityManager)
+{
+	
+}

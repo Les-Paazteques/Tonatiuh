@@ -63,6 +63,8 @@ public:
 	TObjectPtr<UWorld> CurrentWorld;
 
 private:
+
+	bool _hasAlreadyCalledStartMethod = false;
 	
 	bool _isInGameTimePaused = false;
 	
@@ -104,6 +106,8 @@ private:
 
 	bool IsDebugModeOn() const;
 
+	void Start();
+	
 	bool IsInGameTimePaused() const;
 	
 	void HourPassed();

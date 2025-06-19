@@ -24,3 +24,7 @@ void AArtefact::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+int AArtefact::GetCostOfKey(EResourceEnum p_resource)
+{
+	return *_cost.Find(p_resource);
+}
