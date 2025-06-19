@@ -254,7 +254,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		collisionQueryParams
 	);
 	
-	if (hitResult.GetActor())
+	if (hitResult.GetActor() && FoundWidget->PreviewBuilding == nullptr)
 	{
 		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
 			return;
@@ -288,7 +288,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 		{
 			if (jobCapIncrease.Key == EJobEnum::HealthPriest)
 			{
-				if (CityManager->resources[buildingCost.Key] <=
+				if (CityManager->resources[buildingCost.Key] <
 					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],HealthTempleCount))
 				{
 					return false;
@@ -297,7 +297,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 			
 			if (jobCapIncrease.Key == EJobEnum::TimePriest)
 			{
-				if (CityManager->resources[buildingCost.Key] <=
+				if (CityManager->resources[buildingCost.Key] <
 					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],TimeTempleCount))
 				{
 					return false;
@@ -305,7 +305,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 			}
 		}
 		
-		if (CityManager->resources[buildingCost.Key] <= p_Building->BuildingCost[buildingCost.Key])
+		if (CityManager->resources[buildingCost.Key] < p_Building->BuildingCost[buildingCost.Key])
 			return false;
 	}
 	
