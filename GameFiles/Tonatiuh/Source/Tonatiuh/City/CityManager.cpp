@@ -241,3 +241,11 @@ int ACityManager::GetHappiness() const
 	return Happiness;
 }
 
+void ACityManager::AddToBaseGain(int p_amount)
+{
+	if (p_amount < 0)
+	{
+		return;
+	}
+	BaseGain += p_amount;
+}

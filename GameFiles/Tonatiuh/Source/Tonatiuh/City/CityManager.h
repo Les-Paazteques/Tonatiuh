@@ -131,4 +131,7 @@ public:
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
 
 	int GetHappiness() const;
+
+	UFUNCTION(BlueprintCallable)
+	void AddToBaseGain(int p_amount);
 };
