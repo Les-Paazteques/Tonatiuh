@@ -22,8 +22,6 @@ UTimeManager::UTimeManager()
 
 	// Setting the current time to the start time
 	InGameCurrentTimeInHours = START_TIME_IN_GAME_HOUR;
-
-	HourPassed();
 }
 
 void UTimeManager::Initialize(FSubsystemCollectionBase& p_collection)
