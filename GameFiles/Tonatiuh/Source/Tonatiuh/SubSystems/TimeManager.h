@@ -66,7 +66,9 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TObjectPtr<UWorld> CurrentWorld;
-
+	
+	int InGameCurrentTimeInHours = 0;
+	
 private:
 
 	bool _hasAlreadyCalledStartMethod = false;
@@ -77,8 +79,7 @@ private:
 	float _inGameHourInSecondsIRL;
 	
 	float _secondsPassed = 0;
-	int _inGameCurrentTimeInHours = 0;
-	
+
 public:
 
 	UTimeManager();

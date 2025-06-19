@@ -21,7 +21,7 @@ UTimeManager::UTimeManager()
 		);
 
 	// Setting the current time to the start time
-	_inGameCurrentTimeInHours = START_TIME_IN_GAME_HOUR;
+	InGameCurrentTimeInHours = START_TIME_IN_GAME_HOUR;
 
 	HourPassed();
 }
@@ -69,44 +69,44 @@ void UTimeManager::Tick(const float p_deltaTime)
 
 void UTimeManager::HourPassed()
 {
-	_inGameCurrentTimeInHours++;
+	InGameCurrentTimeInHours++;
 
-	if (_inGameCurrentTimeInHours >= 24)
+	if (InGameCurrentTimeInHours >= 24)
 	{
-		_inGameCurrentTimeInHours = 0;
-		OnNewDayStartedEvent.Broadcast(_inGameCurrentTimeInHours);
+		InGameCurrentTimeInHours = 0;
+		OnNewDayStartedEvent.Broadcast(InGameCurrentTimeInHours);
 	}
 	
-	OnHourPassedEvent.Broadcast(_inGameCurrentTimeInHours);
+	OnHourPassedEvent.Broadcast(InGameCurrentTimeInHours);
 
 	if (IsDebugModeOn())
 		MessageDebugger::CustomMessageOnScreen(-1,
-			FString::Printf(TEXT("An hour passed (%d)"), _inGameCurrentTimeInHours),
+			FString::Printf(TEXT("An hour passed (%d)"), InGameCurrentTimeInHours),
 			FColor::Green,
 			10.0f
 		);
 
 	// Day handling
-	if (_inGameCurrentTimeInHours == DAY_START_TIME_IN_GAME_HOUR)
+	if (InGameCurrentTimeInHours == DAY_START_TIME_IN_GAME_HOUR)
 	{
-		OnDayStartedEvent.Broadcast(_inGameCurrentTimeInHours);
+		OnDayStartedEvent.Broadcast(InGameCurrentTimeInHours);
 
 		if (IsDebugModeOn())
 			MessageDebugger::CustomMessageOnScreen(-1,
-			FString::Printf(TEXT("Day as started | Current hour (%d)"), _inGameCurrentTimeInHours),
+			FString::Printf(TEXT("Day as started | Current hour (%d)"), InGameCurrentTimeInHours),
 				FColor::Green,
 				10.0f
 			);
 	}
 
 	// Night handling
-	if (_inGameCurrentTimeInHours == NIGHT_START_TIME_IN_GAME_HOUR)
+	if (InGameCurrentTimeInHours == NIGHT_START_TIME_IN_GAME_HOUR)
 	{
-		OnNightStartedEvent.Broadcast(_inGameCurrentTimeInHours);
+		OnNightStartedEvent.Broadcast(InGameCurrentTimeInHours);
 
 		if (IsDebugModeOn())
 			MessageDebugger::CustomMessageOnScreen(-1,
-				FString::Printf(TEXT("Night as started | Current hour (%d)"), _inGameCurrentTimeInHours),
+				FString::Printf(TEXT("Night as started | Current hour (%d)"), InGameCurrentTimeInHours),
 				FColor::Green,
 				10.0f
 			);
@@ -160,7 +160,7 @@ void UTimeManager::Start()
 	_hasAlreadyCalledStartMethod = true;
 
 	// Because the method 'HourPassed' pass an hour, we cancel that
-	_inGameCurrentTimeInHours--;
+	InGameCurrentTimeInHours--;
 	
 	HourPassed();
 }
