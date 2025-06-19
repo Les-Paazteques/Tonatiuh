@@ -8,6 +8,8 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHourPassedEvent, int, p_currentTimeInHour);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNewDayStartedEvent, int, p_currentTimeInHour);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDayStartedEvent, int, p_currentTimeInHour);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNightStartedEvent, int, p_currentTimeInHour);
 
@@ -38,6 +40,9 @@ public:
 	/// </code>
 	/// </summary>
 	UPROPERTY(BlueprintAssignable) FOnHourPassedEvent OnHourPassedEvent;
+
+	/// <summary> Launches when passing from 11 PM to 0 AM </summary>
+	UPROPERTY(BlueprintAssignable) FOnNewDayStartedEvent OnNewDayStartedEvent;
 	
 	UPROPERTY(BlueprintAssignable) FOnDayStartedEvent OnDayStartedEvent;
 	UPROPERTY(BlueprintAssignable) FOnNightStartedEvent OnNightStartedEvent;

@@ -8,6 +8,9 @@
 #include "Tonatiuh/Jobs/Job.h"
 #include "Tonatiuh/GridManager/GridManager.h"
 
+// PLEASE DON'T DELETE THIS, the build needs it (#include "Components/BillboardComponent.h")
+#include "Components/BillboardComponent.h"
+
 #include "TownHall.generated.h"
 
 
