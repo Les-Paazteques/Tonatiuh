@@ -176,6 +176,11 @@ void UPlayerHealthComponent::DamageDuringNightTime(int p_currentHour)
 		return;
 
 	int happiness = cityManager->GetHappiness();
+
+	// In case we receive negative happiness
+	if (happiness < 0)
+		happiness = 0;
+	
 	int happinessShift = happiness / _pointOfHappinessRequired;
 	int adjustedStart = static_cast<int>(_nightStart) + happinessShift;
 
