@@ -230,6 +230,7 @@ void ACityBuilderCharacter::Interact(const FInputActionValue& p_value)
 	
 	FoundWidget->SelectedBuilding = nullptr;
 	FoundWidget->PreviewBuilding->Destroy();
+	FoundWidget->PreviewBuilding = nullptr;
 }
 
 void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
@@ -271,6 +272,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 	{
 		FoundWidget->SelectedBuilding = nullptr;
 		FoundWidget->PreviewBuilding->Destroy();
+		FoundWidget->PreviewBuilding = nullptr;
 	}
 }
 
