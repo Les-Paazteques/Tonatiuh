@@ -254,7 +254,7 @@ void ACityBuilderCharacter::RemoveBuilding(const FInputActionValue& p_value)
 		collisionQueryParams
 	);
 	
-	if (hitResult.GetActor())
+	if (hitResult.GetActor() && FoundWidget->PreviewBuilding == nullptr)
 	{
 		if (Cast<ATownHall>(hitResult.GetActor()) != nullptr)
 			return;

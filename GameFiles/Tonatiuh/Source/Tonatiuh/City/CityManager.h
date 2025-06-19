@@ -92,6 +92,8 @@ protected:
 	int HappinessTimer;
 
 	int HouseCount = 0;
+
+	int BuildingCount = 0;
 	
 	EHappinessEnum Mood = EHappinessEnum::Neutral;
 	
