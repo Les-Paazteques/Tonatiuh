@@ -36,7 +36,7 @@ public:
 	virtual void Tick(float p_deltaTime) override;
 	
 	bool TryGetResourceIncreasedAndJobType(int& p_increase, EJobEnum& p_jobType);
-	void InitBuildings();
+	virtual void InitBuildings();
 	void RemoveBuildings();
 	virtual void GetCityManager(AActor* p_cityManager);
 
