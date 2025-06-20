@@ -20,6 +20,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Checkpoint")
 	int32 CheckpointID;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Checkpoint")
+	int SectorToLoad = 0;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Checkpoint")
 	UBoxComponent* TriggerBox;
 

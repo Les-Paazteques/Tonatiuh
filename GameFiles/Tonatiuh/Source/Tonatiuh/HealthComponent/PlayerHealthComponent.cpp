@@ -73,9 +73,10 @@ void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevel
 	}
 }
 
-void UPlayerHealthComponent::SetRespawnLocation(const FVector& p_newLocation)
+void UPlayerHealthComponent::SetRespawnLocation(const ACheckpoint* checkpoint)
 {
-	RespawnLocation = p_newLocation;
+	RespawnLocation = checkpoint->GetActorLocation();
+	RespawnLevel = checkpoint->SectorToLoad;
 }
 
 FVector UPlayerHealthComponent::GetRespawnLocation() const
@@ -97,6 +98,11 @@ void UPlayerHealthComponent::Respawn()
 {
 	if (AMetroidVaniaCharacter* owner = Cast<AMetroidVaniaCharacter>(GetOwner()))
 	{
+		ASwitchGamemode* GameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
+		if (GameMode != nullptr)
+		{
+			GameMode->LoadLevel(RespawnLevel);
+		}
 		owner->SetActorLocation(RespawnLocation);
 		OnRespawn.Broadcast();
 	}
