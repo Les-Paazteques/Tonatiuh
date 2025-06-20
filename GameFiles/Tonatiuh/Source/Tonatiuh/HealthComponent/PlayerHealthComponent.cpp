@@ -73,7 +73,7 @@ void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevel
 	}
 }
 
-void UPlayerHealthComponent::SetRespawnLocation(ACheckpoint* checkpoint)
+void UPlayerHealthComponent::SetRespawnLocation(const ACheckpoint* checkpoint)
 {
 	RespawnLocation = checkpoint->GetActorLocation();
 	RespawnLevel = checkpoint->SectorToLoad;
@@ -101,7 +101,6 @@ void UPlayerHealthComponent::Respawn()
 		ASwitchGamemode* GameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
 		if (GameMode != nullptr)
 		{
-			GameMode->UnloadAllRooms();
 			GameMode->LoadLevel(RespawnLevel);
 		}
 		owner->SetActorLocation(RespawnLocation);

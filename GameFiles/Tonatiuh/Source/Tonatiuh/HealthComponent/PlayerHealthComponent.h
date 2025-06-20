@@ -72,7 +72,7 @@ public:
 
 	virtual void TickComponent(float p_deltaTime, ELevelTick p_tickType, FActorComponentTickFunction* p_thisTickFunction) override;
 
-	void SetRespawnLocation(ACheckpoint* checkpoint);
+	void SetRespawnLocation(const ACheckpoint* checkpoint);
 	FVector GetRespawnLocation() const;
 
 	void Die();
