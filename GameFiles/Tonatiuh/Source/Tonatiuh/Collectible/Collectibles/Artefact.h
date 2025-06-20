@@ -25,7 +25,7 @@ public:
 	int DoubleJumpKey;
 
 	/** If set to true the artefact will end the game when used in the research center */
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool EndGameKey;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -36,6 +36,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool IsPermanent = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	int FoodToGive;
 
 protected:
 	// Called when the game starts or when spawned
