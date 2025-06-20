@@ -9,6 +9,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/GameSession.h"
 #include "Tonatiuh/Character/MetroidVaniaCharacter.h"
+#include "Tonatiuh/ExternalTools/MessageDebugger.h"
 
 
 UPlayerHealthComponent::UPlayerHealthComponent()
@@ -72,9 +73,10 @@ void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevel
 	}
 }
 
-void UPlayerHealthComponent::SetRespawnLocation(const FVector& p_newLocation)
+void UPlayerHealthComponent::SetRespawnLocation(const ACheckpoint* checkpoint)
 {
-	RespawnLocation = p_newLocation;
+	RespawnLocation = checkpoint->GetActorLocation();
+	RespawnLevel = checkpoint->SectorToLoad;
 }
 
 FVector UPlayerHealthComponent::GetRespawnLocation() const
@@ -96,6 +98,11 @@ void UPlayerHealthComponent::Respawn()
 {
 	if (AMetroidVaniaCharacter* owner = Cast<AMetroidVaniaCharacter>(GetOwner()))
 	{
+		ASwitchGamemode* GameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
+		if (GameMode != nullptr)
+		{
+			GameMode->LoadLevel(RespawnLevel);
+		}
 		owner->SetActorLocation(RespawnLocation);
 		OnRespawn.Broadcast();
 	}
@@ -103,9 +110,14 @@ void UPlayerHealthComponent::Respawn()
 
 void UPlayerHealthComponent::TakeDamage(int p_damageAmount)
 {
-	if (p_damageAmount <= 0 || InvincibilityCooldown > 0)
+	ASwitchGamemode* GameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
+	if (GameMode == nullptr)
+	{
+		MessageDebugger::ErrorOnScreen(-1,"gamemode is not valid");
 		return;
-
+	}
+	if ((p_damageAmount <= 0 || InvincibilityCooldown > 0) || GameMode->GetCurrentMode() == EGameplayMode::CityBuilder)
+		return;
 	CurrentHealth -= p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
 	InvincibilityCooldown = MaxInvincibilityCooldown;
@@ -176,6 +188,11 @@ void UPlayerHealthComponent::DamageDuringNightTime(int p_currentHour)
 		return;
 
 	int happiness = cityManager->GetHappiness();
+
+	// In case we receive negative happiness
+	if (happiness < 0)
+		happiness = 0;
+	
 	int happinessShift = happiness / _pointOfHappinessRequired;
 	int adjustedStart = static_cast<int>(_nightStart) + happinessShift;
 

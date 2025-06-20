@@ -92,6 +92,8 @@ protected:
 	int HappinessTimer;
 
 	int HouseCount = 0;
+
+	int BuildingCount = 0;
 	
 	EHappinessEnum Mood = EHappinessEnum::Neutral;
 	
@@ -131,4 +133,7 @@ public:
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
 
 	int GetHappiness() const;
+
+	UFUNCTION(BlueprintCallable)
+	void AddToBaseGain(int p_amount);
 };
