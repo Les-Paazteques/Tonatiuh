@@ -128,8 +128,15 @@ void ACityManager::UpdateResourceGain(int p_hour)
 	for (auto[Name,value]: resourcesGain)
 	{
 		resourcesGain[Name] = BaseGain
-		+ (TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff)
-		- TownHall->GetGlobalPopulation()*popUpkeep[Name];
+			+ TownHall->GetJobByResource(Name)->GetJobNumber()*JobGain[Name] * debuff;
+		if (Name == EResourceEnum::Food)
+		{
+			resourcesGain[Name] -= TownHall->GetGlobalPopulation()*popUpkeep[Name];
+		}
+		else if (Name == EResourceEnum::Wood)
+		{
+			resourcesGain[Name] -= BuildingCount;
+		}
 	}
 	if (p_hour == 0 || (p_hour % PopGrowthTime) == 0 )
 	{
@@ -205,6 +212,7 @@ void ACityManager::TryGetUi()
 
 void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
 {
+	BuildingCount++;
 	if (p_Job == EJobEnum::Housing)
 	{
 		HouseCount++;
@@ -215,6 +223,7 @@ void ACityManager::increaseHouseCount(int p_Amount, EJobEnum p_Job)
 
 void ACityManager::decreaseHouseCount(int p_Amount, EJobEnum p_Job)
 {
+	BuildingCount--;
 	if (p_Job == EJobEnum::Housing)
 	{
 		HouseCount--;
@@ -241,3 +250,11 @@ int ACityManager::GetHappiness() const
 	return Happiness;
 }
 
+void ACityManager::AddToBaseGain(int p_amount)
+{
+	if (p_amount < 0)
+	{
+		return;
+	}
+	BaseGain += p_amount;
+}

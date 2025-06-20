@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Tonatiuh/Map/Checkpoint/Checkpoint.h"
 #include "PlayerHealthComponent.generated.h"
 
 class AMetroidVaniaCharacter;
@@ -37,8 +38,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	FVector RespawnLocation;
 
+	int RespawnLevel = 0;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	int32 MaxHealth = 5;
+	int32 MaxHealth = 3;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health")
 	int32 CurrentHealth;
@@ -69,7 +72,7 @@ public:
 
 	virtual void TickComponent(float p_deltaTime, ELevelTick p_tickType, FActorComponentTickFunction* p_thisTickFunction) override;
 
-	void SetRespawnLocation(const FVector& p_newLocation);
+	void SetRespawnLocation(const ACheckpoint* checkpoint);
 	FVector GetRespawnLocation() const;
 
 	void Die();
