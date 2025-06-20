@@ -245,9 +245,21 @@ void ACityManager::removeResource(EResourceEnum p_Resource,int p_Quantity)
 		resourcesGain[EResourceEnum::Wood],TownHall->GetGlobalPopulation(),Happiness,HouseCount);
 }
 
+void ACityManager::AddResource(EResourceEnum p_Resource, int p_Quantiy)
+{
+	resources[p_Resource] += p_Quantiy;
+	UI->SetResourceGainText(resources[EResourceEnum::Food],resourcesGain[EResourceEnum::Food],resources[EResourceEnum::Wood],
+		resourcesGain[EResourceEnum::Wood],TownHall->GetGlobalPopulation(),Happiness,HouseCount);
+}
+
 int ACityManager::GetHappiness() const
 {
 	return Happiness;
+}
+
+void ACityManager::setHappiness(int p_Happiness)
+{
+	BaseHappiness = p_Happiness;
 }
 
 void ACityManager::AddToBaseGain(int p_amount)
