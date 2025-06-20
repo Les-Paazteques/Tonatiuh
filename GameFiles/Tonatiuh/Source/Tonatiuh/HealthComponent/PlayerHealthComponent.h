@@ -41,7 +41,7 @@ public:
 	int RespawnLevel = 0;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	int32 MaxHealth = 5;
+	int32 MaxHealth = 3;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Health")
 	int32 CurrentHealth;
