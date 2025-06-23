@@ -292,7 +292,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 		{
 			if (jobCapIncrease.Key == EJobEnum::HealthPriest)
 			{
-				if (CityManager->resources[buildingCost.Key] <
+				if (CityManager->resources[buildingCost.Key] <=
 					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],HealthTempleCount))
 				{
 					return false;
@@ -301,7 +301,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 			
 			if (jobCapIncrease.Key == EJobEnum::TimePriest)
 			{
-				if (CityManager->resources[buildingCost.Key] <
+				if (CityManager->resources[buildingCost.Key] <=
 					GetTempleCost(p_Building->BuildingCost[buildingCost.Key],TimeTempleCount))
 				{
 					return false;
@@ -309,7 +309,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 			}
 		}
 		
-		if (CityManager->resources[buildingCost.Key] < p_Building->BuildingCost[buildingCost.Key])
+		if (CityManager->resources[buildingCost.Key] <= p_Building->BuildingCost[buildingCost.Key])
 			return false;
 	}
 	
@@ -318,7 +318,7 @@ bool ACityBuilderCharacter::HasResources(ABuilding* p_Building) const
 
 float ACityBuilderCharacter::GetTempleCost(const int p_BaseCost, const int p_TempleCount)
 {
-	return p_BaseCost * exp(p_TempleCount / 3);
+	return p_BaseCost * FMath::Exp(p_TempleCount / 3.0f);
 }
 
 void ACityBuilderCharacter::increaseBuildCount(const int p_Amount, const EJobEnum p_Job)
@@ -374,6 +374,16 @@ void ACityBuilderCharacter::ActivateUI()
 {
 	SwitchWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	FoundWidget->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+}
+
+int ACityBuilderCharacter::HealthTempleCost()
+{
+	return GetTempleCost(10,HealthTempleCount);
+}
+
+int ACityBuilderCharacter::SunTempleCost()
+{
+	return GetTempleCost(10,TimeTempleCount);
 }
 
 void ACityBuilderCharacter::DeactivateUI()
