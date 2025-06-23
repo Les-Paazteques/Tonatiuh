@@ -192,8 +192,10 @@ void ACityManager::UpdateNightDebuff(int p_hour)
 void ACityManager::TryGetUi()
 {
 	//i want the metroidvania player character. this is bad
-	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode())->MetroidVaniaCharacterReference);
-	if (ACityBuilderCharacter* PC = Cast<ACityBuilderCharacter>(UGameplayStatics::GetPlayerPawn(this, 0)))
+	//can confirm, this is really bad, oh well
+	ASwitchGamemode* SwitchGamemode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
+	MetroidvaniaCharacter = Cast<AMetroidVaniaCharacter>(SwitchGamemode->MetroidVaniaCharacterReference);
+	if (ACityBuilderCharacter* PC = Cast<ACityBuilderCharacter>(SwitchGamemode->CityBuilderPawnReference))
 	{
 		if (!PC->FoundWidget)
 		{
