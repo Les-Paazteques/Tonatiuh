@@ -113,8 +113,6 @@ protected:
 
 	void TryGetUi();
 
-	UFUNCTION()
-	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
 
 	UFUNCTION()
 	void decreaseHouseCount(int p_Amount, EJobEnum p_Job);
@@ -130,9 +128,16 @@ public:
 	// Called every frame
 	virtual void Tick(float p_deltaTime) override;
 
+	UFUNCTION()
+	void increaseHouseCount(int p_Amount, EJobEnum p_Job);
+	
 	void removeResource(EResourceEnum p_Resource, int p_Quantiy);
 
+	void AddResource(EResourceEnum p_Resource, int p_Quantiy);
+
 	int GetHappiness() const;
+
+	void setHappiness(int p_Happiness);
 
 	UFUNCTION(BlueprintCallable)
 	void AddToBaseGain(int p_amount);
