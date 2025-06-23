@@ -70,6 +70,9 @@ public:
 public:
 	UPlayerHealthComponent();
 
+	UPROPERTY(EditAnywhere)
+	bool Invincible = false;
+	
 	virtual void TickComponent(float p_deltaTime, ELevelTick p_tickType, FActorComponentTickFunction* p_thisTickFunction) override;
 
 	void SetRespawnLocation(const ACheckpoint* checkpoint);
@@ -92,6 +95,8 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	void DamageDuringNightTime(int p_currentHour);
+
+	void SetInvincible(bool p_invincible);
 
 protected:
 	virtual void BeginPlay() override;

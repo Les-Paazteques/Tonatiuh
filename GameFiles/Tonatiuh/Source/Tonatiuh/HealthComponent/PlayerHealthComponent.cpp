@@ -116,8 +116,10 @@ void UPlayerHealthComponent::TakeDamage(int p_damageAmount)
 		MessageDebugger::ErrorOnScreen(-1,"gamemode is not valid");
 		return;
 	}
-	if ((p_damageAmount <= 0 || InvincibilityCooldown > 0) || GameMode->GetCurrentMode() == EGameplayMode::CityBuilder)
+	if (p_damageAmount <= 0 || InvincibilityCooldown > 0 || GameMode->GetCurrentMode() == EGameplayMode::CityBuilder || Invincible)
+	{
 		return;
+	}
 	CurrentHealth -= p_damageAmount;
 	CurrentHealth = FMath::Clamp(CurrentHealth, 0, MaxHealth);
 	InvincibilityCooldown = MaxInvincibilityCooldown;
@@ -201,4 +203,9 @@ void UPlayerHealthComponent::DamageDuringNightTime(int p_currentHour)
 	
 	if (p_currentHour >= NightStartDamaging || p_currentHour < NightEndDamaging)
 		TakeDamage(_nightDamageAmount);
+}
+
+void UPlayerHealthComponent::SetInvincible(bool p_invincible)
+{
+	Invincible = p_invincible;
 }
