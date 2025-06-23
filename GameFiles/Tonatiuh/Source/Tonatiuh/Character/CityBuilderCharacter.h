@@ -133,6 +133,12 @@ public:
 
 	UFUNCTION()
 	void ActivateUI();
+
+	UFUNCTION(BlueprintCallable)
+	int HealthTempleCost();
+
+	UFUNCTION(BlueprintCallable)
+	int SunTempleCost();
 	
 	/** Returns CameraBoom SubObject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return _cameraBoom; }
