@@ -4,9 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "Tonatiuh/Map/Checkpoint/Checkpoint.h"
 #include "PlayerHealthComponent.generated.h"
 
+class ACheckpoint;
 class AMetroidVaniaCharacter;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerDamaged, int, p_damageAmount);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlayerHealed, int, p_healAmount);
@@ -35,10 +35,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	int TimeInGameHourSkippedWhenDeath = 4;
 
-	UPROPERTY(VisibleAnywhere)
-	FVector RespawnLocation;
-
-	int RespawnLevel = 0;
+	UPROPERTY(EditAnywhere)
+	ACheckpoint* RespawnCheckpoint = nullptr;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
 	int32 MaxHealth = 3;
@@ -75,7 +73,7 @@ public:
 	
 	virtual void TickComponent(float p_deltaTime, ELevelTick p_tickType, FActorComponentTickFunction* p_thisTickFunction) override;
 
-	void SetRespawnLocation(const ACheckpoint* checkpoint);
+	void SetRespawnLocation(ACheckpoint* checkpoint);
 	FVector GetRespawnLocation() const;
 
 	void Die();
