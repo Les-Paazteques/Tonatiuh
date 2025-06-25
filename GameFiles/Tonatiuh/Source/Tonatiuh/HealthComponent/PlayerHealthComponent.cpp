@@ -10,12 +10,12 @@
 #include "GameFramework/GameSession.h"
 #include "Tonatiuh/Character/MetroidVaniaCharacter.h"
 #include "Tonatiuh/ExternalTools/MessageDebugger.h"
+#include "Tonatiuh/Map/Checkpoint/Checkpoint.h"
 
 
 UPlayerHealthComponent::UPlayerHealthComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	RespawnLocation = FVector::ZeroVector;
 	CurrentHealth = MaxHealth;
 	BlinkingCooldown = MaxBlinkingSpeed;
 }
@@ -25,8 +25,6 @@ void UPlayerHealthComponent::BeginPlay()
 	Super::BeginPlay();
 
 	_character = Cast<AMetroidVaniaCharacter>(GetOwner());
-
-	RespawnLocation = GetOwner()->GetActorLocation();
 
 	if (UWorld* world = GetWorld())
 	{
@@ -73,15 +71,14 @@ void UPlayerHealthComponent::TickComponent(const float p_deltaTime, const ELevel
 	}
 }
 
-void UPlayerHealthComponent::SetRespawnLocation(const ACheckpoint* checkpoint)
+void UPlayerHealthComponent::SetRespawnLocation(ACheckpoint* checkpoint)
 {
-	RespawnLocation = checkpoint->GetActorLocation();
-	RespawnLevel = checkpoint->SectorToLoad;
+	RespawnCheckpoint = checkpoint;
 }
 
 FVector UPlayerHealthComponent::GetRespawnLocation() const
 {
-	return RespawnLocation;
+	return RespawnCheckpoint->GetActorLocation();
 }
 
 void UPlayerHealthComponent::Die()
@@ -101,9 +98,9 @@ void UPlayerHealthComponent::Respawn()
 		ASwitchGamemode* GameMode = Cast<ASwitchGamemode>(GetWorld()->GetAuthGameMode());
 		if (GameMode != nullptr)
 		{
-			GameMode->LoadLevel(RespawnLevel);
+			GameMode->LoadLevel(RespawnCheckpoint->SectorToLoad);
 		}
-		owner->SetActorLocation(RespawnLocation);
+		owner->SetActorLocation(RespawnCheckpoint->GetActorLocation());
 		OnRespawn.Broadcast();
 	}
 }
