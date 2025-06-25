@@ -3,6 +3,7 @@
 
 #include "Checkpoint.h"
 #include "Components/BoxComponent.h"
+#include "Tonatiuh/SubSystems/InventoryManager.h"
 
 
 // Sets default values
@@ -14,7 +15,6 @@ ACheckpoint::ACheckpoint()
 	RootComponent = TriggerBox;
 	TriggerBox->SetBoxExtent(FVector(100.f));
 	TriggerBox->SetCollisionProfileName("Trigger");
-	TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ACheckpoint::OnOverlapEnd);
 	TriggerBox->OnComponentBeginOverlap.AddDynamic(this, &ACheckpoint::OnOverlapBegin);
 
 	TextRender = CreateDefaultSubobject<UTextRenderComponent>(TEXT("TextRender"));
@@ -26,13 +26,13 @@ void ACheckpoint::BeginPlay()
 {
 	Super::BeginPlay();
 	TextRender->SetVisibility(false);
+	TriggerBox->OnComponentEndOverlap.AddDynamic(this, &ACheckpoint::OnOverlapEnd); //DON'T MOVE IT TO CONSTRUCTOR, IT WILL STOP WORKING
 }
 
 void ACheckpoint::OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* p_otherActor,
 	UPrimitiveComponent* p_otherComp, int32 p_otherBodyIndex,
 	bool p_fromSweep, const FHitResult& p_sweepResult)
 {
-	UE_LOG(LogTemp, Error, TEXT("OnOverlapBegin"));
 	if (p_otherActor == nullptr)
 		return;
 	
@@ -52,6 +52,12 @@ void ACheckpoint::OnOverlapBegin(UPrimitiveComponent* p_overlappedComp, AActor* 
 			IsOnCheckpoint = true;
 			TextRender->SetVisibility(true);
 		}
+		
+		UInventoryManager* inventoryManager = GetWorld()->GetSubsystem<UInventoryManager>();
+		
+		if (inventoryManager == nullptr) return;
+		
+		inventoryManager->SaveAllInventory(false);
 	}
 }
 
@@ -60,8 +66,6 @@ void ACheckpoint::OnOverlapEnd(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	UE_LOG(LogTemp, Error, TEXT("OnOverlapEnd"));
-	
 	if (OtherActor == nullptr)
 		return;
 	
